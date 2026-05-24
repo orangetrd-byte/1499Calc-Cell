@@ -18,15 +18,13 @@
       "sizes": "512x512",
       "type": "image/png"
     }
-  ]
-}
-]
+  ],
   "shortcuts": [
     {
       "name": "Open Calculator",
       "short_name": "Calc",
       "description": "Open the tooling calculator",
-      "url": "/index.html"
+      "url": "./index.html"
     }
   ],
   "categories": ["productivity", "utilities"],
