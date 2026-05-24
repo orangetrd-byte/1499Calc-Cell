@@ -1,0 +1,934 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>1499 Master Tooling & Schedule Cell</title>
+
+    <!-- PWA -->
+    <link rel="manifest" href="manifest.json" />
+    <meta name="theme-color" content="#0d0e12" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="1499 Cell" />
+    <link rel="apple-touch-icon" href="icons/icon-192.png" />
+    <link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png" />
+    <link rel="icon" type="image/png" sizes="512x512" href="icons/icon-512.png" />
+    <style>
+        :root {
+            --bg-color: #0d0e12;
+            --card-bg: #161920;
+            --input-bg: #1f2330;
+            --text-color: #f0f2f5;
+            --text-dim: #7e89a3;
+            --accent: #39ff14;     /* Neon Safety Green */
+            --border: #262b3c;
+            --orange: #ff9f0a;     /* Warning Orange */
+            --blue: #0a84ff;       /* Status Blue */
+            --red: #ff453a;        /* Alert Red */
+            --purple: #bf5af2;     /* Utility Purple */
+        }
+
+        * { 
+            box-sizing: border-box; 
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 20px;
+            line-height: 1.5;
+        }
+
+        .container { 
+            max-width: 1400px; 
+            margin: 0 auto; 
+        }
+
+        h1 { 
+            font-size: 1.65rem; 
+            color: #fff; 
+            margin-top: 0;
+            margin-bottom: 25px; 
+            border-bottom: 3px solid var(--blue); 
+            padding-bottom: 14px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .grid { 
+            display: grid; 
+            grid-template-columns: 1fr; 
+            gap: 25px; 
+            margin-bottom: 25px;
+        }
+        
+        @media (min-width: 992px) { 
+            .grid { grid-template-columns: 1fr 1fr; } 
+        }
+        
+        .card { 
+            background: linear-gradient(145deg, #161920, #13151b);
+            border: 1px solid var(--border); 
+            border-radius: 12px; 
+            padding: 24px; 
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.6);
+            height: 100%;
+        }
+
+        .card-title { 
+            font-size: 1.15rem; 
+            font-weight: bold; 
+            color: #fff; 
+            margin-top: 0; 
+            margin-bottom: 20px; 
+            padding-bottom: 10px; 
+            border-bottom: 1px solid var(--border); 
+            letter-spacing: 0.5px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .input-group { 
+            display: flex; 
+            flex-direction: column; 
+            margin-bottom: 18px; 
+        }
+
+        label { 
+            font-size: 0.85rem; 
+            color: var(--text-dim); 
+            margin-bottom: 6px; 
+            font-weight: 600; 
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+        
+        .op-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 6px;
+        }
+        
+        .op-header label { 
+            margin-bottom: 0; 
+        }
+
+        .op-checkbox {
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+            accent-color: var(--blue);
+        }
+        
+        input[type="number"], input[type="date"], textarea { 
+            background-color: var(--input-bg); 
+            border: 1px solid var(--border); 
+            color: #fff; 
+            padding: 12px; 
+            border-radius: 6px; 
+            font-size: 1rem; 
+            font-weight: 500;
+            font-family: inherit;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        input:focus, textarea:focus { 
+            border-color: var(--blue); 
+            outline: none; 
+            box-shadow: 0 0 6px rgba(10, 132, 255, 0.35); 
+        }
+        
+        .highlight-box { 
+            background: rgba(10, 132, 255, 0.06); 
+            border-left: 5px solid var(--blue); 
+            padding: 18px; 
+            border-radius: 6px; 
+            margin-top: 20px; 
+        }
+
+        .result-row { 
+            display: flex; 
+            justify-content: space-between; 
+            padding: 10px 0; 
+            border-bottom: 1px dashed var(--border); 
+            align-items: center; 
+            gap: 15px; 
+        }
+
+        .result-row:last-child { 
+            border-bottom: none; 
+        }
+
+        .result-val { 
+            font-weight: bold; 
+            color: #fff; 
+            text-align: right; 
+            word-break: break-word; 
+        }
+
+        .result-val.green { 
+            color: var(--accent); 
+            text-shadow: 0 0 10px rgba(57, 255, 20, 0.35); 
+            font-size: 1.25rem; 
+        }
+        
+        .audit-trail { 
+            font-size: 0.8rem; 
+            color: var(--text-dim); 
+            margin-top: 12px; 
+            line-height: 1.4; 
+            border-top: 1px solid var(--border); 
+            padding-top: 12px; 
+        }
+
+        .small-note { 
+            font-size: 0.78rem; 
+            color: var(--text-dim); 
+            margin-top: 6px; 
+        }
+
+        /* Timeline Styles */
+        .timeline-wrapper {
+            margin-top: 20px;
+            background: rgba(0,0,0,0.2);
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+        }
+
+        .timeline-bar {
+            display: flex;
+            height: 24px;
+            border-radius: 4px;
+            overflow: hidden;
+            background-color: #222;
+            margin-bottom: 10px;
+        }
+
+        .timeline-segment {
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+            font-weight: bold;
+            color: #fff;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.8);
+            transition: width 0.3s ease;
+        }
+
+        .seg-op20 { background-color: #0a84ff; }
+        .seg-op30 { background-color: #30d158; }
+        .seg-op40 { background-color: #ff9f0a; }
+        .seg-op50 { background-color: #bf5af2; }
+
+        .timeline-legend {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            font-size: 0.8rem;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .legend-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 2px;
+        }
+
+        /* Interface Utility Control Layouts */
+        .btn {
+            background-color: var(--input-bg);
+            border: 1px solid var(--border);
+            color: #fff;
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.85rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s;
+        }
+
+        .btn:hover {
+            background-color: var(--border);
+            border-color: var(--text-dim);
+        }
+
+        .btn-accent {
+            background-color: rgba(10, 132, 255, 0.15);
+            border-color: var(--blue);
+            color: #64d2ff;
+        }
+
+        .btn-accent:hover {
+            background-color: var(--blue);
+            color: #fff;
+        }
+
+        .btn-danger {
+            background-color: rgba(255, 69, 58, 0.1);
+            border-color: var(--red);
+            color: #ff453a;
+        }
+
+        .btn-danger:hover {
+            background-color: var(--red);
+            color: #fff;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 10px;
+        }
+
+        .table-wrapper { 
+            overflow-x: auto; 
+            margin-top: 12px; 
+            border-radius: 8px; 
+            border: 1px solid var(--border); 
+        }
+
+        table { 
+            width: 100%; 
+            border-collapse: collapse; 
+            font-size: 0.92rem; 
+            background-color: #111318; 
+        }
+
+        th, td { 
+            padding: 14px 16px; 
+            text-align: center; 
+            border-bottom: 1px solid var(--border); 
+        }
+
+        th { 
+            background-color: #161920; 
+            color: #fff; 
+            font-weight: 600; 
+            text-transform: uppercase; 
+            font-size: 0.8rem; 
+            letter-spacing: 0.5px; 
+        }
+
+        tr:last-child td { 
+            border-bottom: none; 
+        }
+
+        tr:nth-child(even) { 
+            background-color: rgba(255, 255, 255, 0.01); 
+        }
+        
+        .stock-input { 
+            width: 75px; 
+            padding: 6px 8px; 
+            text-align: center; 
+            background-color: var(--input-bg); 
+            border: 1px solid var(--border); 
+            color: #fff; 
+            border-radius: 4px; 
+            font-weight: bold;
+        }
+
+        .house-stock-label { 
+            font-size: 0.78rem; 
+            color: var(--text-dim); 
+            font-style: italic; 
+        }
+        
+        .order-badge {
+            background-color: rgba(255, 69, 58, 0.14);
+            color: var(--red);
+            border: 1px solid var(--red);
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: bold;
+            letter-spacing: 0.5px;
+            margin-left: 8px;
+            display: inline-block;
+            animation: pulseAlert 2s infinite ease-in-out;
+        }
+
+        .footer-utility-bar {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        @keyframes pulseAlert {
+            0% { opacity: 0.85; }
+            50% { opacity: 1; box-shadow: 0 0 10px rgba(255, 69, 58, 0.4); }
+            100% { opacity: 0.85; }
+        }
+    </style>
+</head>
+
+<body>
+<div class="container">
+    <h1>⚙️ 1499 Master Tooling & Schedule Cell</h1>
+
+    <div class="grid">
+        <div class="card">
+            <div class="card-title">Production Run Parameters</div>
+            <div class="input-group">
+                <label for="partsNeeded">Total Parts In Run Needed</label>
+                <input type="number" id="partsNeeded" value="23" min="0" />
+            </div>
+            
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                <div class="input-group">
+                    <label for="startDate">Production Start</label>
+                    <input type="date" id="startDate" />
+                </div>
+                <div class="input-group">
+                    <label for="targetEndDate">Target Deadline</label>
+                    <input type="date" id="targetEndDate" />
+                </div>
+            </div>
+
+            <div class="highlight-box">
+                <div class="result-row">
+                    <span>Total Target Workdays:</span>
+                    <span id="daysNeededDisplay" class="result-val" style="color: var(--blue);">--</span>
+                </div>
+                <div class="result-row">
+                    <span>Required Output Rate (Shift Pace):</span>
+                    <span id="burnRateDisplay" class="result-val" style="color: var(--orange); font-size: 1.1rem;">--</span>
+                </div>
+                <div class="result-row">
+                    <span>Max Parts (Special Order Capacity):</span>
+                    <span id="maxPartsDisplay" class="result-val">--</span>
+                </div>
+                <div class="result-row" style="border-top: 1px solid var(--border); padding-top: 10px; margin-top: 5px;">
+                    <span>Estimated Finish Date:</span>
+                    <span id="finishDateDisplay" class="result-val green">--</span>
+                </div>
+                <div class="result-row">
+                    <span>Schedule Buffer Status:</span>
+                    <span id="bufferDisplay" class="result-val" style="font-size: 1.1rem;">--</span>
+                </div>
+                <div class="audit-trail" id="calendarAudit">
+                    Analyzing active shop floor metrics...
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-title">Cell Process Rates & Plant Closures</div>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 5px;">
+                <div class="input-group">
+                    <div class="op-header">
+                        <label>Op 20 (Roughing)</label>
+                        <input type="checkbox" id="op20Active" class="op-checkbox" checked />
+                    </div>
+                    <input type="number" id="op20Rate" value="10" />
+                </div>
+                <div class="input-group">
+                    <div class="op-header">
+                        <label>Op 30 (Turn/Bore)</label>
+                        <input type="checkbox" id="op30Active" class="op-checkbox" checked />
+                    </div>
+                    <input type="number" id="op30Rate" value="6" />
+                </div>
+                <div class="input-group">
+                    <div class="op-header">
+                        <label>Op 40 (Bottleneck)</label>
+                        <input type="checkbox" id="op40Active" class="op-checkbox" checked />
+                    </div>
+                    <input type="number" id="op40Rate" value="1" />
+                </div>
+                <div class="input-group">
+                    <div class="op-header">
+                        <label>Op 50 (Finish)</label>
+                        <input type="checkbox" id="op50Active" class="op-checkbox" checked />
+                    </div>
+                    <input type="number" id="op50Rate" value="2" />
+                </div>
+            </div>
+            
+            <div class="input-group">
+                <label for="holidayList" style="color: var(--orange);">Active Shop Calendar Holidays</label>
+                <textarea id="holidayList" rows="5" style="resize: vertical; font-size: 0.85rem; font-family: monospace;">2026-01-01
+2026-01-02
+2026-04-03
+2026-05-25
+2026-06-22
+2026-06-23
+2026-06-24
+2026-06-25
+2026-06-26
+2026-07-02
+2026-07-03
+2026-09-07
+2026-11-26
+2026-11-27
+2026-12-25
+2027-01-01
+2027-03-25
+2027-05-31</textarea>
+                <div class="small-note">Accepts commas, line breaks, or pasted lists from data logs.</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card" style="margin-bottom: 25px;">
+        <div class="card-title">Dynamic Sequential Production Timeline</div>
+        <div class="timeline-wrapper">
+            <div class="timeline-bar" id="timelineBarContainer">
+                </div>
+            <div class="timeline-legend">
+                <div class="legend-item"><div class="legend-dot seg-op20"></div><span>Op 20 (Roughing)</span></div>
+                <div class="legend-item"><div class="legend-dot seg-op30"></div><span>Op 30 (Turn/Bore)</span></div>
+                <div class="legend-item"><div class="legend-dot seg-op40"></div><span>Op 40 (Bottleneck)</span></div>
+                <div class="legend-item"><div class="legend-dot seg-op50"></div><span>Op 50 (Finish)</span></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-title">
+            <span>Tooling Matrix & Box Procurement</span>
+            <button class="btn btn-accent" id="copyProcurementBtn">📤 Share Tooling Order</button>
+        </div>
+        <div class="table-wrapper">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Tool Position</th>
+                        <th>Insert Part Configuration</th>
+                        <th>Inserts/Part</th>
+                        <th>Total Needed</th>
+                        <th>On-Hand Boxes (10/pk)</th>
+                        <th>Boxes Needed (To Order)</th>
+                    </tr>
+                </thead>
+                <tbody id="toolingTableBody"></tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="footer-utility-bar">
+        <div style="color: var(--text-dim); font-size: 0.85rem;">System status: Persistent caching engine running</div>
+        <div class="btn-group">
+            <button class="btn" id="clearRunParamsBtn">🔄 Clear Active Job Params</button>
+            <button class="btn btn-danger" id="factoryResetMasterBtn">⚠️ Full Factory Reset</button>
+        </div>
+    </div>
+</div>
+
+<script>
+const toolsData = [
+    { name: "Tool #1", id: "LCMF1603M0-0300-MP,890", perPart: 1.0, stockBoxes: 0, isHouseStock: true },
+    { name: "Tool #2", id: "CNMG120408-MF1,TH1000", perPart: 0.5, stockBoxes: 3, isHouseStock: false },
+    { name: "Tool #3", id: "NI-LCMN-BB84081", perPart: 2.0, stockBoxes: 11, isHouseStock: false },
+    { name: "Tool #4", id: "NI-LCMN-BB84080", perPart: 1.0, stockBoxes: 7, isHouseStock: false },
+    { name: "Tool #5", id: "LCMF1603M0-0300-MP,890", perPart: 1.5, stockBoxes: 0, isHouseStock: true },
+    { name: "Tool #6", id: "NI-LCMN-BB84082", perPart: 4.0, stockBoxes: 24, isHouseStock: false },
+    { name: "Tool #7", id: "KMT-4175966,NRD3031R", perPart: 0.5, stockBoxes: 0, isHouseStock: true },
+    { name: "Tool #9", id: "NI-LCMN-BB84079", perPart: 1.0, stockBoxes: 20, isHouseStock: false },
+    { name: "Tool #11", id: "NI-LCMA-BB84077,890", perPart: 0.5, stockBoxes: 5, isHouseStock: false },
+    { name: "Tool #12", id: "NI-LCMN-BB84078", perPart: 2.0, stockBoxes: 12, isHouseStock: false },
+    { name: "OP50 Tool #1", id: "NI-LCMN-BB84083", perPart: 2.0, stockBoxes: 12, isHouseStock: false }
+];
+
+const storedBoxes = localStorage.getItem("1499_master_boxes");
+if (storedBoxes) {
+    try {
+        const parsedBoxes = JSON.parse(storedBoxes);
+        toolsData.forEach((tool, i) => {
+            if (parsedBoxes[i] !== undefined) tool.stockBoxes = parsedBoxes[i];
+        });
+    } catch(err) { console.error("Inventory tracking failed to restore:", err); }
+}
+
+function getActiveHolidays() {
+    const rawText = document.getElementById("holidayList").value;
+    if (!rawText) return [];
+    return rawText
+        .split(/[\n,]+/)
+        .map(d => d.trim())
+        .filter(d => /^\d{4}-\d{2}-\d{2}$/.test(d));
+}
+
+function getOpWorkdayContribution(rateId, toggleId, parts) {
+    const checkbox = document.getElementById(toggleId);
+    if (checkbox && !checkbox.checked) return 0; 
+    const el = document.getElementById(rateId);
+    if (!el) return 0;
+    const val = parseFloat(el.value);
+    return (!val || val <= 0) ? 0 : (parts / val);
+}
+
+function buildToolingTableInitial() {
+    const tbody = document.getElementById("toolingTableBody");
+    if (!tbody) return;
+    tbody.innerHTML = "";
+
+    toolsData.forEach((tool, index) => {
+        const tr = document.createElement("tr");
+        tr.id = `tool-row-${index}`;
+        let stockInputHTML = tool.isHouseStock ? `<span class="house-stock-label">In-House Stock</span>` : `<input type="number" class="stock-input" value="${tool.stockBoxes}" min="0" data-index="${index}">`;
+
+        tr.innerHTML = `
+            <td><strong style="color: #fff;">${tool.name}</strong></td>
+            <td style="font-size: 0.82rem; color: var(--text-dim); text-align: left; font-family: monospace;">${tool.id}</td>
+            <td style="color: #fff;">${tool.perPart}</td>
+            <td class="total-needed-cell">--</td>
+            <td>${stockInputHTML}</td>
+            <td class="boxes-needed-cell" style="font-weight: bold;">--</td>
+        `;
+        tbody.appendChild(tr);
+    });
+}
+
+function updateToolingTableValues(parts) {
+    let maxSupportedParts = Infinity;
+    let hasSpecialOrderStock = false;
+
+    toolsData.forEach((tool, index) => {
+        const row = document.getElementById(`tool-row-${index}`);
+        if (!row) return;
+
+        const neededInserts = Math.ceil(parts * tool.perPart);
+        const neededCell = row.querySelector(".total-needed-cell");
+        const boxesCell = row.querySelector(".boxes-needed-cell");
+
+        if (neededCell) neededCell.innerText = neededInserts;
+
+        if (tool.isHouseStock) {
+            if (boxesCell) { boxesCell.innerText = "--"; boxesCell.style.color = "var(--text-dim)"; }
+            return; 
+        }
+
+        const totalLooseInsertsOnHand = tool.stockBoxes * 10;
+        const shortage = Math.max(0, neededInserts - totalLooseInsertsOnHand);
+        const boxesNeededToOrder = Math.ceil(shortage / 10);
+
+        if (tool.perPart > 0 && tool.stockBoxes > 0) {
+            hasSpecialOrderStock = true;
+            const possibleWithThisTool = Math.floor(totalLooseInsertsOnHand / tool.perPart);
+            if (possibleWithThisTool < maxSupportedParts) maxSupportedParts = possibleWithThisTool;
+        }
+
+        if (boxesCell) {
+            if (boxesNeededToOrder > 0) {
+                boxesCell.innerHTML = `${boxesNeededToOrder}<span class="order-badge">🚨 ORDER NOW</span>`;
+                boxesCell.style.color = "var(--orange)";
+            } else {
+                boxesCell.innerText = "✔";
+                boxesCell.style.color = "var(--accent)";
+            }
+        }
+    });
+
+    const maxPartsDisplay = document.getElementById("maxPartsDisplay");
+    if (maxPartsDisplay) {
+        if (!hasSpecialOrderStock) {
+            maxPartsDisplay.innerText = "0 parts (Check custom boxes)";
+            maxPartsDisplay.style.color = "var(--orange)";
+        } else {
+            maxPartsDisplay.innerText = `${maxSupportedParts} parts`;
+            maxPartsDisplay.style.color = maxSupportedParts < parts ? "var(--orange)" : "var(--accent)";
+        }
+    }
+}
+
+function saveRunParamsToCache() {
+    const runtimeState = {
+        partsNeeded: document.getElementById("partsNeeded").value,
+        startDate: document.getElementById("startDate").value,
+        targetEndDate: document.getElementById("targetEndDate").value,
+        op20Rate: document.getElementById("op20Rate").value,
+        op30Rate: document.getElementById("op30Rate").value,
+        op40Rate: document.getElementById("op40Rate").value,
+        op50Rate: document.getElementById("op50Rate").value,
+        op20Active: document.getElementById("op20Active").checked,
+        op30Active: document.getElementById("op30Active").checked,
+        op40Active: document.getElementById("op40Active").checked,
+        op50Active: document.getElementById("op50Active").checked,
+        holidayList: document.getElementById("holidayList").value
+    };
+    localStorage.setItem("1499_master_runtime", JSON.stringify(runtimeState));
+}
+
+function calculateSchedule() {
+    const partsInput = document.getElementById("partsNeeded");
+    const parts = partsInput ? (parseFloat(partsInput.value) || 0) : 0;
+    
+    updateToolingTableValues(parts);
+
+    const startDateEl = document.getElementById("startDate");
+    const targetEndDateEl = document.getElementById("targetEndDate");
+    
+    let startVal = startDateEl && startDateEl.value ? startDateEl.value : "2026-05-29";
+    let targetEndVal = targetEndDateEl && targetEndDateEl.value ? targetEndDateEl.value : "2026-08-14";
+
+    const op20Days = getOpWorkdayContribution("op20Rate", "op20Active", parts);
+    const op30Days = getOpWorkdayContribution("op30Rate", "op30Active", parts);
+    const op40Days = getOpWorkdayContribution("op40Rate", "op40Active", parts);
+    const op50Days = getOpWorkdayContribution("op50Rate", "op50Active", parts);
+    
+    const totalWorkdaysRequired = Math.ceil(op20Days + op30Days + op40Days + op50Days);
+    document.getElementById("daysNeededDisplay").innerText = totalWorkdaysRequired + " workdays";
+
+    // --- TIMELINE GRAPHICS ENGINE BUILDER ---
+    const timelineBar = document.getElementById("timelineBarContainer");
+    if (timelineBar) {
+        timelineBar.innerHTML = "";
+        const totalRaw = op20Days + op30Days + op40Days + op50Days;
+        if (totalRaw > 0) {
+            const operations = [
+                { class: "seg-op20", days: op20Days, label: "Op 20" },
+                { class: "seg-op30", days: op30Days, label: "Op 30" },
+                { class: "seg-op40", days: op40Days, label: "Op 40" },
+                { class: "seg-op50", days: op50Days, label: "Op 50" }
+            ];
+            operations.forEach(op => {
+                const pct = (op.days / totalRaw) * 100;
+                if (pct > 0) {
+                    const seg = document.createElement("div");
+                    seg.className = `timeline-segment ${op.class}`;
+                    seg.style.width = `${pct}%`;
+                    seg.innerText = pct > 12 ? `${op.label} (${Math.ceil(op.days)}d)` : "";
+                    seg.title = `${op.label}: ${op.days.toFixed(1)} Days`;
+                    timelineBar.appendChild(seg);
+                }
+            });
+        } else {
+            timelineBar.innerHTML = `<div style="width:100%; text-align:center; color:var(--text-dim); font-size:0.8rem; line-height:24px;">No Active Shop Routing Scheduled</div>`;
+        }
+    }
+
+    // --- SHOP CALENDAR LOGIC ---
+    const split = startVal.split("-");
+    let currentDate = new Date(parseInt(split[0]), parseInt(split[1]) - 1, parseInt(split[2]), 0, 0, 0);
+    const configuredHolidays = getActiveHolidays();
+    let workdaysCounted = 0, weekendDaysSkipped = 0, holidayDaysSkipped = 0;
+
+    while (workdaysCounted < totalWorkdaysRequired) {
+        currentDate.setDate(currentDate.getDate() + 1);
+        const dayOfWeek = currentDate.getDay(); 
+        const isoString = currentDate.getFullYear() + '-' + String(currentDate.getMonth() + 1).padStart(2, '0') + '-' + String(currentDate.getDate()).padStart(2, '0');
+
+        if (dayOfWeek === 0 || dayOfWeek === 6) weekendDaysSkipped++;
+        else if (configuredHolidays.includes(isoString)) holidayDaysSkipped++;
+        else workdaysCounted++;
+    }
+
+    const finishDisplay = document.getElementById("finishDateDisplay");
+    const auditDisplay = document.getElementById("calendarAudit");
+
+    if (finishDisplay) {
+        if (totalWorkdaysRequired === 0) {
+            let cleanStart = new Date(parseInt(split[0]), parseInt(split[1]) - 1, parseInt(split[2]));
+            finishDisplay.innerText = cleanStart.toLocaleDateString("en-US", { weekday: "short", year: "numeric", month: "short", day: "numeric" });
+            if (auditDisplay) auditDisplay.innerText = "No work queued.";
+        } else {
+            finishDisplay.innerText = currentDate.toLocaleDateString("en-US", { weekday: "short", year: "numeric", month: "short", day: "numeric" });
+            if (auditDisplay) auditDisplay.innerText = `Bypassed ${weekendDaysSkipped} weekend days and ${holidayDaysSkipped} holiday closures.`;
+        }
+    }
+
+    // --- REQUIRED SHIFT PACE ANALYSIS ---
+    const burnRateDisplay = document.getElementById("burnRateDisplay");
+    if (burnRateDisplay && targetEndDateEl && targetEndDateEl.value) {
+        const tSplit = targetEndVal.split("-");
+        const targetDateObj = new Date(parseInt(tSplit[0]), parseInt(tSplit[1]) - 1, parseInt(tSplit[2]), 0, 0, 0);
+        const startDateObj = new Date(parseInt(split[0]), parseInt(split[1]) - 1, parseInt(split[2]), 0, 0, 0);
+        
+        let lookDate = new Date(startDateObj);
+        let availableWorkdays = 0;
+        while (lookDate < targetDateObj) {
+            lookDate.setDate(lookDate.getDate() + 1);
+            const dow = lookDate.getDay();
+            const iso = lookDate.getFullYear() + '-' + String(lookDate.getMonth() + 1).padStart(2, '0') + '-' + String(lookDate.getDate()).padStart(2, '0');
+            if (dow !== 0 && dow !== 6 && !configuredHolidays.includes(iso)) {
+                availableWorkdays++;
+            }
+        }
+        
+        if (parts === 0) {
+            burnRateDisplay.innerText = "0 parts / shift";
+        } else if (availableWorkdays <= 0) {
+            burnRateDisplay.innerText = "Deadline Impossible";
+            burnRateDisplay.style.color = "var(--red)";
+        } else {
+            const dailyBurnRequired = (parts / availableWorkdays).toFixed(1);
+            burnRateDisplay.innerText = `${dailyBurnRequired} Parts / Shift`;
+            burnRateDisplay.style.color = "var(--orange)";
+        }
+    } else if (burnRateDisplay) {
+        burnRateDisplay.innerText = "Target Deadline Required";
+        burnRateDisplay.style.color = "var(--text-dim)";
+    }
+
+    const bufferDisplay = document.getElementById("bufferDisplay");
+    if (bufferDisplay) {
+        if (targetEndDateEl && targetEndDateEl.value) {
+            const tSplit = targetEndVal.split("-");
+            const targetDateObj = new Date(parseInt(tSplit[0]), parseInt(tSplit[1]) - 1, parseInt(tSplit[2]), 0, 0, 0);
+            const calcFinishMidnight = new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate(), 0, 0, 0);
+            const calendarDaysCushion = Math.ceil((targetDateObj.getTime() - calcFinishMidnight.getTime()) / (1000 * 60 * 60 * 24));
+
+            if (totalWorkdaysRequired === 0) {
+                bufferDisplay.innerText = "No run planned";
+                bufferDisplay.style.color = "var(--text-dim)";
+            } else if (calendarDaysCushion > 0) {
+                bufferDisplay.innerText = `Ahead by ${calendarDaysCushion} Calendar Days`;
+                bufferDisplay.style.color = "var(--accent)";
+            } else if (calendarDaysCushion === 0) {
+                bufferDisplay.innerText = "Zero Margin (Ships Day of Finish)";
+                bufferDisplay.style.color = "var(--orange)";
+            } else {
+                bufferDisplay.innerText = `BEHIND SCHEDULE BY ${Math.abs(calendarDaysCushion)} DAYS`;
+                bufferDisplay.style.color = "var(--red)";
+            }
+        } else {
+            bufferDisplay.innerText = "No deadline targeted";
+            bufferDisplay.style.color = "var(--text-dim)";
+        }
+    }
+    
+    saveRunParamsToCache();
+}
+
+// --- DEVICE POPUP SHARE SHEET UTILITY ---
+document.getElementById("copyProcurementBtn").addEventListener("click", () => {
+    const partsVal = parseFloat(document.getElementById("partsNeeded").value) || 0;
+    let shareText = `1499 MASTER CELL PROCUREMENT LIST\n`;
+    shareText += `Run Target: ${partsVal} Parts\n`;
+    shareText += `------------------------------------\n`;
+    
+    let itemsFound = 0;
+    toolsData.forEach((tool) => {
+        if (tool.isHouseStock) return;
+        const needed = Math.ceil(partsVal * tool.perPart);
+        const hand = tool.stockBoxes * 10;
+        const short = Math.max(0, needed - hand);
+        const boxesToOrder = Math.ceil(short / 10);
+        
+        if (boxesToOrder > 0) {
+            shareText += `• ${tool.name} (${tool.id})\n`;
+            shareText += `  ORDER: ${boxesToOrder} Box(es)\n\n`;
+            itemsFound++;
+        }
+    });
+
+    if (itemsFound === 0) shareText += `✔ All insert stock verified.\n`;
+    shareText += `------------------------------------`;
+
+    if (navigator.share) {
+        navigator.share({
+            title: '1499 Cell Tooling Order',
+            text: shareText
+        })
+        .then(() => console.log('Shared successfully.'))
+        .catch(err => console.log('Share canceled:', err));
+    } else {
+        // Desktop Fallback
+        navigator.clipboard.writeText(shareText).then(() => {
+            const btn = document.getElementById("copyProcurementBtn");
+            const oldText = btn.innerText;
+            btn.innerText = "✔ Copied (Share Sheet Unsupported)";
+            setTimeout(() => { btn.innerText = oldText; }, 2500);
+        });
+    }
+});
+
+// --- UTILITY RESETS ---
+document.getElementById("clearRunParamsBtn").addEventListener("click", () => {
+    if(confirm("Clear current production counts and routing dates? On-hand box matrix will not be deleted.")) {
+        document.getElementById("partsNeeded").value = "0";
+        document.getElementById("startDate").value = "2026-05-29";
+        document.getElementById("targetEndDate").value = "";
+        calculateSchedule();
+    }
+});
+
+document.getElementById("factoryResetMasterBtn").addEventListener("click", () => {
+    if(confirm("CRITICAL: Wipe out all custom local tracking caches? This completely zeroes current warehouse box counts.")) {
+        localStorage.clear();
+        location.reload();
+    }
+});
+
+document.addEventListener("DOMContentLoaded", () => {
+    const startInput = document.getElementById("startDate");
+    const targetInput = document.getElementById("targetEndDate");
+    if (startInput) startInput.value = "2026-05-29";
+    if (targetInput) targetInput.value = "2026-08-14";
+
+    const storedRuntime = localStorage.getItem("1499_master_runtime");
+    if (storedRuntime) {
+        try {
+            const runtimeState = JSON.parse(storedRuntime);
+            Object.keys(runtimeState).forEach(id => {
+                const el = document.getElementById(id);
+                if (el) {
+                    if (el.type === "checkbox") el.checked = runtimeState[id];
+                    else el.value = runtimeState[id];
+                }
+            });
+        } catch(err) { console.error("Failed to restore runtime config panel:", err); }
+    }
+
+    buildToolingTableInitial();
+
+    const tableBody = document.getElementById("toolingTableBody");
+    if (tableBody) {
+        tableBody.addEventListener("input", e => {
+            if (!e.target.classList.contains("stock-input")) return;
+            const idx = parseInt(e.target.dataset.index);
+            toolsData[idx].stockBoxes = parseFloat(e.target.value) || 0;
+            
+            const serialisedBoxArray = toolsData.map(t => t.stockBoxes);
+            localStorage.setItem("1499_master_boxes", JSON.stringify(serialisedBoxArray));
+            calculateSchedule();
+        });
+    }
+
+    ["partsNeeded", "startDate", "targetEndDate", "op20Rate", "op30Rate", "op40Rate", "op50Rate", "op20Active", "op30Active", "op40Active", "op50Active", "holidayList"].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) {
+            el.addEventListener("input", calculateSchedule);
+            el.addEventListener("change", calculateSchedule);
+        }
+    });
+
+    calculateSchedule();
+});
+</script>
+
+<script>
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('sw.js')
+        .then(reg => console.log('SW registered:', reg.scope))
+        .catch(err => console.log('SW failed:', err));
+    });
+  }
+</script>
+</body>
+</html>
