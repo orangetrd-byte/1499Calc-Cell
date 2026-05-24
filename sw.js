@@ -1,9 +1,9 @@
 const CACHE_NAME = '1499-cell-v1';
 const ASSETS = [
-  '/index.html',
-  '/manifest.json',
-  '/icons/icon-192.png',
-  '/icons/icon-512.png'
+  './index.html',
+  './manifest.json',
+  './icons/icon-192.png',
+  './icons/icon-512.png'
 ];
 
 // Install — cache all core assets
@@ -42,8 +42,8 @@ self.addEventListener('fetch', event => {
         }
         return response;
       }).catch(() => {
-        // Offline fallback
-        return caches.match('/index.html');
+        // Offline fallback (Fixed path here too)
+        return caches.match('./index.html');
       });
     })
   );
