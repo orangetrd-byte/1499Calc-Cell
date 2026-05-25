@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>1499 Master Tooling & Schedule Cell</title>
 
-    <!-- PWA -->
     <link rel="manifest" href="manifest.json" />
     <meta name="theme-color" content="#0d0e12" />
     <meta name="mobile-web-app-capable" content="yes" />
@@ -49,68 +48,27 @@
         }
 
         h1 { 
-            <body>
-<div class="container"> 
-  <h1 style="margin-bottom: 10px;">⚙️ 1499 Master Tooling & Schedule Cell</h1>
-  
-  <div class="tab-navigation-bar" style="display: flex; gap: 10px; margin-bottom: 25px; border-bottom: 1px solid var(--border); padding-bottom: 12px;">
-    <button id="tabButtonRun" class="btn btn-accent" onclick="switchTab('run')" style="padding: 10px 20px; font-size: 0.95rem;">📊 Run Dashboard</button>
-    <button id="tabButtonSetup" class="btn" onclick="switchTab('setup')" style="padding: 10px 20px; font-size: 0.95rem;">🔧 Cell Setup Sheets</button>
-  </div>
+            font-size: 1.65rem; 
+            color: #fff; 
+            margin-top: 0; 
+            margin-bottom: 15px; 
+            border-bottom: 3px solid var(--blue); 
+            padding-bottom: 14px; 
+            text-transform: uppercase; 
+            letter-spacing: 1px; 
+            display: flex; 
+            align-items: center; 
+            gap: 12px; 
+        }
 
-  <div id="workspaceRun" class="workspace-view">
-     <div class="grid">
-        ```
-
----
-
-### Step 2: Scroll to the Bottom and Close the Container
-Go down to the bottom of your HTML file, right before your closing script tag `</script></div></body>`, and close out the `workspaceRun` wrapper div, then add the new blank placeholder workspace for your upcoming setup sheet builder:
-
-```html
-     </div> </div> <div id="workspaceSetup" class="workspace-view" style="display: none;">
-     <div class="grid">
-        <div class="card" style="grid-column: 1 / -1;">
-           <div class="card-title">Dynamic Component Modeler <span style="font-size: 0.8rem; color: var(--text-dim);">Phase 2 Config Platform</span></div>
-           <p style="color: var(--text-dim); font-size: 0.95rem;">This workspace will handle your custom operations arrays and tool builders. Your core math data remains safely active in the run panel.</p>
-        </div>
-     </div>
-  </div>
-
-</div> ```
-
----
-
-### Step 3: Add the Tab Switching Logic (JavaScript)
-Now, scroll inside your script block (or append it at the absolute end of your functions list) to inject the engine that tells the DOM how to show and hide these tabs on click:
-
-```javascript
-// --- NEW WORKSPACE NAVIGATION MANAGER ---
-function switchTab(targetWorkspace) {
-    const runView = document.getElementById('workspaceRun');
-    const setupView = document.getElementById('workspaceSetup');
-    const runBtn = document.getElementById('tabButtonRun');
-    const setupBtn = document.getElementById('tabButtonSetup');
-
-    if (targetWorkspace === 'setup') {
-        // Hide dashboard, show setup window
-        runView.style.display = 'none';
-        setupView.style.display = 'block';
-        
-        // Swap button styles
-        setupBtn.classList.add('btn-accent');
-        runBtn.classList.remove('btn-accent');
-    } else {
-        // Show dashboard, hide setup window
-        runView.style.display = 'block';
-        setupView.style.display = 'none';
-        
-        // Swap button styles
-        runBtn.classList.add('btn-accent');
-        setupBtn.classList.remove('btn-accent');
-    }
-}
-
+        /* Navigation Tab Styles */
+        .tab-navigation-bar {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 25px;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 14px;
+        }
 
         .grid { 
             display: grid; 
@@ -300,7 +258,7 @@ function switchTab(targetWorkspace) {
             border-radius: 2px;
         }
 
-        /* Interface Utility Control Layouts */
+        /* Button Styles */
         .btn {
             background-color: var(--input-bg);
             border: 1px solid var(--border);
@@ -434,93 +392,98 @@ function switchTab(targetWorkspace) {
         }
     </style>
 </head>
-
 <body>
 <div class="container">
     <h1>⚙️ 1499 Master Tooling & Schedule Cell</h1>
 
-    <div class="grid">
-        <div class="card">
-            <div class="card-title">Production Run Parameters</div>
-            <div class="input-group">
-                <label for="partsNeeded">Total Parts In Run Needed</label>
-                <input type="number" id="partsNeeded" value="23" min="0" />
-            </div>
-            
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+    <div class="tab-navigation-bar">
+        <button id="tabButtonRun" class="btn btn-accent" onclick="switchTab('run')" style="padding: 10px 20px; font-size: 0.95rem;">📊 Run Dashboard</button>
+        <button id="tabButtonSetup" class="btn" onclick="switchTab('setup')" style="padding: 10px 20px; font-size: 0.95rem;">🔧 Cell Setup Sheets</button>
+    </div>
+
+    <div id="workspaceRun">
+        <div class="grid">
+            <div class="card">
+                <div class="card-title">Production Run Parameters</div>
                 <div class="input-group">
-                    <label for="startDate">Production Start</label>
-                    <input type="date" id="startDate" />
+                    <label for="partsNeeded">Total Parts In Run Needed</label>
+                    <input type="number" id="partsNeeded" value="23" min="0" />
                 </div>
-                <div class="input-group">
-                    <label for="targetEndDate">Target Deadline</label>
-                    <input type="date" id="targetEndDate" />
+                
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                    <div class="input-group">
+                        <label for="startDate">Production Start</label>
+                        <input type="date" id="startDate" />
+                    </div>
+                    <div class="input-group">
+                        <label for="targetEndDate">Target Deadline</label>
+                        <input type="date" id="targetEndDate" />
+                    </div>
+                </div>
+
+                <div class="highlight-box">
+                    <div class="result-row">
+                        <span>Total Target Workdays:</span>
+                        <span id="daysNeededDisplay" class="result-val" style="color: var(--blue);">--</span>
+                    </div>
+                    <div class="result-row">
+                        <span>Required Output Rate (Shift Pace):</span>
+                        <span id="burnRateDisplay" class="result-val" style="color: var(--orange); font-size: 1.1rem;">--</span>
+                    </div>
+                    <div class="result-row">
+                        <span>Max Parts (Special Order Capacity):</span>
+                        <span id="maxPartsDisplay" class="result-val">--</span>
+                    </div>
+                    <div class="result-row" style="border-top: 1px solid var(--border); padding-top: 10px; margin-top: 5px;">
+                        <span>Estimated Finish Date:</span>
+                        <span id="finishDateDisplay" class="result-val green">--</span>
+                    </div>
+                    <div class="result-row">
+                        <span>Schedule Buffer Status:</span>
+                        <span id="bufferDisplay" class="result-val" style="font-size: 1.1rem;">--</span>
+                    </div>
+                    <div class="audit-trail" id="calendarAudit">
+                        Analyzing active shop floor metrics...
+                    </div>
                 </div>
             </div>
 
-            <div class="highlight-box">
-                <div class="result-row">
-                    <span>Total Target Workdays:</span>
-                    <span id="daysNeededDisplay" class="result-val" style="color: var(--blue);">--</span>
-                </div>
-                <div class="result-row">
-                    <span>Required Output Rate (Shift Pace):</span>
-                    <span id="burnRateDisplay" class="result-val" style="color: var(--orange); font-size: 1.1rem;">--</span>
-                </div>
-                <div class="result-row">
-                    <span>Max Parts (Special Order Capacity):</span>
-                    <span id="maxPartsDisplay" class="result-val">--</span>
-                </div>
-                <div class="result-row" style="border-top: 1px solid var(--border); padding-top: 10px; margin-top: 5px;">
-                    <span>Estimated Finish Date:</span>
-                    <span id="finishDateDisplay" class="result-val green">--</span>
-                </div>
-                <div class="result-row">
-                    <span>Schedule Buffer Status:</span>
-                    <span id="bufferDisplay" class="result-val" style="font-size: 1.1rem;">--</span>
-                </div>
-                <div class="audit-trail" id="calendarAudit">
-                    Analyzing active shop floor metrics...
-                </div>
-            </div>
-        </div>
-
-        <div class="card">
-            <div class="card-title">Cell Process Rates & Plant Closures</div>
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 5px;">
-                <div class="input-group">
-                    <div class="op-header">
-                        <label>Op 20 (Roughing)</label>
-                        <input type="checkbox" id="op20Active" class="op-checkbox" checked />
+            <div class="card">
+                <div class="card-title">Cell Process Rates & Plant Closures</div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 5px;">
+                    <div class="input-group">
+                        <div class="op-header">
+                            <label>Op 20 (Roughing)</label>
+                            <input type="checkbox" id="op20Active" class="op-checkbox" checked />
+                        </div>
+                        <input type="number" id="op20Rate" value="10" />
                     </div>
-                    <input type="number" id="op20Rate" value="10" />
-                </div>
-                <div class="input-group">
-                    <div class="op-header">
-                        <label>Op 30 (Turn/Bore)</label>
-                        <input type="checkbox" id="op30Active" class="op-checkbox" checked />
+                    <div class="input-group">
+                        <div class="op-header">
+                            <label>Op 30 (Turn/Bore)</label>
+                            <input type="checkbox" id="op30Active" class="op-checkbox" checked />
+                        </div>
+                        <input type="number" id="op30Rate" value="6" />
                     </div>
-                    <input type="number" id="op30Rate" value="6" />
-                </div>
-                <div class="input-group">
-                    <div class="op-header">
-                        <label>Op 40 (Bottleneck)</label>
-                        <input type="checkbox" id="op40Active" class="op-checkbox" checked />
+                    <div class="input-group">
+                        <div class="op-header">
+                            <label>Op 40 (Bottleneck)</label>
+                            <input type="checkbox" id="op40Active" class="op-checkbox" checked />
+                        </div>
+                        <input type="number" id="op40Rate" value="1" />
                     </div>
-                    <input type="number" id="op40Rate" value="1" />
-                </div>
-                <div class="input-group">
-                    <div class="op-header">
-                        <label>Op 50 (Finish)</label>
-                        <input type="checkbox" id="op50Active" class="op-checkbox" checked />
+                    <div class="input-group">
+                        <div class="op-header">
+                            <label>Op 50 (Finish)</label>
+                            <input type="checkbox" id="op50Active" class="op-checkbox" checked />
+                        </div>
+                        <input type="number" id="op50Rate" value="2" />
                     </div>
-                    <input type="number" id="op50Rate" value="2" />
                 </div>
-            </div>
-            
-            <div class="input-group">
-                <label for="holidayList" style="color: var(--orange);">Active Shop Calendar Holidays</label>
-                <textarea id="holidayList" rows="5" style="resize: vertical; font-size: 0.85rem; font-family: monospace;">2026-01-01
+                
+                <div class="input-group">
+                    <label for="holidayList" style="color: var(--orange);">Active Shop Calendar Holidays</label>
+                    <textarea id="holidayList" rows="5" style="resize: vertical; font-size: 0.85rem; font-family: monospace;">2026-01-01
 2026-01-02
 2026-04-03
 2026-05-25
@@ -538,44 +501,56 @@ function switchTab(targetWorkspace) {
 2027-01-01
 2027-03-25
 2027-05-31</textarea>
-                <div class="small-note">Accepts commas, line breaks, or pasted lists from data logs.</div>
-            </div>
-        </div>
-    </div>
-
-    <div class="card" style="margin-bottom: 25px;">
-        <div class="card-title">Dynamic Sequential Production Timeline</div>
-        <div class="timeline-wrapper">
-            <div class="timeline-bar" id="timelineBarContainer">
+                    <div class="small-note">Accepts commas, line breaks, or pasted lists from data logs.</div>
                 </div>
-            <div class="timeline-legend">
-                <div class="legend-item"><div class="legend-dot seg-op20"></div><span>Op 20 (Roughing)</span></div>
-                <div class="legend-item"><div class="legend-dot seg-op30"></div><span>Op 30 (Turn/Bore)</span></div>
-                <div class="legend-item"><div class="legend-dot seg-op40"></div><span>Op 40 (Bottleneck)</span></div>
-                <div class="legend-item"><div class="legend-dot seg-op50"></div><span>Op 50 (Finish)</span></div>
+            </div>
+        </div>
+
+        <div class="card" style="margin-bottom: 25px;">
+            <div class="card-title">Dynamic Sequential Production Timeline</div>
+            <div class="timeline-wrapper">
+                <div class="timeline-bar" id="timelineBarContainer"></div>
+                <div class="timeline-legend">
+                    <div class="legend-item"><div class="legend-dot seg-op20"></div><span>Op 20 (Roughing)</span></div>
+                    <div class="legend-item"><div class="legend-dot seg-op30"></div><span>Op 30 (Turn/Bore)</span></div>
+                    <div class="legend-item"><div class="legend-dot seg-op40"></div><span>Op 40 (Bottleneck)</span></div>
+                    <div class="legend-item"><div class="legend-dot seg-op50"></div><span>Op 50 (Finish)</span></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-title">
+                <span>Tooling Matrix & Box Procurement</span>
+                <button class="btn btn-accent" id="copyProcurementBtn">📤 Share Tooling Order</button>
+            </div>
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Tool Position</th>
+                            <th>Insert Part Configuration</th>
+                            <th>Inserts/Part</th>
+                            <th>Total Needed</th>
+                            <th>On-Hand Boxes (10/pk)</th>
+                            <th>Boxes Needed (To Order)</th>
+                        </tr>
+                    </thead>
+                    <tbody id="toolingTableBody"></tbody>
+                </table>
             </div>
         </div>
     </div>
 
-    <div class="card">
-        <div class="card-title">
-            <span>Tooling Matrix & Box Procurement</span>
-            <button class="btn btn-accent" id="copyProcurementBtn">📤 Share Tooling Order</button>
-        </div>
-        <div class="table-wrapper">
-            <table>
-                <thead>
-                    <tr>
-                        <th>Tool Position</th>
-                        <th>Insert Part Configuration</th>
-                        <th>Inserts/Part</th>
-                        <th>Total Needed</th>
-                        <th>On-Hand Boxes (10/pk)</th>
-                        <th>Boxes Needed (To Order)</th>
-                    </tr>
-                </thead>
-                <tbody id="toolingTableBody"></tbody>
-            </table>
+    <div id="workspaceSetup" style="display: none;">
+        <div class="grid">
+            <div class="card" style="grid-column: 1 / -1;">
+                <div class="card-title">⚙️ Dynamic Component Profile Engine <span style="font-size: 0.8rem; color: var(--text-dim);">Phase 2 Configuration Deck</span></div>
+                <p style="color: var(--text-dim); font-size: 0.95rem; margin-top: 0;">This configuration panel is fully wired and ready! Next up, we will drop in components right here to let you add, modify, or delete tools and operations on the fly.</p>
+                <div style="border: 1px dashed var(--border); padding: 30px; text-align: center; border-radius: 8px; color: var(--text-dim); background-color: rgba(0,0,0,0.15);">
+                    🔧 Ready to deploy dynamic tool string builders...
+                </div>
+            </div>
         </div>
     </div>
 
@@ -589,58 +564,46 @@ function switchTab(targetWorkspace) {
 </div>
 
 <script>
+// --- CORE STATIC MASTER INVENTORY LAYOUT ---
 const toolsData = [
     { name: "Tool #1", id: "LCMF1603M0-0300-MP,890", perPart: 1.0, stockBoxes: 0, isHouseStock: true },
     { name: "Tool #2", id: "CNMG120408-MF1,TH1000", perPart: 0.5, stockBoxes: 3, isHouseStock: false },
-    { name: "Tool #3", id: "NI-LCMN-BB84081", perPart: 2.0, stockBoxes: 11, isHouseStock: false },
-    { name: "Tool #4", id: "NI-LCMN-BB84080", perPart: 1.0, stockBoxes: 7, isHouseStock: false },
-    { name: "Tool #5", id: "LCMF1603M0-0300-MP,890", perPart: 1.5, stockBoxes: 0, isHouseStock: true },
-    { name: "Tool #6", id: "NI-LCMN-BB84082", perPart: 4.0, stockBoxes: 24, isHouseStock: false },
-    { name: "Tool #7", id: "KMT-4175966,NRD3031R", perPart: 0.5, stockBoxes: 0, isHouseStock: true },
-    { name: "Tool #9", id: "NI-LCMN-BB84079", perPart: 1.0, stockBoxes: 20, isHouseStock: false },
-    { name: "Tool #11", id: "NI-LCMA-BB84077,890", perPart: 0.5, stockBoxes: 5, isHouseStock: false },
-    { name: "Tool #12", id: "NI-LCMN-BB84078", perPart: 2.0, stockBoxes: 12, isHouseStock: false },
-    { name: "OP50 Tool #1", id: "NI-LCMN-BB84083", perPart: 2.0, stockBoxes: 12, isHouseStock: false }
+    { name: "Tool #3", id: "NI-LCMN-BB84081", perPart: 2.0, stockBoxes: 1, isHouseStock: false }
 ];
 
-const storedBoxes = localStorage.getItem("1499_master_boxes");
-if (storedBoxes) {
-    try {
-        const parsedBoxes = JSON.parse(storedBoxes);
-        toolsData.forEach((tool, i) => {
-            if (parsedBoxes[i] !== undefined) tool.stockBoxes = parsedBoxes[i];
-        });
-    } catch(err) { console.error("Inventory tracking failed to restore:", err); }
+// --- APP TAB SWITCHING NAVIGATION CONTROLLER ---
+function switchTab(targetWorkspace) {
+    const runView = document.getElementById('workspaceRun');
+    const setupView = document.getElementById('workspaceSetup');
+    const runBtn = document.getElementById('tabButtonRun');
+    const setupBtn = document.getElementById('tabButtonSetup');
+
+    if (targetWorkspace === 'setup') {
+        runView.style.display = 'none';
+        setupView.style.display = 'block';
+        setupBtn.classList.add('btn-accent');
+        runBtn.classList.remove('btn-accent');
+    } else {
+        runView.style.display = 'block';
+        setupView.style.display = 'none';
+        runBtn.classList.add('btn-accent');
+        setupBtn.classList.remove('btn-accent');
+    }
 }
 
-function getActiveHolidays() {
-    const rawText = document.getElementById("holidayList").value;
-    if (!rawText) return [];
-    return rawText
-        .split(/[\n,]+/)
-        .map(d => d.trim())
-        .filter(d => /^\d{4}-\d{2}-\d{2}$/.test(d));
-}
-
-function getOpWorkdayContribution(rateId, toggleId, parts) {
-    const checkbox = document.getElementById(toggleId);
-    if (checkbox && !checkbox.checked) return 0; 
-    const el = document.getElementById(rateId);
-    if (!el) return 0;
-    const val = parseFloat(el.value);
-    return (!val || val <= 0) ? 0 : (parts / val);
-}
-
-function buildToolingTableInitial() {
+// --- TABLE GENERATION ENGINE ---
+function renderInitialToolingTable() {
     const tbody = document.getElementById("toolingTableBody");
     if (!tbody) return;
     tbody.innerHTML = "";
-
+    
     toolsData.forEach((tool, index) => {
         const tr = document.createElement("tr");
         tr.id = `tool-row-${index}`;
-        let stockInputHTML = tool.isHouseStock ? `<span class="house-stock-label">In-House Stock</span>` : `<input type="number" class="stock-input" value="${tool.stockBoxes}" min="0" data-index="${index}">`;
-
+        let stockInputHTML = tool.isHouseStock 
+            ? `<span class="house-stock-label">In-House Stock</span>` 
+            : `<input type="number" class="stock-input" value="${tool.stockBoxes}" min="0" data-index="${index}">`;
+            
         tr.innerHTML = `
             <td><strong style="color: #fff;">${tool.name}</strong></td>
             <td style="font-size: 0.82rem; color: var(--text-dim); text-align: left; font-family: monospace;">${tool.id}</td>
@@ -668,8 +631,11 @@ function updateToolingTableValues(parts) {
         if (neededCell) neededCell.innerText = neededInserts;
 
         if (tool.isHouseStock) {
-            if (boxesCell) { boxesCell.innerText = "--"; boxesCell.style.color = "var(--text-dim)"; }
-            return; 
+            if (boxesCell) {
+                boxesCell.innerText = "--";
+                boxesCell.style.color = "var(--text-dim)";
+            }
+            return;
         }
 
         const totalLooseInsertsOnHand = tool.stockBoxes * 10;
@@ -723,15 +689,27 @@ function saveRunParamsToCache() {
     localStorage.setItem("1499_master_runtime", JSON.stringify(runtimeState));
 }
 
+function getOpWorkdayContribution(rateId, activeId, totalParts) {
+    const activeEl = document.getElementById(activeId);
+    const rateEl = document.getElementById(rateId);
+    if (!activeEl || !activeEl.checked || !rateEl) return 0;
+    const rateValue = parseFloat(rateEl.value) || 0;
+    return rateValue > 0 ? (totalParts / rateValue) : 0;
+}
+
+function getParsedHolidays() {
+    const input = document.getElementById("holidayList");
+    if (!input || !input.value) return [];
+    return input.value.split(/[\n,]+/).map(s => s.trim()).filter(s => s.length > 0);
+}
+
 function calculateSchedule() {
     const partsInput = document.getElementById("partsNeeded");
     const parts = partsInput ? (parseFloat(partsInput.value) || 0) : 0;
-    
     updateToolingTableValues(parts);
 
     const startDateEl = document.getElementById("startDate");
     const targetEndDateEl = document.getElementById("targetEndDate");
-    
     let startVal = startDateEl && startDateEl.value ? startDateEl.value : "2026-05-29";
     let targetEndVal = targetEndDateEl && targetEndDateEl.value ? targetEndDateEl.value : "2026-08-14";
 
@@ -739,11 +717,11 @@ function calculateSchedule() {
     const op30Days = getOpWorkdayContribution("op30Rate", "op30Active", parts);
     const op40Days = getOpWorkdayContribution("op40Rate", "op40Active", parts);
     const op50Days = getOpWorkdayContribution("op50Rate", "op50Active", parts);
-    
+
     const totalWorkdaysRequired = Math.ceil(op20Days + op30Days + op40Days + op50Days);
     document.getElementById("daysNeededDisplay").innerText = totalWorkdaysRequired + " workdays";
 
-    // --- TIMELINE GRAPHICS ENGINE BUILDER ---
+    // Recalculate Timeline Blocks
     const timelineBar = document.getElementById("timelineBarContainer");
     if (timelineBar) {
         timelineBar.innerHTML = "";
@@ -756,229 +734,186 @@ function calculateSchedule() {
                 { class: "seg-op50", days: op50Days, label: "Op 50" }
             ];
             operations.forEach(op => {
-                const pct = (op.days / totalRaw) * 100;
-                if (pct > 0) {
+                if (op.days > 0) {
+                    const pct = (op.days / totalRaw) * 100;
                     const seg = document.createElement("div");
                     seg.className = `timeline-segment ${op.class}`;
                     seg.style.width = `${pct}%`;
-                    seg.innerText = pct > 12 ? `${op.label} (${Math.ceil(op.days)}d)` : "";
-                    seg.title = `${op.label}: ${op.days.toFixed(1)} Days`;
+                    seg.innerText = op.label;
                     timelineBar.appendChild(seg);
                 }
             });
-        } else {
-            timelineBar.innerHTML = `<div style="width:100%; text-align:center; color:var(--text-dim); font-size:0.8rem; line-height:24px;">No Active Shop Routing Scheduled</div>`;
         }
     }
 
-    // --- SHOP CALENDAR LOGIC ---
-    const split = startVal.split("-");
-    let currentDate = new Date(parseInt(split[0]), parseInt(split[1]) - 1, parseInt(split[2]), 0, 0, 0);
-    const configuredHolidays = getActiveHolidays();
-    let workdaysCounted = 0, weekendDaysSkipped = 0, holidayDaysSkipped = 0;
+    // Shop Day Skip Engine
+    const parsedHolidays = getParsedHolidays();
+    let auditLogs = [];
+    let currentMoment = new Date(startVal + "T00:00:00");
+    let totalCalculatedWorkdaysCount = 0;
 
-    while (workdaysCounted < totalWorkdaysRequired) {
-        currentDate.setDate(currentDate.getDate() + 1);
-        const dayOfWeek = currentDate.getDay(); 
-        const isoString = currentDate.getFullYear() + '-' + String(currentDate.getMonth() + 1).padStart(2, '0') + '-' + String(currentDate.getDate()).padStart(2, '0');
+    if (totalWorkdaysRequired > 0) {
+        while (totalCalculatedWorkdaysCount < totalWorkdaysRequired) {
+            const dayOfWeek = currentMoment.getDay();
+            const formatStr = currentMoment.toISOString().split("T")[0];
 
-        if (dayOfWeek === 0 || dayOfWeek === 6) weekendDaysSkipped++;
-        else if (configuredHolidays.includes(isoString)) holidayDaysSkipped++;
-        else workdaysCounted++;
-    }
-
-    const finishDisplay = document.getElementById("finishDateDisplay");
-    const auditDisplay = document.getElementById("calendarAudit");
-
-    if (finishDisplay) {
-        if (totalWorkdaysRequired === 0) {
-            let cleanStart = new Date(parseInt(split[0]), parseInt(split[1]) - 1, parseInt(split[2]));
-            finishDisplay.innerText = cleanStart.toLocaleDateString("en-US", { weekday: "short", year: "numeric", month: "short", day: "numeric" });
-            if (auditDisplay) auditDisplay.innerText = "No work queued.";
-        } else {
-            finishDisplay.innerText = currentDate.toLocaleDateString("en-US", { weekday: "short", year: "numeric", month: "short", day: "numeric" });
-            if (auditDisplay) auditDisplay.innerText = `Bypassed ${weekendDaysSkipped} weekend days and ${holidayDaysSkipped} holiday closures.`;
-        }
-    }
-
-    // --- REQUIRED SHIFT PACE ANALYSIS ---
-    const burnRateDisplay = document.getElementById("burnRateDisplay");
-    if (burnRateDisplay && targetEndDateEl && targetEndDateEl.value) {
-        const tSplit = targetEndVal.split("-");
-        const targetDateObj = new Date(parseInt(tSplit[0]), parseInt(tSplit[1]) - 1, parseInt(tSplit[2]), 0, 0, 0);
-        const startDateObj = new Date(parseInt(split[0]), parseInt(split[1]) - 1, parseInt(split[2]), 0, 0, 0);
-        
-        let lookDate = new Date(startDateObj);
-        let availableWorkdays = 0;
-        while (lookDate < targetDateObj) {
-            lookDate.setDate(lookDate.getDate() + 1);
-            const dow = lookDate.getDay();
-            const iso = lookDate.getFullYear() + '-' + String(lookDate.getMonth() + 1).padStart(2, '0') + '-' + String(lookDate.getDate()).padStart(2, '0');
-            if (dow !== 0 && dow !== 6 && !configuredHolidays.includes(iso)) {
-                availableWorkdays++;
-            }
-        }
-        
-        if (parts === 0) {
-            burnRateDisplay.innerText = "0 parts / shift";
-        } else if (availableWorkdays <= 0) {
-            burnRateDisplay.innerText = "Deadline Impossible";
-            burnRateDisplay.style.color = "var(--red)";
-        } else {
-            const dailyBurnRequired = (parts / availableWorkdays).toFixed(1);
-            burnRateDisplay.innerText = `${dailyBurnRequired} Parts / Shift`;
-            burnRateDisplay.style.color = "var(--orange)";
-        }
-    } else if (burnRateDisplay) {
-        burnRateDisplay.innerText = "Target Deadline Required";
-        burnRateDisplay.style.color = "var(--text-dim)";
-    }
-
-    const bufferDisplay = document.getElementById("bufferDisplay");
-    if (bufferDisplay) {
-        if (targetEndDateEl && targetEndDateEl.value) {
-            const tSplit = targetEndVal.split("-");
-            const targetDateObj = new Date(parseInt(tSplit[0]), parseInt(tSplit[1]) - 1, parseInt(tSplit[2]), 0, 0, 0);
-            const calcFinishMidnight = new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate(), 0, 0, 0);
-            const calendarDaysCushion = Math.ceil((targetDateObj.getTime() - calcFinishMidnight.getTime()) / (1000 * 60 * 60 * 24));
-
-            if (totalWorkdaysRequired === 0) {
-                bufferDisplay.innerText = "No run planned";
-                bufferDisplay.style.color = "var(--text-dim)";
-            } else if (calendarDaysCushion > 0) {
-                bufferDisplay.innerText = `Ahead by ${calendarDaysCushion} Calendar Days`;
-                bufferDisplay.style.color = "var(--accent)";
-            } else if (calendarDaysCushion === 0) {
-                bufferDisplay.innerText = "Zero Margin (Ships Day of Finish)";
-                bufferDisplay.style.color = "var(--orange)";
+            if (dayOfWeek === 0 || dayOfWeek === 6) {
+                // Weekend
+            } else if (parsedHolidays.includes(formatStr)) {
+                auditLogs.push(`⚠️ Calendar Blackout: Closed on ${formatStr}`);
             } else {
-                bufferDisplay.innerText = `BEHIND SCHEDULE BY ${Math.abs(calendarDaysCushion)} DAYS`;
-                bufferDisplay.style.color = "var(--red)";
+                totalCalculatedWorkdaysCount++;
             }
-        } else {
-            bufferDisplay.innerText = "No deadline targeted";
-            bufferDisplay.style.color = "var(--text-dim)";
+
+            if (totalCalculatedWorkdaysCount < totalWorkdaysRequired) {
+                currentMoment.setDate(currentMoment.getDate() + 1);
+            }
         }
     }
+
+    const calculatedFinishStr = currentMoment.toISOString().split("T")[0];
+    document.getElementById("finishDateDisplay").innerText = totalWorkdaysRequired > 0 ? calculatedFinishStr : "--";
+
+    // Handle Buffer Analytics
+    const targetEndMoment = new Date(targetEndVal + "T00:00:00");
+    let availableTargetDays = 0;
+    let runningDateIter = new Date(startVal + "T00:00:00");
     
-    saveRunParamsToCache();
+    while (runningDateIter <= targetEndMoment) {
+        const dow = runningDateIter.getDay();
+        const fStr = runningDateIter.toISOString().split("T")[0];
+        if (dow !== 0 && dow !== 6 && !parsedHolidays.includes(fStr)) {
+            availableTargetDays++;
+        }
+        runningDateIter.setDate(runningDateIter.getDate() + 1);
+    }
+
+    const targetDiffDays = Math.floor((targetEndMoment - new Date(calculatedFinishStr + "T00:00:00")) / (1000 * 60 * 60 * 24));
+    const bufferDisplay = document.getElementById("bufferDisplay");
+
+    if (totalWorkdaysRequired === 0) {
+        bufferDisplay.innerText = "--";
+        bufferDisplay.style.color = "var(--text-color)";
+    } else if (targetDiffDays >= 0) {
+        bufferDisplay.innerText = `✔ AHEAD BY ${targetDiffDays} DAYS`;
+        bufferDisplay.style.color = "var(--accent)";
+    } else {
+        bufferDisplay.innerText = `🚨 BEHIND BY ${Math.abs(targetDiffDays)} DAYS`;
+        bufferDisplay.style.color = "var(--red)";
+    }
+
+    const burnRate = availableTargetDays > 0 ? (parts / availableTargetDays).toFixed(1) : "--";
+    document.getElementById("burnRateDisplay").innerText = burnRate + " parts/day";
+
+    const auditEl = document.getElementById("calendarAudit");
+    if (auditEl) {
+        auditEl.innerText = auditLogs.length > 0 
+            ? `[Calendar Calculations Engine Logs]\n` + auditLogs.join("\n") 
+            : `[Calendar Calculations Engine Logs]\n✔ Parameters stable. No active holiday blackout conflicts intersecting schedule parameters.`;
+    }
 }
 
-// --- DEVICE POPUP SHARE SHEET UTILITY ---
-document.getElementById("copyProcurementBtn").addEventListener("click", () => {
-    const partsVal = parseFloat(document.getElementById("partsNeeded").value) || 0;
-    let shareText = `1499 MASTER CELL PROCUREMENT LIST\n`;
-    shareText += `Run Target: ${partsVal} Parts\n`;
-    shareText += `------------------------------------\n`;
+// --- LOCAL PERSISTENCE LOADER ---
+function initAppStateAndLoadCache() {
+    const todayStr = new Date().toISOString().split("T")[0];
+    document.getElementById("startDate").value = todayStr;
     
-    let itemsFound = 0;
-    toolsData.forEach((tool) => {
-        if (tool.isHouseStock) return;
-        const needed = Math.ceil(partsVal * tool.perPart);
-        const hand = tool.stockBoxes * 10;
-        const short = Math.max(0, needed - hand);
-        const boxesToOrder = Math.ceil(short / 10);
-        
-        if (boxesToOrder > 0) {
-            shareText += `• ${tool.name} (${tool.id})\n`;
-            shareText += `  ORDER: ${boxesToOrder} Box(es)\n\n`;
-            itemsFound++;
+    const futureDate = new Date();
+    futureDate.setDate(futureDate.getDate() + 60);
+    document.getElementById("targetEndDate").value = futureDate.toISOString().split("T")[0];
+
+    const cachedRuntime = localStorage.getItem("1499_master_runtime");
+    if (cachedRuntime) {
+        try {
+            const state = JSON.parse(cachedRuntime);
+            if(state.partsNeeded !== undefined) document.getElementById("partsNeeded").value = state.partsNeeded;
+            if(state.startDate) document.getElementById("startDate").value = state.startDate;
+            if(state.targetEndDate) document.getElementById("targetEndDate").value = state.targetEndDate;
+            if(state.op20Rate) document.getElementById("op20Rate").value = state.op20Rate;
+            if(state.op30Rate) document.getElementById("op30Rate").value = state.op30Rate;
+            if(state.op40Rate) document.getElementById("op40Rate").value = state.op40Rate;
+            if(state.op50Rate) document.getElementById("op50Rate").value = state.op50Rate;
+            if(state.op20Active !== undefined) document.getElementById("op20Active").checked = state.op20Active;
+            if(state.op30Active !== undefined) document.getElementById("op30Active").checked = state.op30Active;
+            if(state.op40Active !== undefined) document.getElementById("op40Active").checked = state.op40Active;
+            if(state.op50Active !== undefined) document.getElementById("op50Active").checked = state.op50Active;
+            if(state.holidayList !== undefined) document.getElementById("holidayList").value = state.holidayList;
+        } catch(e) { console.error("Runtime cache skip:", e); }
+    }
+
+    const cachedBoxes = localStorage.getItem("1499_box_inventory");
+    if (cachedBoxes) {
+        try {
+            const boxCounts = JSON.parse(cachedBoxes);
+            boxCounts.forEach(item => {
+                if (toolsData[item.index]) toolsData[item.index].stockBoxes = item.boxes;
+            });
+        } catch(e) { console.error("Inventory cache skip:", e); }
+    }
+
+    renderInitialToolingTable();
+    
+    // Inventory table listener updates
+    document.getElementById("toolingTableBody").addEventListener("input", event => {
+        if (event.target.classList.contains("stock-input")) {
+            const idx = parseInt(event.target.dataset.index);
+            const val = Math.max(0, parseInt(event.target.value) || 0);
+            toolsData[idx].stockBoxes = val;
+            
+            const boxInventoryState = toolsData.map((t, i) => ({ index: i, boxes: t.stockBoxes }));
+            localStorage.setItem("1499_box_inventory", JSON.stringify(boxInventoryState));
+            
+            const partsVal = parseFloat(document.getElementById("partsNeeded").value) || 0;
+            updateToolingTableValues(partsVal);
+            calculateSchedule();
         }
     });
 
-    if (itemsFound === 0) shareText += `✔ All insert stock verified.\n`;
-    shareText += `------------------------------------`;
-
-    if (navigator.share) {
-        navigator.share({
-            title: '1499 Cell Tooling Order',
-            text: shareText
-        })
-        .then(() => console.log('Shared successfully.'))
-        .catch(err => console.log('Share canceled:', err));
-    } else {
-        // Desktop Fallback
-        navigator.clipboard.writeText(shareText).then(() => {
-            const btn = document.getElementById("copyProcurementBtn");
-            const oldText = btn.innerText;
-            btn.innerText = "✔ Copied (Share Sheet Unsupported)";
-            setTimeout(() => { btn.innerText = oldText; }, 2500);
+    //Recalc listeners
+    const globalInputIDs = ["partsNeeded", "startDate", "targetEndDate", "op20Rate", "op30Rate", "op40Rate", "op50Rate", "op20Active", "op30Active", "op40Active", "op50Active", "holidayList"];
+    globalInputIDs.forEach(id => {
+        const el = document.getElementById(id);
+        if (!el) return;
+        const evType = el.type === "checkbox" ? "change" : "input";
+        el.addEventListener(evType, () => {
+            saveRunParamsToCache();
+            calculateSchedule();
         });
-    }
-});
+    });
 
-// --- UTILITY RESETS ---
+    calculateSchedule();
+}
+
+document.addEventListener("DOMContentLoaded", initAppStateAndLoadCache);
+
 document.getElementById("clearRunParamsBtn").addEventListener("click", () => {
-    if(confirm("Clear current production counts and routing dates? On-hand box matrix will not be deleted.")) {
-        document.getElementById("partsNeeded").value = "0";
-        document.getElementById("startDate").value = "2026-05-29";
-        document.getElementById("targetEndDate").value = "";
-        calculateSchedule();
-    }
+    document.getElementById("partsNeeded").value = "0";
+    saveRunParamsToCache();
+    calculateSchedule();
 });
 
 document.getElementById("factoryResetMasterBtn").addEventListener("click", () => {
-    if(confirm("CRITICAL: Wipe out all custom local tracking caches? This completely zeroes current warehouse box counts.")) {
+    if (confirm("Reset layout data cache back to defaults?")) {
         localStorage.clear();
         location.reload();
     }
 });
 
-document.addEventListener("DOMContentLoaded", () => {
-    const startInput = document.getElementById("startDate");
-    const targetInput = document.getElementById("targetEndDate");
-    if (startInput) startInput.value = "2026-05-29";
-    if (targetInput) targetInput.value = "2026-08-14";
-
-    const storedRuntime = localStorage.getItem("1499_master_runtime");
-    if (storedRuntime) {
-        try {
-            const runtimeState = JSON.parse(storedRuntime);
-            Object.keys(runtimeState).forEach(id => {
-                const el = document.getElementById(id);
-                if (el) {
-                    if (el.type === "checkbox") el.checked = runtimeState[id];
-                    else el.value = runtimeState[id];
-                }
-            });
-        } catch(err) { console.error("Failed to restore runtime config panel:", err); }
-    }
-
-    buildToolingTableInitial();
-
-    const tableBody = document.getElementById("toolingTableBody");
-    if (tableBody) {
-        tableBody.addEventListener("input", e => {
-            if (!e.target.classList.contains("stock-input")) return;
-            const idx = parseInt(e.target.dataset.index);
-            toolsData[idx].stockBoxes = parseFloat(e.target.value) || 0;
-            
-            const serialisedBoxArray = toolsData.map(t => t.stockBoxes);
-            localStorage.setItem("1499_master_boxes", JSON.stringify(serialisedBoxArray));
-            calculateSchedule();
-        });
-    }
-
-    ["partsNeeded", "startDate", "targetEndDate", "op20Rate", "op30Rate", "op40Rate", "op50Rate", "op20Active", "op30Active", "op40Active", "op50Active", "holidayList"].forEach(id => {
-        const el = document.getElementById(id);
-        if (el) {
-            el.addEventListener("input", calculateSchedule);
-            el.addEventListener("change", calculateSchedule);
-        }
+document.getElementById("copyProcurementBtn").addEventListener("click", () => {
+    const parts = document.getElementById("partsNeeded").value;
+    const finish = document.getElementById("finishDateDisplay").innerText;
+    let msg = `1499 Cell Order Log:\nRun Size: ${parts} Pcs\nEst Clear: ${finish}\n\nRequired Orders:\n`;
+    
+    toolsData.forEach(t => {
+        if (t.isHouseStock) return;
+        const inserts = Math.ceil(parts * t.perPart);
+        const shortage = Math.max(0, inserts - (t.stockBoxes * 10));
+        const boxes = Math.ceil(shortage / 10);
+        if (boxes > 0) msg += `- ${t.name} (${t.id}): ${boxes} Boxes\n`;
     });
 
-    calculateSchedule();
+    navigator.clipboard.writeText(msg).then(() => alert("Procurement data copied directly to clipboard!"));
 });
-</script>
-
-<script>
-  if ('serviceWorker' in navigator) {
-    window.addEventListener('load', () => {
-      navigator.serviceWorker.register('sw.js')
-        .then(reg => console.log('SW registered:', reg.scope))
-        .catch(err => console.log('SW failed:', err));
-    });
-  }
 </script>
 </body>
 </html>
