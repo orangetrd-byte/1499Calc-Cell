@@ -1,463 +1,262 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>1499 Master Tooling & Schedule Cell</title>
-
-    <link rel="manifest" href="manifest.json" />
-    <meta name="theme-color" content="#0d0e12" />
-    <meta name="mobile-web-app-capable" content="yes" />
-    <meta name="apple-mobile-web-app-capable" content="yes" />
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-    <meta name="apple-mobile-web-app-title" content="1499 Cell" />
-    <link rel="apple-touch-icon" href="icons/icon-192.png" />
-    <link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png" />
-    <link rel="icon" type="image/png" sizes="512x512" href="icons/icon-512.png" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Master Tooling & Schedule Cell</title>
+    <link rel="manifest" href="./manifest.json">
+    <meta name="theme-color" content="#0d0e12">
     <style>
         :root {
-            --bg-color: #0d0e12;
-            --card-bg: #161920;
-            --input-bg: #1f2330;
-            --text-color: #f0f2f5;
-            --text-dim: #7e89a3;
-            --accent: #39ff14;     /* Neon Safety Green */
-            --border: #262b3c;
-            --orange: #ff9f0a;     /* Warning Orange */
-            --blue: #0a84ff;       /* Status Blue */
-            --red: #ff453a;        /* Alert Red */
-            --purple: #bf5af2;     /* Utility Purple */
+            --bg-main: #0d0e12;
+            --bg-card: #15171e;
+            --input-bg: #1e222b;
+            --border: #2a303d;
+            --text-main: #f0f3f8;
+            --text-dim: #94a3b8;
+            --accent: #39ff14; /* Safety Green */
+            --blue: #0a84ff;
+            --red: #ff3b30;
         }
 
-        * { box-sizing: border-box; }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+        body { background-color: var(--bg-main); color: var(--text-main); padding: 15px; font-size: 14px; }
+        .container { max-width: 1200px; margin: 0 auto; }
 
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            margin: 0;
-            padding: 20px;
-            line-height: 1.5;
-        }
-
-        .container { max-width: 1400px; margin: 0 auto; }
-
-        h1 { 
-            font-size: 1.65rem; 
-            color: #fff; 
-            margin: 0 0 15px 0; 
-            border-bottom: 3px solid var(--blue); 
-            padding-bottom: 14px; 
-            text-transform: uppercase; 
-            letter-spacing: 1px; 
-            display: flex; 
-            align-items: center; 
-            gap: 12px; 
-        }
-
-        .tab-navigation-bar {
-            display: flex;
-            gap: 12px;
-            margin-bottom: 25px;
-            border-bottom: 1px solid var(--border);
-            padding-bottom: 14px;
-        }
-
-        .grid { 
-            display: grid; 
-            grid-template-columns: 1fr; 
-            gap: 25px; 
-            margin-bottom: 25px;
-        }
+        header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 1px solid var(--border); padding-bottom: 10px; }
+        h1 { font-size: 1.4rem; font-weight: 700; letter-spacing: -0.5px; }
+        .tabs { display: flex; gap: 8px; }
         
-        @media (min-width: 992px) { .grid { grid-template-columns: 1fr 1fr; } }
+        .btn { padding: 8px 16px; border: 1px solid var(--border); background: var(--bg-card); color: var(--text-main); border-radius: 6px; cursor: pointer; font-weight: 500; font-size: 0.9rem; transition: all 0.2s; display: inline-flex; align-items: center; justify-content: center; gap: 6px; }
+        .btn:hover { background: var(--input-bg); border-color: var(--text-dim); }
+        .btn-accent { background: var(--accent) !important; color: #000 !important; border-color: var(--accent) !important; font-weight: 600; }
+        .btn-primary { background: var(--blue); color: #fff; border-color: var(--blue); }
+        .btn-danger { background: rgba(255, 59, 48, 0.15); color: var(--red); border-color: rgba(255, 59, 48, 0.3); }
+        .btn-danger:hover { background: var(--red); color: #fff; }
+
+        .workspace-view { display: block; }
+        .grid-main { display: grid; grid-template-columns: 340px 1fr; gap: 20px; align-items: start; }
+        @media (max-width: 900px) { .grid-main { grid-template-columns: 1fr; } }
+
+        .card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 8px; padding: 15px; margin-bottom: 15px; }
+        .card-title { font-size: 0.95rem; font-weight: 600; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 15px; border-left: 3px solid var(--blue); padding-left: 8px; display: flex; justify-content: space-between; align-items: center; }
+
+        .input-group { margin-bottom: 12px; display: flex; flex-direction: column; gap: 4px; }
+        .input-group label { font-size: 0.8rem; font-weight: 500; color: var(--text-dim); }
+        .input-row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+        input, select, textarea { width: 100%; padding: 8px 12px; background: var(--input-bg); border: 1px solid var(--border); color: #fff; border-radius: 6px; font-size: 0.9rem; }
+        input:focus, select:focus, textarea:focus { border-color: var(--blue); outline: none; }
         
-        .card { 
-            background: linear-gradient(145deg, #161920, #13151b);
-            border: 1px solid var(--border); 
-            border-radius: 12px; 
-            padding: 24px; 
-            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.6);
-            height: 100%;
-        }
+        .checkbox-group { display: flex; align-items: center; gap: 8px; }
+        .checkbox-group input { width: auto; cursor: pointer; }
 
-        .card-title { 
-            font-size: 1.15rem; 
-            font-weight: bold; 
-            color: #fff; 
-            margin: 0 0 20px 0; 
-            padding-bottom: 10px; 
-            border-bottom: 1px solid var(--border); 
-            letter-spacing: 0.5px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
+        .metric-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 15px; margin-bottom: 20px; }
+        .metric-box { background: var(--bg-card); border: 1px solid var(--border); border-radius: 8px; padding: 15px; text-align: left; }
+        .metric-label { font-size: 0.8rem; color: var(--text-dim); text-transform: uppercase; font-weight: 500; }
+        .metric-value { font-size: 1.6rem; font-weight: 700; margin-top: 5px; color: var(--accent); }
 
-        .input-group { display: flex; flex-direction: column; margin-bottom: 18px; }
+        .timeline-container { background: var(--input-bg); border: 1px solid var(--border); height: 26px; border-radius: 6px; margin-bottom: 20px; display: flex; overflow: hidden; font-size: 0.75rem; font-weight: bold; line-height: 26px; text-align: center; color: #fff; }
+        .timeline-segment { height: 100%; transition: width 0.3s ease; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; padding: 0 4px; }
 
-        label { 
-            font-size: 0.85rem; 
-            color: var(--text-dim); 
-            margin-bottom: 6px; 
-            font-weight: 600; 
-            text-transform: uppercase;
-            letter-spacing: 0.3px;
-        }
+        .table-wrapper { overflow-x: auto; background: var(--bg-card); border: 1px solid var(--border); border-radius: 8px; }
+        table { width: 100%; border-collapse: collapse; text-align: left; }
+        th { background: rgba(0,0,0,0.2); color: var(--text-dim); font-weight: 600; padding: 10px 12px; font-size: 0.8rem; text-transform: uppercase; border-bottom: 1px solid var(--border); }
+        td { padding: 10px 12px; border-bottom: 1px solid var(--border); vertical-align: middle; }
         
-        .op-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px; }
-        .op-header label { margin-bottom: 0; }
-        .op-checkbox { width: 18px; height: 18px; cursor: pointer; accent-color: var(--blue); }
-        
-        input[type="number"], input[type="date"], input[type="text"], select, textarea { 
-            background-color: var(--input-bg); 
-            border: 1px solid var(--border); 
-            color: #fff; 
-            padding: 12px; 
-            border-radius: 6px; 
-            font-size: 1rem; 
-            font-weight: 500;
-            font-family: inherit;
-            transition: border-color 0.2s, box-shadow 0.2s;
-        }
+        .op-header-row { font-weight: bold; text-align: left; letter-spacing: 0.5px; border-bottom: 1px solid var(--border); }
+        .stock-input { width: 65px; padding: 4px 6px; text-align: center; background: var(--bg-main); }
+        .house-stock-label { font-size: 0.8rem; color: var(--accent); font-weight: 500; background: rgba(57, 255, 20, 0.08); padding: 4px 8px; border-radius: 4px; border: 1px solid rgba(57, 255, 20, 0.15); }
+        .order-badge { margin-left: 6px; font-size: 0.7rem; padding: 2px 6px; border-radius: 4px; letter-spacing: 0.5px; background: rgba(255,59,48,0.15); color: var(--red); border: 1px solid rgba(255,59,48,0.2); }
 
-        input:focus, select:focus, textarea:focus { 
-            border-color: var(--blue); 
-            outline: none; 
-            box-shadow: 0 0 6px rgba(10, 132, 255, 0.35); 
-        }
-        
-        .highlight-box { 
-            background: rgba(10, 132, 255, 0.06); 
-            border-left: 5px solid var(--blue); 
-            padding: 18px; 
-            border-radius: 6px; 
-            margin-top: 20px; 
-        }
-
-        .result-row { 
-            display: flex; 
-            justify-content: space-between; 
-            padding: 10px 0; 
-            border-bottom: 1px dashed var(--border); 
-            align-items: center; 
-            gap: 15px; 
-        }
-
-        .result-row:last-child { border-bottom: none; }
-
-        .result-val { font-weight: bold; color: #fff; text-align: right; word-break: break-word; }
-        .result-val.green { 
-            color: var(--accent); 
-            text-shadow: 0 0 10px rgba(57, 255, 20, 0.35); 
-            font-size: 1.25rem; 
-        }
-        
-        .audit-trail { 
-            font-size: 0.8rem; 
-            color: var(--text-dim); 
-            margin-top: 12px; 
-            line-height: 1.4; 
-            border-top: 1px solid var(--border); 
-            padding-top: 12px; 
-        }
-
-        .timeline-wrapper { margin-top: 20px; background: rgba(0,0,0,0.2); padding: 15px; border-radius: 8px; border: 1px solid var(--border); }
-        .timeline-bar { display: flex; height: 24px; border-radius: 4px; overflow: hidden; background-color: #222; margin-bottom: 10px; }
-        .timeline-segment {
-            height: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 0.75rem;
-            font-weight: bold;
-            color: #fff;
-            text-shadow: 1px 1px 2px rgba(0,0,0,0.8);
-        }
-
-        .seg-op20 { background-color: #0a84ff; }
-        .seg-op30 { background-color: #30d158; }
-        .seg-op40 { background-color: #ff9f0a; }
-        .seg-op50 { background-color: #bf5af2; }
-        .timeline-legend { display: flex; flex-wrap: wrap; gap: 15px; font-size: 0.8rem; }
-        .legend-item { display: flex; align-items: center; gap: 6px; }
-        .legend-dot { width: 10px; height: 10px; border-radius: 2px; }
-
-        .btn {
-            background-color: var(--input-bg);
-            border: 1px solid var(--border);
-            color: #fff;
-            padding: 8px 16px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-weight: 600;
-            font-size: 0.85rem;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .btn:hover { background-color: var(--border); border-color: var(--text-dim); }
-        .btn-accent { background-color: rgba(10, 132, 255, 0.15); border-color: var(--blue); color: #64d2ff; }
-        .btn-accent:hover { background-color: var(--blue); color: #fff; }
-        .btn-danger { background-color: rgba(255, 69, 58, 0.1); border-color: var(--red); color: #ff453a; }
-        .btn-danger:hover { background-color: var(--red); color: #fff; }
-        .btn-group { display: flex; gap: 10px; }
-
-        .table-wrapper { overflow-x: auto; margin-top: 12px; border-radius: 8px; border: 1px solid var(--border); }
-        table { width: 100%; border-collapse: collapse; font-size: 0.92rem; background-color: #111318; }
-        th, td { padding: 14px 16px; text-align: center; border-bottom: 1px solid var(--border); }
-        th { background-color: #161920; color: #fff; font-weight: 600; text-transform: uppercase; font-size: 0.8rem; letter-spacing: 0.5px; }
-        tr:last-child td { border-bottom: none; }
-        tr:nth-child(even) { background-color: rgba(255, 255, 255, 0.01); }
-        
-        .stock-input { 
-            width: 75px; padding: 6px 8px; text-align: center; background-color: var(--input-bg); 
-            border: 1px solid var(--border); color: #fff; border-radius: 4px; font-weight: bold;
-        }
-        .house-stock-label { font-size: 0.78rem; color: var(--text-dim); font-style: italic; }
-        
-        .order-badge {
-            background-color: rgba(255, 69, 58, 0.14); color: var(--red); border: 1px solid var(--red);
-            padding: 4px 8px; border-radius: 4px; font-size: 0.75rem; font-weight: bold;
-            margin-left: 8px; display: inline-block; animation: pulseAlert 2s infinite ease-in-out;
-        }
-
-        .deck-form-grid {
-            display: grid; grid-template-columns: 1fr; gap: 15px; margin-bottom: 20px;
-            background: rgba(255,255,255,0.02); padding: 18px; border-radius: 8px; border: 1px dashed var(--border);
-        }
-        @media(min-width: 768px) { .deck-form-grid { grid-template-columns: 2fr 3fr 1fr 1.5fr; } }
-
-        .live-tool-card {
-            background: #111318; border: 1px solid var(--border); border-radius: 8px;
-            padding: 16px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; gap: 15px;
-        }
-        .footer-utility-bar {
-            margin-top: 30px; padding-top: 20px; border-top: 1px solid var(--border);
-            display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px;
-        }
-        @keyframes pulseAlert {
-            0% { opacity: 0.85; }
-            50% { opacity: 1; box-shadow: 0 0 10px rgba(255, 69, 58, 0.4); }
-            100% { opacity: 0.85; }
-        }
+        .live-tool-card { background: rgba(255,255,255,0.01); border: 1px solid var(--border); border-radius: 6px; padding: 12px; margin-bottom: 10px; display: flex; flex-direction: column; gap: 10px; position: relative; }
+        .op-config-row { display: flex; align-items: center; justify-content: space-between; padding: 6px 10px; background: rgba(255,255,255,0.02); border: 1px solid var(--border); border-radius: 6px; margin-bottom: 8px; }
     </style>
 </head>
 <body>
+
 <div class="container">
-    <h1>⚙️ 1499 Master Tooling & Schedule Cell</h1>
+    <header>
+        <div>
+            <h1>Master Tooling & Schedule Cell</h1>
+            <p style="font-size: 0.8rem; color: var(--text-dim); margin-top: 2px;">Dynamic Multi-Operation Production & Procurement Sheet</p>
+        </div>
+        <div class="tabs">
+            <button id="tabButtonRun" class="btn btn-accent" onclick="switchTab('run')">📊 Production Run</button>
+            <button id="tabButtonSetup" class="btn" onclick="switchTab('setup')">🔧 Cell Setup Sheets</button>
+        </div>
+    </header>
 
-    <div class="tab-navigation-bar">
-        <button id="tabButtonRun" class="btn btn-accent" onclick="switchTab('run')" style="padding: 10px 20px; font-size: 0.95rem;">📊 Run Dashboard</button>
-        <button id="tabButtonSetup" class="btn" onclick="switchTab('setup')" style="padding: 10px 20px; font-size: 0.95rem;">🔧 Cell Setup Sheets</button>
+    <div id="workspaceRun" class="workspace-view">
+        <div class="metric-row">
+            <div class="metric-box">
+                <div class="metric-label">Estimated Finish Date</div>
+                <div class="metric-value" id="finishDateDisplay">--</div>
+            </div>
+            <div class="metric-box">
+                <div class="metric-label">Required Cell Floor Time</div>
+                <div class="metric-value" id="daysNeededDisplay" style="color: var(--blue);">--</div>
+            </div>
+            <div class="metric-box">
+                <div class="metric-label">Calendar Day Buffer</div>
+                <div class="metric-value" id="bufferDisplay">--</div>
+            </div>
+            <div class="metric-box">
+                <div class="metric-label">Required Target Pace</div>
+                <div class="metric-value" id="burnRateDisplay" style="color: #fff; font-size: 1.3rem; margin-top:9px;">--</div>
+            </div>
+        </div>
+
+        <div class="timeline-container" id="timelineBarContainer"></div>
+
+        <div class="grid-main">
+            <div class="sidebar">
+                <div class="card">
+                    <div class="card-title">Job Parameters</div>
+                    <div class="input-group">
+                        <label for="partsNeeded">Total Parts Ordered</label>
+                        <input type="number" id="partsNeeded" value="150" min="1" oninput="calculateSchedule()">
+                    </div>
+                    <div class="input-row">
+                        <div class="input-group">
+                            <label for="startDate">Run Start Date</label>
+                            <input type="date" id="startDate" onchange="calculateSchedule()">
+                        </div>
+                        <div class="input-group">
+                            <label for="targetEndDate">Target Deadline</label>
+                            <input type="date" id="targetEndDate" onchange="calculateSchedule()">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-title">Dynamic Operations List</div>
+                    <div id="dynamicOperationsRatesContainer"></div>
+                    
+                    <div style="border-top: 1px solid var(--border); margin-top: 15px; padding-top: 12px; display: flex; gap: 6px;">
+                        <input type="text" id="newOpNumberInput" placeholder="e.g., Op 10" style="padding: 6px;">
+                        <button class="btn btn-primary" onclick="addCustomOperation()" style="white-space: nowrap; font-size:0.8rem;">➕ Add Op</button>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-title">Plant Scheduled Closures</div>
+                    <div class="input-group">
+                        <label for="holidayList">Holiday Shut Downs (YYYY-MM-DD)</label>
+                        <textarea id="holidayList" rows="3" oninput="calculateSchedule()" placeholder="2026-07-04&#10;2026-09-07&#10;2026-11-26"></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <div class="main-content">
+                <div class="card" style="padding: 0; overflow: hidden;">
+                    <div class="table-wrapper">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Pocket</th>
+                                    <th>Tool Assignment Name</th>
+                                    <th>Insert Part Configuration</th>
+                                    <th>Inserts/Part</th>
+                                    <th>Total Needed</th>
+                                    <th>On-Hand Boxes</th>
+                                    <th>Boxes To Order</th>
+                                </tr>
+                            </thead>
+                            <tbody id="toolingTableBody"></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="card" id="calendarAudit" style="font-size: 0.9rem; line-height: 1.4; color: var(--text-main);">
+                    --
+                </div>
+                
+                <div style="display:flex; justify-content: space-between; align-items: center; margin-top: 10px; padding: 0 5px;">
+                    <span style="font-size:0.85rem; color: var(--text-dim);">Max allocation tracking: <strong id="maxPartsDisplay" style="color:var(--accent);">--</strong></span>
+                    <div style="display:flex; gap:10px;">
+                        <button class="btn" onclick="clearJobParams()">Reset Counts</button>
+                        <button class="btn btn-danger" onclick="factoryResetMaster()">⚠️ Full Factory Reset</button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
-    <div id="workspaceRun">
-        <div class="grid">
-            <div class="card">
-                <div class="card-title">Production Run Parameters</div>
-                <div class="input-group">
-                    <label for="partsNeeded">Total Parts In Run Needed</label>
-                    <input type="number" id="partsNeeded" value="100" min="0" oninput="calculateSchedule()" />
-                </div>
-                
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
-                    <div class="input-group">
-                        <label for="startDate">Production Start</label>
-                        <input type="date" id="startDate" onchange="calculateSchedule()" />
-                    </div>
-                    <div class="input-group">
-                        <label for="targetEndDate">Target Deadline</label>
-                        <input type="date" id="targetEndDate" onchange="calculateSchedule()" />
-                    </div>
-                </div>
-
-                <div class="highlight-box">
-                    <div class="result-row">
-                        <span>Total Target Workdays:</span>
-                        <span id="daysNeededDisplay" class="result-val" style="color: var(--blue);">--</span>
-                    </div>
-                    <div class="result-row">
-                        <span>Required Output Rate (Shift Pace):</span>
-                        <span id="burnRateDisplay" class="result-val" style="color: var(--orange); font-size: 1.1rem;">--</span>
-                    </div>
-                    <div class="result-row">
-                        <span>Max Parts (Special Order Capacity):</span>
-                        <span id="maxPartsDisplay" class="result-val">--</span>
-                    </div>
-                    <div class="result-row" style="border-top: 1px solid var(--border); padding-top: 10px; margin-top: 5px;">
-                        <span>Estimated Finish Date:</span>
-                        <span id="finishDateDisplay" class="result-val green">--</span>
-                    </div>
-                    <div class="result-row">
-                        <span>Schedule Buffer Status:</span>
-                        <span id="bufferDisplay" class="result-val" style="font-size: 1.1rem;">--</span>
-                    </div>
-                    <div class="audit-trail" id="calendarAudit">Analyzing active shop floor metrics...</div>
-                </div>
-            </div>
-
-            <div class="card">
-                <div class="card-title">Cell Process Rates & Plant Closures</div>
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 5px;">
-                    <div class="input-group">
-                        <div class="op-header"><label>Op 20 (Roughing)</label><input type="checkbox" id="op20Active" class="op-checkbox" checked onchange="calculateSchedule()" /></div>
-                        <input type="number" id="op20Rate" value="10" oninput="calculateSchedule()" />
-                    </div>
-                    <div class="input-group">
-                        <div class="op-header"><label>Op 30 (Turn/Bore)</label><input type="checkbox" id="op30Active" class="op-checkbox" checked onchange="calculateSchedule()" /></div>
-                        <input type="number" id="op30Rate" value="6" oninput="calculateSchedule()" />
-                    </div>
-                    <div class="input-group">
-                        <div class="op-header"><label>Op 40 (Bottleneck)</label><input type="checkbox" id="op40Active" class="op-checkbox" checked onchange="calculateSchedule()" /></div>
-                        <input type="number" id="op40Rate" value="1" oninput="calculateSchedule()" />
-                    </div>
-                    <div class="input-group">
-                        <div class="op-header"><label>Op 50 (Finish)</label><input type="checkbox" id="op50Active" class="op-checkbox" checked onchange="calculateSchedule()" /></div>
-                        <input type="number" id="op50Rate" value="2" oninput="calculateSchedule()" />
-                    </div>
-                </div>
-                
-                <div class="input-group">
-                    <label for="holidayList" style="color: var(--orange);">Active Shop Calendar Holidays</label>
-                    <textarea id="holidayList" rows="5" style="resize: vertical; font-size: 0.85rem; font-family: monospace;" oninput="calculateSchedule()">2026-01-01
-2026-01-02
-2026-04-03
-2026-05-25
-2026-06-22
-2026-06-23
-2026-06-24
-2026-06-25
-2026-06-26
-2026-07-02
-2026-07-03
-2026-09-07
-2026-11-26
-2026-11-27
-2026-12-25</textarea>
-                </div>
-            </div>
-        </div>
-
-        <div class="card" style="margin-bottom: 25px;">
-            <div class="card-title">Dynamic Sequential Production Timeline</div>
-            <div class="timeline-wrapper">
-                <div class="timeline-bar" id="timelineBarContainer"></div>
-                <div class="timeline-legend">
-                    <div class="legend-item"><div class="legend-dot seg-op20"></div><span>Op 20 (Roughing)</span></div>
-                    <div class="legend-item"><div class="legend-dot seg-op30"></div><span>Op 30 (Turn/Bore)</span></div>
-                    <div class="legend-item"><div class="legend-dot seg-op40"></div><span>Op 40 (Bottleneck)</span></div>
-                    <div class="legend-item"><div class="legend-dot seg-op50"></div><span>Op 50 (Finish)</span></div>
-                </div>
-            </div>
-        </div>
-
+    <div id="workspaceSetup" class="workspace-view" style="display: none;">
         <div class="card">
-            <div class="card-title">Tooling Matrix & Box Procurement</div>
-            <div class="table-wrapper">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Tool Position</th>
-                            <th>Insert Part Configuration</th>
-                            <th>Inserts/Part</th>
-                            <th>Total Needed</th>
-                            <th>On-Hand Boxes (10/pk)</th>
-                            <th>Boxes Needed (To Order)</th>
-                        </tr>
-                    </thead>
-                    <tbody id="toolingTableBody"></tbody>
-                </table>
+            <div class="card-title">
+                <span>Master Matrix Layout Assignment</span>
+                <button class="btn btn-accent" onclick="addNewBlankToolRow()" style="font-size: 0.8rem; padding: 4px 10px;">➕ Add Tool Row</button>
             </div>
-        </div>
-    </div>
-
-    <div id="workspaceSetup" style="display: none;">
-        <div class="grid">
-            <div class="card" style="grid-column: 1 / -1;">
-                <div class="card-title">⚙️ Dynamic Component Profile Engine <span style="font-size: 0.8rem; color: var(--text-dim);">Phase 2 Configuration Deck</span></div>
-                
-                <div class="deck-form-grid">
-                    <div class="input-group"><label for="newToolName">Position Name</label><input type="text" id="newToolName" placeholder="e.g., Tool #4" /></div>
-                    <div class="input-group"><label for="newToolId">Insert Specification ID</label><input type="text" id="newToolId" placeholder="e.g., WNMG080408..." /></div>
-                    <div class="input-group"><label for="newToolPerPart">Inserts/Part</label><input type="number" id="newToolPerPart" value="1" min="0" step="0.1" /></div>
-                    <div class="input-group">
-                        <label for="newToolStockType">Procurement Type</label>
-                        <select id="newToolStockType" onchange="toggleStockInputField(this.value)">
-                            <option value="special">Custom (Track Box Shortage)</option>
-                            <option value="house">In-House Stock (Unlimited)</option>
-                        </select>
-                    </div>
-                </div>
-                <div id="customBoxCountWrapper" class="input-group" style="max-width: 250px; margin-bottom: 20px;">
-                    <label for="newToolBoxes">Initial Boxes On-Hand</label>
-                    <input type="number" id="newToolBoxes" value="0" min="0" />
-                </div>
-                <button class="btn btn-accent" onclick="addNewToolString()">➕ Deploy New Tool String To Matrix</button>
-                
-                <div class="card-title" style="margin-top: 20px; border-bottom: 1px solid var(--border); padding-bottom: 8px;">Active Cell String Deployments</div>
-                <div id="activeToolsStackContainer"></div>
-            </div>
-        </div>
-    </div>
-
-    <div class="footer-utility-bar">
-        <div style="color: var(--text-dim); font-size: 0.85rem;">System status: Persistent caching engine running</div>
-        <div class="btn-group">
-            <button class="btn" onclick="clearJobParams()">🔄 Clear Active Job Params</button>
-            <button class="btn btn-danger" onclick="factoryResetMaster()">⚠️ Full Factory Reset</button>
+            <p style="font-size:0.85rem; color:var(--text-dim); margin-bottom:15px; line-height:1.4;">
+                Map turret pockets, name tool targets, select their operational routing assignment, and wear rates. Use "Wipe Row" to clean out tools no longer running on the job.
+            </p>
+            <div id="activeToolsStackContainer"></div>
         </div>
     </div>
 </div>
 
 <script>
-let toolsData = [];
-
-// 14 distinct tools split clearly between Op 40 and Op 50
-const defaultTools = [
-    // --- OP 40 BOTTLENECK LAYOUT (10 Tools) ---
-    { name: "Op 40 - Tool Slot #1", pocket: "1", id: "ENTER-INSERT-ID", perPart: 1.0, stockBoxes: 0, isHouseStock: true },
-    { name: "Op 40 - Tool Slot #2", pocket: "2", id: "ENTER-INSERT-ID", perPart: 1.0, stockBoxes: 0, isHouseStock: true },
-    { name: "Op 40 - Tool Slot #3", pocket: "3", id: "ENTER-INSERT-ID", perPart: 1.0, stockBoxes: 0, isHouseStock: true },
-    { name: "Op 40 - Tool Slot #4", pocket: "4", id: "ENTER-INSERT-ID", perPart: 1.0, stockBoxes: 0, isHouseStock: true },
-    { name: "Op 40 - Tool Slot #5", pocket: "5", id: "ENTER-INSERT-ID", perPart: 1.0, stockBoxes: 0, isHouseStock: true },
-    { name: "Op 40 - Tool Slot #6", pocket: "6", id: "ENTER-INSERT-ID", perPart: 1.0, stockBoxes: 0, isHouseStock: true },
-    { name: "Op 40 - Tool Slot #7", pocket: "7", id: "ENTER-INSERT-ID", perPart: 1.0, stockBoxes: 0, isHouseStock: true },
-    { name: "Op 40 - Tool Slot #8", pocket: "8", id: "ENTER-INSERT-ID", perPart: 1.0, stockBoxes: 0, isHouseStock: true },
-    { name: "Op 40 - Tool Slot #9", pocket: "9", id: "ENTER-INSERT-ID", perPart: 1.0, stockBoxes: 0, isHouseStock: true },
-    { name: "Op 40 - Tool Slot #10", pocket: "10", id: "ENTER-INSERT-ID", perPart: 1.0, stockBoxes: 0, isHouseStock: true },
-
-    // --- OP 50 FINISH LINE LAYOUT (4 Tools) ---
-    { name: "Op 50 - Tool Slot #11", pocket: "11", id: "ENTER-INSERT-ID", perPart: 1.0, stockBoxes: 0, isHouseStock: true },
-    { name: "Op 50 - Tool Slot #12", pocket: "12", id: "ENTER-INSERT-ID", perPart: 1.0, stockBoxes: 0, isHouseStock: true },
-    { name: "Op 50 - Tool Slot #13", pocket: "13", id: "ENTER-INSERT-ID", perPart: 1.0, stockBoxes: 0, isHouseStock: true },
-    { name: "Op 50 - Tool Slot #14", pocket: "14", id: "ENTER-INSERT-ID", perPart: 1.0, stockBoxes: 0, isHouseStock: true }
+// Base high-contrast palette assigned to dynamic operations automatically
+const colorPalette = [
+    { text: "#f57c00", bg: "rgba(245, 124, 0, 0.12)", seg: "#c75f00" }, // Orange
+    { text: "#b050ff", bg: "rgba(176, 80, 255, 0.12)", seg: "#7b1fa2" }, // Purple
+    { text: "#0a84ff", bg: "rgba(10, 132, 255, 0.12)", seg: "#1565c0" }, // Blue
+    { text: "#e5c158", bg: "rgba(229, 193, 88, 0.12)", seg: "#b8860b" }, // Gold
+    { text: "#4caf50", bg: "rgba(76, 175, 80, 0.12)", seg: "#2e7d32" },  // Green
+    { text: "#ff5252", bg: "rgba(255, 82, 82, 0.12)", seg: "#c62828" }   // Crimson
 ];
 
-function loadToolsFromCache() {
-    const cached = localStorage.getItem("1499_master_tools_list");
-    if (cached) {
-        try { 
-            const parsed = JSON.parse(cached);
-            if (!Array.isArray(parsed) || parsed.length !== 14) {
-                toolsData = [...defaultTools];
-                saveToolsToCache();
-            } else {
-                toolsData = parsed;
-            }
-        } 
-        catch(e) { 
-            toolsData = [...defaultTools]; 
-            saveToolsToCache();
-        }
-    } else {
-        toolsData = [...defaultTools];
-        saveToolsToCache();
-    }
+let operationsData = ["Op 40", "Op 50"];
+let opRatesData = { "Op 40": 8, "Op 50": 15 };
+let opActiveData = { "Op 40": true, "Op 50": true };
+
+let toolsData = [
+    { name: "Rough Turn", pocket: "1", id: "CNMG-432", perPart: 1.0, stockBoxes: 0, isHouseStock: true, opRef: "Op 40" },
+    { name: "Finish Face", pocket: "2", id: "WNMG-431", perPart: 1.0, stockBoxes: 0, isHouseStock: true, opRef: "Op 40" },
+    { name: "Groove ID", pocket: "5", id: "GRV-080", perPart: 2.0, stockBoxes: 2, isHouseStock: false, opRef: "Op 50" }
+];
+
+function loadEngineCache() {
+    const cachedOps = localStorage.getItem("1499_dyn_ops_list");
+    const cachedRates = localStorage.getItem("1499_dyn_ops_rates");
+    const cachedActive = localStorage.getItem("1499_dyn_ops_active");
+    const cachedTools = localStorage.getItem("1499_dyn_master_tools");
+
+    if (cachedOps && cachedRates && cachedActive && cachedTools) {
+        try {
+            operationsData = JSON.parse(cachedOps);
+            opRatesData = JSON.parse(cachedRates);
+            opActiveData = JSON.parse(cachedActive);
+            toolsData = JSON.parse(cachedTools);
+        } catch(e) { resetToDefaultData(); }
+    } else { resetToDefaultData(); }
 }
 
-function saveToolsToCache() { localStorage.setItem("1499_master_tools_list", JSON.stringify(toolsData)); }
+function saveEngineCache() {
+    localStorage.setItem("1499_dyn_ops_list", JSON.stringify(operationsData));
+    localStorage.setItem("1499_dyn_ops_rates", JSON.stringify(opRatesData));
+    localStorage.setItem("1499_dyn_ops_active", JSON.stringify(opActiveData));
+    localStorage.setItem("1499_dyn_master_tools", JSON.stringify(toolsData));
+}
+
+function resetToDefaultData() {
+    operationsData = ["Op 40", "Op 50"];
+    opRatesData = { "Op 40": 8, "Op 50": 15 };
+    opActiveData = { "Op 40": true, "Op 50": true };
+    toolsData = [
+        { name: "Op 40 - Tool Slot #1", pocket: "1", id: "ENTER-INSERT-ID", perPart: 1.0, stockBoxes: 0, isHouseStock: true, opRef: "Op 40" },
+        { name: "Op 40 - Tool Slot #2", pocket: "2", id: "ENTER-INSERT-ID", perPart: 1.0, stockBoxes: 0, isHouseStock: true, opRef: "Op 40" },
+        { name: "Op 50 - Tool Slot #11", pocket: "11", id: "ENTER-INSERT-ID", perPart: 1.0, stockBoxes: 0, isHouseStock: true, opRef: "Op 50" }
+    ];
+    saveEngineCache();
+}
+
+function getOpColors(opName) {
+    let idx = operationsData.indexOf(opName);
+    if (idx === -1) idx = 0;
+    return colorPalette[idx % colorPalette.length];
+}
 
 function switchTab(targetWorkspace) {
     const runView = document.getElementById('workspaceRun');
@@ -472,96 +271,227 @@ function switchTab(targetWorkspace) {
     } else {
         runView.style.display = 'block'; setupView.style.display = 'none';
         runBtn.classList.add('btn-accent'); setupBtn.classList.remove('btn-accent');
-        renderToolingTable(); calculateSchedule();
+        renderOperationsSidebar(); renderToolingTable(); calculateSchedule();
     }
 }
 
-function toggleStockInputField(val) { document.getElementById("customBoxCountWrapper").style.display = (val === "house") ? "none" : "flex"; }
+function addCustomOperation() {
+    const input = document.getElementById("newOpNumberInput");
+    const opName = input.value.trim();
+    if (!opName || operationsData.includes(opName)) return;
+
+    operationsData.push(opName);
+    opRatesData[opName] = 10; // Default startup rate
+    opActiveData[opName] = true;
+    
+    input.value = "";
+    saveEngineCache();
+    renderOperationsSidebar();
+    renderToolingTable();
+    calculateSchedule();
+}
+
+function removeOperationFromCell(opName) {
+    if (confirm(`Completely delete ${opName} and unassign its associated tools?`)) {
+        operationsData = operationsData.filter(o => o !== opName);
+        delete opRatesData[opName];
+        delete opActiveData[opName];
+        
+        // Default remaining tools back to first existing operation or unassigned
+        toolsData.forEach(tool => {
+            if (tool.opRef === opName) tool.opRef = operationsData[0] || "";
+        });
+
+        saveEngineCache();
+        renderOperationsSidebar();
+        renderToolingTable();
+        calculateSchedule();
+    }
+}
+
+function updateOpRate(opName, val) {
+    opRatesData[opName] = parseFloat(val) || 0;
+    saveEngineCache();
+    calculateSchedule();
+}
+
+function toggleOpActive(opName, checked) {
+    opActiveData[opName] = checked;
+    saveEngineCache();
+    calculateSchedule();
+}
+
+function renderOperationsSidebar() {
+    const container = document.getElementById("dynamicOperationsRatesContainer");
+    if (!container) return;
+    container.innerHTML = "";
+
+    operationsData.forEach(op => {
+        const colors = getOpColors(op);
+        const div = document.createElement("div");
+        div.style.marginBottom = "12px";
+        div.style.paddingBottom = "8px";
+        div.style.borderBottom = "1px solid rgba(255,255,255,0.05)";
+        
+        div.innerHTML = `
+            <div class="checkbox-group" style="justify-content: space-between; align-items: center;">
+                <div style="display:flex; align-items:center; gap:8px;">
+                    <input type="checkbox" id="check-${op}" ${opActiveData[op] ? 'checked' : ''} onchange="toggleOpActive('${op}', this.checked)">
+                    <label for="check-${op}" style="font-weight:600; color:${colors.text}; font-size:0.95rem;">${op}</label>
+                </div>
+                <button onclick="removeOperationFromCell('${op}')" style="background:none; border:none; color:var(--red); cursor:pointer; font-size:0.8rem;">Wipe</button>
+            </div>
+            <div class="input-group" style="margin-top:6px; margin-bottom:0;">
+                <input type="number" value="${opRatesData[op]}" min="0" oninput="updateOpRate('${op}', this.value)" style="padding: 4px 8px;">
+            </div>
+        `;
+        container.appendChild(div);
+    });
+}
 
 function renderToolingTable() {
     const tbody = document.getElementById("toolingTableBody");
     if (!tbody) return;
     tbody.innerHTML = "";
     
-    const thead = document.querySelector("table thead tr");
-    if (thead) {
-        thead.innerHTML = `
-            <th>Pocket</th>
-            <th>Tool Assignment Name</th>
-            <th>Insert Part Configuration</th>
-            <th>Inserts/Part</th>
-            <th>Total Needed</th>
-            <th>On-Hand Boxes</th>
-            <th>Boxes To Order</th>
-        `;
-    }
-    
     if (toolsData.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="7" style="color: var(--text-dim); font-style: italic; padding: 20px;">No tools configured.</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="7" style="color: var(--text-dim); font-style: italic; padding: 20px;">No tools configured in layout sheets.</td></tr>`;
         return;
     }
 
-    let renderedOp50Header = false;
+    // Sort and render tools grouped clean by operational assignments
+    operationsData.forEach(op => {
+        const opTools = toolsData.filter(t => t.opRef === op);
+        if (opTools.length === 0) return;
 
-    toolsData.forEach((tool, index) => {
-        // Insert Visual Header BEFORE the first Op 40 Tool
-        if (index === 0) {
-            const headerRow = document.createElement("tr");
-            headerRow.innerHTML = `<td colspan="7" style="background: rgba(245, 124, 0, 0.15); color: var(--orange); font-weight: bold; text-align: left; padding: 10px 15px; letter-spacing: 1px; border-bottom: 2px solid var(--orange);">⚙️ OPERATION 40 TOOLS</td>`;
-            tbody.appendChild(headerRow);
-        }
+        const colors = getOpColors(op);
         
-        // Insert Visual Header BEFORE the first Op 50 Tool (Index 10)
-        if (index === 10 && !renderedOp50Header) {
-            const headerRow = document.createElement("tr");
-            headerRow.innerHTML = `<td colspan="7" style="background: rgba(160, 32, 240, 0.15); color: #b050ff; font-weight: bold; text-align: left; padding: 10px 15px; letter-spacing: 1px; border-bottom: 2px solid #b050ff; margin-top: 20px;">🏁 OPERATION 50 TOOLS</td>`;
-            tbody.appendChild(headerRow);
-            renderedOp50Header = true;
-        }
+        // Operation Section Divider Header Row
+        const headerRow = document.createElement("tr");
+        headerRow.className = "op-header-row";
+        headerRow.innerHTML = `<td colspan="7" style="background: ${colors.bg}; color: ${colors.text}; padding: 10px 12px; border-bottom: 1px solid var(--border); text-transform: uppercase;">⚙️ ${op} Layout Allocation</td>`;
+        tbody.appendChild(headerRow);
 
-        const tr = document.createElement("tr");
-        tr.id = `tool-row-${index}`;
-        let stockInputHTML = tool.isHouseStock 
-            ? `<span class="house-stock-label">In-House Stock</span>` 
-            : `<input type="number" class="stock-input" value="${tool.stockBoxes}" min="0" oninput="updateBoxStock(${index}, this.value)">`;
+        opTools.forEach(tool => {
+            // Find global index back in toolsData array for referencing input updates
+            const globalIndex = toolsData.indexOf(tool);
+            const tr = document.createElement("tr");
+            tr.id = `tool-row-${globalIndex}`;
             
-        tr.innerHTML = `
-            <td><span style="color: var(--orange); font-weight: bold; font-family: monospace; font-size: 1.1rem;">T${tool.pocket || (index + 1)}</span></td>
-            <td><strong style="color: #fff;">${tool.name}</strong></td>
-            <td style="font-size: 0.82rem; color: var(--text-dim); text-align: left; font-family: monospace;">${tool.id}</td>
-            <td style="color: #fff;">${tool.perPart}</td>
-            <td class="total-needed-cell">--</td>
-            <td>${stockInputHTML}</td>
-            <td class="boxes-needed-cell" style="font-weight: bold;">--</td>
-        `;
-        tbody.appendChild(tr);
+            let stockInputHTML = tool.isHouseStock 
+                ? `<span class="house-stock-label">In-House Stock</span>` 
+                : `<input type="number" class="stock-input" value="${tool.stockBoxes}" min="0" oninput="updateBoxStock(${globalIndex}, this.value)">`;
+
+            tr.innerHTML = `
+                <td><span style="color: ${colors.text}; font-weight: bold; font-family: monospace; font-size: 1.05rem;">T${tool.pocket || ''}</span></td>
+                <td><strong style="color: #fff;">${tool.name}</strong></td>
+                <td style="font-size: 0.82rem; color: var(--text-dim); text-align: left; font-family: monospace;">${tool.id}</td>
+                <td style="color: #fff;">${tool.perPart}</td>
+                <td class="total-needed-cell">--</td>
+                <td>
+                    <div style="display:flex; align-items:center; gap:8px;">
+                        <select style="width:auto; padding:2px 4px; font-size:0.8rem;" onchange="updateStockType(${globalIndex}, this.value)">
+                            <option value="house" ${tool.isHouseStock ? 'selected' : ''}>House</option>
+                            <option value="order" ${!tool.isHouseStock ? 'selected' : ''}>Box Count</option>
+                        </select>
+                        ${stockInputHTML}
+                    </div>
+                </td>
+                <td class="boxes-needed-cell" style="font-weight: bold;">--</td>
+            `;
+            tbody.appendChild(tr);
+        });
     });
 }
 
-function updateSingleToolName(index, val) {
-    toolsData[index].name = val.trim() || `Tool Slot #${index + 1}`;
-    saveToolsToCache();
-}
-
-function updateSingleToolId(index, val) {
-    toolsData[index].id = val.trim() || "ENTER-INSERT-ID";
-    saveToolsToCache();
-}
-
-function updateSingleToolUsage(index, val) {
-    toolsData[index].perPart = parseFloat(val) || 0;
-    saveToolsToCache();
-}
-
-function updateSinglePocketID(index, val) {
-    toolsData[index].pocket = val.trim();
-    saveToolsToCache();
+function updateStockType(index, type) {
+    toolsData[index].isHouseStock = (type === "house");
+    saveEngineCache();
+    renderToolingTable();
+    calculateSchedule();
 }
 
 function updateBoxStock(index, val) {
     toolsData[index].stockBoxes = parseInt(val) || 0;
-    saveToolsToCache();
+    saveEngineCache();
     updateToolingTableValues(parseFloat(document.getElementById("partsNeeded").value) || 0);
+}
+
+function updateSingleToolField(index, field, val) {
+    if (field === 'perPart') val = parseFloat(val) || 0;
+    toolsData[index][field] = val;
+    saveEngineCache();
+}
+
+function addNewBlankToolRow() {
+    toolsData.push({
+        name: "New Tool Slot",
+        pocket: "",
+        id: "ENTER-INSERT-ID",
+        perPart: 1.0,
+        stockBoxes: 0,
+        isHouseStock: true,
+        opRef: operationsData[0] || ""
+    });
+    saveEngineCache();
+    renderSetupDeckStack();
+}
+
+function deleteToolFromEngine(index) {
+    toolsData.splice(index, 1);
+    saveEngineCache();
+    renderSetupDeckStack();
+}
+
+function renderSetupDeckStack() {
+    const container = document.getElementById("activeToolsStackContainer");
+    if (!container) return;
+    container.innerHTML = "";
+
+    if (toolsData.length === 0) {
+        container.innerHTML = `<div style="text-align:center; padding:30px; color:var(--text-dim);">No active tools defined. Hit "Add Tool Row" above to populate matrix.</div>`;
+        return;
+    }
+
+    toolsData.forEach((tool, index) => {
+        const colors = getOpColors(tool.opRef);
+        const div = document.createElement("div");
+        div.className = "live-tool-card";
+        div.style.borderLeft = `5px solid ${colors.text}`;
+
+        let opSelectOptions = operationsData.map(op => `<option value="${op}" ${tool.opRef === op ? 'selected' : ''}>${op}</option>`).join('');
+
+        div.innerHTML = `
+            <div style="width: 100%; display: grid; grid-template-columns: 80px 2fr 2fr 1fr 1fr; gap: 12px; align-items: center;">
+                <div class="input-group" style="margin-bottom:0;">
+                    <label style="color: ${colors.text}; text-transform:uppercase; font-size:0.7rem;">Pocket</label>
+                    <input type="text" value="${tool.pocket || ''}" placeholder="Pkt" style="text-align:center;" oninput="updateSingleToolField(${index}, 'pocket', this.value)">
+                </div>
+                <div class="input-group" style="margin-bottom:0;">
+                    <label style="text-transform:uppercase; font-size:0.7rem;">Tool Description Name</label>
+                    <input type="text" value="${tool.name}" oninput="updateSingleToolField(${index}, 'name', this.value)">
+                </div>
+                <div class="input-group" style="margin-bottom:0;">
+                    <label style="text-transform:uppercase; font-size:0.7rem;">Insert Part Catalog ID</label>
+                    <input type="text" value="${tool.id}" style="font-family:monospace;" oninput="updateSingleToolField(${index}, 'id', this.value)">
+                </div>
+                <div class="input-group" style="margin-bottom:0;">
+                    <label style="text-transform:uppercase; font-size:0.7rem;">Routing Op</label>
+                    <select onchange="updateSingleToolField(${index}, 'opRef', this.value); renderSetupDeckStack();">
+                        ${opSelectOptions}
+                    </select>
+                </div>
+                <div class="input-group" style="margin-bottom:0;">
+                    <label style="text-transform:uppercase; font-size:0.7rem;">Usage/Part</label>
+                    <input type="number" value="${tool.perPart}" step="0.01" min="0" style="text-align:center;" oninput="updateSingleToolField(${index}, 'perPart', this.value)">
+                </div>
+            </div>
+            <div style="display:flex; justify-content:flex-end;">
+                <button class="btn btn-danger" onclick="deleteToolFromEngine(${index})" style="padding:3px 10px; font-size:0.75rem;">❌ Wipe Row</button>
+            </div>
+        `;
+        container.appendChild(div);
+    });
 }
 
 function updateToolingTableValues(parts) {
@@ -595,7 +525,6 @@ function updateToolingTableValues(parts) {
         if (boxesCell) {
             if (boxesNeededToOrder > 0) {
                 boxesCell.innerHTML = `${boxesNeededToOrder}<span class="order-badge">🚨 ORDER</span>`;
-                boxesCell.style.color = "var(--orange)";
             } else {
                 boxesCell.innerText = "✔"; boxesCell.style.color = "var(--accent)";
             }
@@ -613,115 +542,48 @@ function updateToolingTableValues(parts) {
     }
 }
 
-function renderSetupDeckStack() {
-    const container = document.getElementById("activeToolsStackContainer");
-    if (!container) return;
-    container.innerHTML = "";
-
-    const manualDeckForm = document.querySelector(".deck-form-grid");
-    if (manualDeckForm) manualDeckForm.style.display = "none";
-    const manualBtn = document.querySelector("button[onclick='addNewToolString()']");
-    if (manualBtn) manualBtn.style.display = "none";
-
-    toolsData.forEach((tool, index) => {
-        // Section Banners inside Setup Sheet view
-        if (index === 0) {
-            const banner = document.createElement("div");
-            banner.style = "grid-column: 1/-1; font-weight: bold; padding: 10px; margin-top:10px; border-left: 4px solid var(--orange); color: var(--orange); font-size: 1.1rem; text-transform: uppercase;";
-            banner.innerText = "⚙️ Operation 40 Layout Matrix";
-            container.appendChild(banner);
-        }
-        if (index === 10) {
-            const banner = document.createElement("div");
-            banner.style = "grid-column: 1/-1; font-weight: bold; padding: 10px; margin-top:25px; border-left: 4px solid #b050ff; color: #b050ff; font-size: 1.1rem; text-transform: uppercase;";
-            banner.innerText = "🏁 Operation 50 Layout Matrix";
-            container.appendChild(banner);
-        }
-
-        const div = document.createElement("div");
-        div.className = "live-tool-card";
-        div.style.borderLeft = index >= 10 ? "5px solid #b050ff" : "5px solid var(--orange)";
-        
-        div.innerHTML = `
-            <div style="width: 100%; display: grid; grid-template-columns: 1fr 2fr 3fr 1fr; gap: 12px; align-items: center;">
-                <div class="input-group" style="margin-bottom:0;">
-                    <label style="color: ${index >= 10 ? '#b050ff' : 'var(--orange)'};">Pocket</label>
-                    <input type="text" class="stock-input" value="${tool.pocket || ''}" placeholder="Pkt" style="width:100%; text-align:center;" oninput="updateSinglePocketID(${index}, this.value); calculateSchedule();">
-                </div>
-                <div class="input-group" style="margin-bottom:0;">
-                    <label>Tool Name Assignment</label>
-                    <input type="text" value="${tool.name}" style="padding:6px; background:var(--input-bg); border:1px solid var(--border); color:#fff; border-radius:4px;" oninput="updateSingleToolName(${index}, this.value)">
-                </div>
-                <div class="input-group" style="margin-bottom:0;">
-                    <label>Insert Specification ID</label>
-                    <input type="text" value="${tool.id}" style="padding:6px; font-family:monospace; background:var(--input-bg); border:1px solid var(--border); color:#fff; border-radius:4px;" oninput="updateSingleToolId(${index}, this.value)">
-                </div>
-                <div class="input-group" style="margin-bottom:0;">
-                    <label>Usage (per Part)</label>
-                    <input type="number" value="${tool.perPart}" step="0.1" min="0" style="padding:6px; background:var(--input-bg); border:1px solid var(--border); color:#fff; border-radius:4px; text-align:center;" oninput="updateSingleToolUsage(${index}, this.value); calculateSchedule();">
-                </div>
-            </div>
-        `;
-        container.appendChild(div);
-    });
-}
-
-function getOpWorkdayContribution(rateId, activeId, totalParts) {
-    const activeEl = document.getElementById(activeId);
-    const rateEl = document.getElementById(rateId);
-    if (!activeEl || !activeEl.checked || !rateEl) return 0;
-    const rateValue = parseFloat(rateEl.value) || 0;
-    return rateValue > 0 ? (totalParts / rateValue) : 0;
-}
-
-function parseHolidays() {
-    const listEl = document.getElementById("holidayList");
-    return listEl ? listEl.value.split(/[\n,]+/).map(s => s.trim()).filter(s => s.match(/^\d{4}-\d{2}-\d{2}$/)) : [];
-}
-
 function calculateSchedule() {
     const parts = parseFloat(document.getElementById("partsNeeded").value) || 0;
     updateToolingTableValues(parts);
 
-    const op20Days = getOpWorkdayContribution("op20Rate", "op20Active", parts);
-    const op30Days = getOpWorkdayContribution("op30Rate", "op30Active", parts);
-    const op40Days = getOpWorkdayContribution("op40Rate", "op40Active", parts);
-    const op50Days = getOpWorkdayContribution("op50Rate", "op50Active", parts);
+    let slowestOpDays = 0;
+    let activeOpsCount = 0;
+    let ratesArray = [];
 
-    const activeOpsArray = [op20Days, op30Days, op40Days, op50Days].filter(d => d > 0);
-    const slowestOpDays = activeOpsArray.length > 0 ? Math.max(...activeOpsArray) : 0;
-    const cellFlushBuffer = activeOpsArray.length > 1 ? (activeOpsArray.length - 1) : 0;
-    
+    operationsData.forEach(op => {
+        if (opActiveData[op] && opRatesData[op] > 0) {
+            activeOpsCount++;
+            const daysForThisOp = parts / opRatesData[op];
+            ratesArray.push({ op: op, days: daysForThisOp });
+            if (daysForThisOp > slowestOpDays) slowestOpDays = daysForThisOp;
+        }
+    });
+
+    const cellFlushBuffer = activeOpsCount > 1 ? (activeOpsCount - 1) : 0;
     const totalWorkdaysRequired = Math.ceil(slowestOpDays + cellFlushBuffer);
     document.getElementById("daysNeededDisplay").innerText = totalWorkdaysRequired + " workdays";
 
-    const rates = [
-        { active: document.getElementById("op20Active").checked, days: op20Days, class: 'seg-op20', label: 'Op 20' },
-        { active: document.getElementById("op30Active").checked, days: op30Days, class: 'seg-op30', label: 'Op 30' },
-        { active: document.getElementById("op40Active").checked, days: op40Days, class: 'seg-op40', label: 'Op 40' },
-        { active: document.getElementById("op50Active").checked, days: op50Days, class: 'seg-op50', label: 'Op 50' }
-    ];
-
-    const totalRaw = rates.reduce((sum, r) => sum + (r.active ? r.days : 0), 0);
+    // Build color bar timeline segments dynamically
     const timelineBar = document.getElementById("timelineBarContainer");
     if (timelineBar) {
         timelineBar.innerHTML = "";
-        if (totalRaw > 0) {
-            rates.forEach(r => {
-                if (r.active && r.days > 0) {
-                    const seg = document.createElement("div");
-                    seg.className = `timeline-segment ${r.class}`;
-                    seg.style.width = `${(r.days / totalRaw) * 100}%`;
-                    seg.innerText = `${r.label}: ${Math.ceil(r.days)}d`;
-                    timelineBar.appendChild(seg);
-                }
+        const totalRawDays = ratesArray.reduce((sum, r) => sum + r.days, 0);
+        if (totalRawDays > 0) {
+            ratesArray.forEach(r => {
+                const colors = getOpColors(r.op);
+                const seg = document.createElement("div");
+                seg.className = `timeline-segment`;
+                seg.style.background = colors.seg;
+                seg.style.width = `${(r.days / totalRawDays) * 100}%`;
+                seg.innerText = `${r.op}: ${Math.ceil(r.days)}d`;
+                timelineBar.appendChild(seg);
             });
         }
     }
 
     const startInput = document.getElementById("startDate");
     const endInput = document.getElementById("targetEndDate");
-    if (!startInput.value) startInput.value = "2026-05-29";
+    if (!startInput.value) startInput.value = "2026-05-25";
     if (!endInput.value) endInput.value = "2026-11-25";
 
     const holidays = parseHolidays();
@@ -756,7 +618,7 @@ function calculateSchedule() {
     }
 
     const burnRateDisplay = document.getElementById("burnRateDisplay");
-    if (burnRateDisplay) document.getElementById("burnRateDisplay").innerText = availableShopDays > 0 ? `${(parts / availableShopDays).toFixed(2)} parts / day` : "--";
+    if (burnRateDisplay) burnRateDisplay.innerText = availableShopDays > 0 ? `${(parts / availableShopDays).toFixed(2)} parts / day` : "--";
 
     const bufferDisplay = document.getElementById("bufferDisplay");
     const auditEl = document.getElementById("calendarAudit");
@@ -765,33 +627,33 @@ function calculateSchedule() {
         bufferDisplay.innerText = `${buffer} workdays`;
         if (buffer < 0) {
             bufferDisplay.style.color = "var(--red)";
-            auditEl.innerHTML = `⚠️ <strong>Behind schedule!</strong> Cell requires ${totalWorkdaysRequired} workdays, but target range only provides ${availableShopDays} days (excluding weekends and ${holidayCount} recognized closures).`;
+            auditEl.innerHTML = `⚠️ <strong>Behind schedule!</strong> Cell requires ${totalWorkdaysRequired} workdays, but target range only provides ${availableShopDays} days (excluding weekends and ${holidayCount} closures).`;
         } else {
             bufferDisplay.style.color = "var(--accent)";
-            auditEl.innerHTML = `✔ <strong>Schedule healthy.</strong> Target timeline contains ${availableShopDays} production days. Plant has ${holidayCount} scheduled non-working days in this window.`;
+            auditEl.innerHTML = `✔ <strong>Schedule healthy.</strong> Target timeline contains ${availableShopDays} production days. Plant has ${holidayCount} non-working closures in this window.`;
         }
     }
 }
 
 function clearJobParams() {
     document.getElementById("partsNeeded").value = "100";
-    document.getElementById("op20Rate").value = "10"; document.getElementById("op30Rate").value = "6";
-    document.getElementById("op40Rate").value = "1"; document.getElementById("op50Rate").value = "2";
     calculateSchedule();
 }
 
 function factoryResetMaster() {
-    if (confirm("Wipe cache and revert layout to default matrix?")) {
-        localStorage.removeItem("1499_master_tools_list");
-        toolsData = [...defaultTools];
+    if (confirm("Wipe completely and reload to default dynamic cell setup?")) {
+        localStorage.clear();
+        resetToDefaultData();
+        loadEngineCache();
+        renderOperationsSidebar();
         renderToolingTable();
-        if (document.getElementById("workspaceSetup").style.display === "block") renderSetupDeckStack();
         calculateSchedule();
     }
 }
 
 window.addEventListener("DOMContentLoaded", () => {
-    loadToolsFromCache();
+    loadEngineCache();
+    renderOperationsSidebar();
     renderToolingTable();
     calculateSchedule();
 });
