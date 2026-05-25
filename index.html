@@ -29,9 +29,7 @@
             --purple: #bf5af2;     /* Utility Purple */
         }
 
-        * { 
-            box-sizing: border-box; 
-        }
+        * { box-sizing: border-box; }
 
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
@@ -42,16 +40,12 @@
             line-height: 1.5;
         }
 
-        .container { 
-            max-width: 1400px; 
-            margin: 0 auto; 
-        }
+        .container { max-width: 1400px; margin: 0 auto; }
 
         h1 { 
             font-size: 1.65rem; 
             color: #fff; 
-            margin-top: 0; 
-            margin-bottom: 15px; 
+            margin: 0 0 15px 0; 
             border-bottom: 3px solid var(--blue); 
             padding-bottom: 14px; 
             text-transform: uppercase; 
@@ -76,9 +70,7 @@
             margin-bottom: 25px;
         }
         
-        @media (min-width: 992px) { 
-            .grid { grid-template-columns: 1fr 1fr; } 
-        }
+        @media (min-width: 992px) { .grid { grid-template-columns: 1fr 1fr; } }
         
         .card { 
             background: linear-gradient(145deg, #161920, #13151b);
@@ -93,8 +85,7 @@
             font-size: 1.15rem; 
             font-weight: bold; 
             color: #fff; 
-            margin-top: 0; 
-            margin-bottom: 20px; 
+            margin: 0 0 20px 0; 
             padding-bottom: 10px; 
             border-bottom: 1px solid var(--border); 
             letter-spacing: 0.5px;
@@ -103,11 +94,7 @@
             align-items: center;
         }
 
-        .input-group { 
-            display: flex; 
-            flex-direction: column; 
-            margin-bottom: 18px; 
-        }
+        .input-group { display: flex; flex-direction: column; margin-bottom: 18px; }
 
         label { 
             font-size: 0.85rem; 
@@ -118,23 +105,9 @@
             letter-spacing: 0.3px;
         }
         
-        .op-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 6px;
-        }
-        
-        .op-header label { 
-            margin-bottom: 0; 
-        }
-
-        .op-checkbox {
-            width: 18px;
-            height: 18px;
-            cursor: pointer;
-            accent-color: var(--blue);
-        }
+        .op-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px; }
+        .op-header label { margin-bottom: 0; }
+        .op-checkbox { width: 18px; height: 18px; cursor: pointer; accent-color: var(--blue); }
         
         input[type="number"], input[type="date"], input[type="text"], select, textarea { 
             background-color: var(--input-bg); 
@@ -171,17 +144,9 @@
             gap: 15px; 
         }
 
-        .result-row:last-child { 
-            border-bottom: none; 
-        }
+        .result-row:last-child { border-bottom: none; }
 
-        .result-val { 
-            font-weight: bold; 
-            color: #fff; 
-            text-align: right; 
-            word-break: break-word; 
-        }
-
+        .result-val { font-weight: bold; color: #fff; text-align: right; word-break: break-word; }
         .result-val.green { 
             color: var(--accent); 
             text-shadow: 0 0 10px rgba(57, 255, 20, 0.35); 
@@ -197,30 +162,8 @@
             padding-top: 12px; 
         }
 
-        .small-note { 
-            font-size: 0.78rem; 
-            color: var(--text-dim); 
-            margin-top: 6px; 
-        }
-
-        /* Timeline Styles */
-        .timeline-wrapper {
-            margin-top: 20px;
-            background: rgba(0,0,0,0.2);
-            padding: 15px;
-            border-radius: 8px;
-            border: 1px solid var(--border);
-        }
-
-        .timeline-bar {
-            display: flex;
-            height: 24px;
-            border-radius: 4px;
-            overflow: hidden;
-            background-color: #222;
-            margin-bottom: 10px;
-        }
-
+        .timeline-wrapper { margin-top: 20px; background: rgba(0,0,0,0.2); padding: 15px; border-radius: 8px; border: 1px solid var(--border); }
+        .timeline-bar { display: flex; height: 24px; border-radius: 4px; overflow: hidden; background-color: #222; margin-bottom: 10px; }
         .timeline-segment {
             height: 100%;
             display: flex;
@@ -230,32 +173,15 @@
             font-weight: bold;
             color: #fff;
             text-shadow: 1px 1px 2px rgba(0,0,0,0.8);
-            transition: width 0.3s ease;
         }
 
         .seg-op20 { background-color: #0a84ff; }
         .seg-op30 { background-color: #30d158; }
         .seg-op40 { background-color: #ff9f0a; }
         .seg-op50 { background-color: #bf5af2; }
-
-        .timeline-legend {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 15px;
-            font-size: 0.8rem;
-        }
-
-        .legend-item {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .legend-dot {
-            width: 10px;
-            height: 10px;
-            border-radius: 2px;
-        }
+        .timeline-legend { display: flex; flex-wrap: wrap; gap: 15px; font-size: 0.8rem; }
+        .legend-item { display: flex; align-items: center; gap: 6px; }
+        .legend-dot { width: 10px; height: 10px; border-radius: 2px; }
 
         .btn {
             background-color: var(--input-bg);
@@ -269,146 +195,48 @@
             display: inline-flex;
             align-items: center;
             gap: 8px;
-            transition: all 0.2s;
         }
 
-        .btn:hover {
-            background-color: var(--border);
-            border-color: var(--text-dim);
-        }
+        .btn:hover { background-color: var(--border); border-color: var(--text-dim); }
+        .btn-accent { background-color: rgba(10, 132, 255, 0.15); border-color: var(--blue); color: #64d2ff; }
+        .btn-accent:hover { background-color: var(--blue); color: #fff; }
+        .btn-danger { background-color: rgba(255, 69, 58, 0.1); border-color: var(--red); color: #ff453a; }
+        .btn-danger:hover { background-color: var(--red); color: #fff; }
+        .btn-group { display: flex; gap: 10px; }
 
-        .btn-accent {
-            background-color: rgba(10, 132, 255, 0.15);
-            border-color: var(--blue);
-            color: #64d2ff;
-        }
-
-        .btn-accent:hover {
-            background-color: var(--blue);
-            color: #fff;
-        }
-
-        .btn-danger {
-            background-color: rgba(255, 69, 58, 0.1);
-            border-color: var(--red);
-            color: #ff453a;
-        }
-
-        .btn-danger:hover {
-            background-color: var(--red);
-            color: #fff;
-        }
-
-        .btn-group {
-            display: flex;
-            gap: 10px;
-        }
-
-        .table-wrapper { 
-            overflow-x: auto; 
-            margin-top: 12px; 
-            border-radius: 8px; 
-            border: 1px solid var(--border); 
-        }
-
-        table { 
-            width: 100%; 
-            border-collapse: collapse; 
-            font-size: 0.92rem; 
-            background-color: #111318; 
-        }
-
-        th, td { 
-            padding: 14px 16px; 
-            text-align: center; 
-            border-bottom: 1px solid var(--border); 
-        }
-
-        th { 
-            background-color: #161920; 
-            color: #fff; 
-            font-weight: 600; 
-            text-transform: uppercase; 
-            font-size: 0.8rem; 
-            letter-spacing: 0.5px; 
-        }
-
-        tr:last-child td { 
-            border-bottom: none; 
-        }
-
-        tr:nth-child(even) { 
-            background-color: rgba(255, 255, 255, 0.01); 
-        }
+        .table-wrapper { overflow-x: auto; margin-top: 12px; border-radius: 8px; border: 1px solid var(--border); }
+        table { width: 100%; border-collapse: collapse; font-size: 0.92rem; background-color: #111318; }
+        th, td { padding: 14px 16px; text-align: center; border-bottom: 1px solid var(--border); }
+        th { background-color: #161920; color: #fff; font-weight: 600; text-transform: uppercase; font-size: 0.8rem; letter-spacing: 0.5px; }
+        tr:last-child td { border-bottom: none; }
+        tr:nth-child(even) { background-color: rgba(255, 255, 255, 0.01); }
         
         .stock-input { 
-            width: 75px; 
-            padding: 6px 8px; 
-            text-align: center; 
-            background-color: var(--input-bg); 
-            border: 1px solid var(--border); 
-            color: #fff; 
-            border-radius: 4px; 
-            font-weight: bold;
+            width: 75px; padding: 6px 8px; text-align: center; background-color: var(--input-bg); 
+            border: 1px solid var(--border); color: #fff; border-radius: 4px; font-weight: bold;
         }
-
-        .house-stock-label { 
-            font-size: 0.78rem; 
-            color: var(--text-dim); 
-            font-style: italic; 
-        }
+        .house-stock-label { font-size: 0.78rem; color: var(--text-dim); font-style: italic; }
         
         .order-badge {
-            background-color: rgba(255, 69, 58, 0.14);
-            color: var(--red);
-            border: 1px solid var(--red);
-            padding: 4px 8px;
-            border-radius: 4px;
-            font-size: 0.75rem;
-            font-weight: bold;
-            letter-spacing: 0.5px;
-            margin-left: 8px;
-            display: inline-block;
-            animation: pulseAlert 2s infinite ease-in-out;
+            background-color: rgba(255, 69, 58, 0.14); color: var(--red); border: 1px solid var(--red);
+            padding: 4px 8px; border-radius: 4px; font-size: 0.75rem; font-weight: bold;
+            margin-left: 8px; display: inline-block; animation: pulseAlert 2s infinite ease-in-out;
         }
 
         .deck-form-grid {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 15px;
-            margin-bottom: 20px;
-            background: rgba(255,255,255,0.02);
-            padding: 18px;
-            border-radius: 8px;
-            border: 1px dashed var(--border);
+            display: grid; grid-template-columns: 1fr; gap: 15px; margin-bottom: 20px;
+            background: rgba(255,255,255,0.02); padding: 18px; border-radius: 8px; border: 1px dashed var(--border);
         }
-        @media(min-width: 768px) {
-            .deck-form-grid { grid-template-columns: 2fr 3fr 1fr 1.5fr; }
-        }
+        @media(min-width: 768px) { .deck-form-grid { grid-template-columns: 2fr 3fr 1fr 1.5fr; } }
 
         .live-tool-card {
-            background: #111318;
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            padding: 16px;
-            margin-bottom: 12px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 15px;
+            background: #111318; border: 1px solid var(--border); border-radius: 8px;
+            padding: 16px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; gap: 15px;
         }
-
         .footer-utility-bar {
-            margin-top: 30px;
-            padding-top: 20px;
-            border-top: 1px solid var(--border);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 15px;
+            margin-top: 30px; padding-top: 20px; border-top: 1px solid var(--border);
+            display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px;
         }
-
         @keyframes pulseAlert {
             0% { opacity: 0.85; }
             50% { opacity: 1; box-shadow: 0 0 10px rgba(255, 69, 58, 0.4); }
@@ -466,9 +294,7 @@
                         <span>Schedule Buffer Status:</span>
                         <span id="bufferDisplay" class="result-val" style="font-size: 1.1rem;">--</span>
                     </div>
-                    <div class="audit-trail" id="calendarAudit">
-                        Analyzing active shop floor metrics...
-                    </div>
+                    <div class="audit-trail" id="calendarAudit">Analyzing active shop floor metrics...</div>
                 </div>
             </div>
 
@@ -476,31 +302,19 @@
                 <div class="card-title">Cell Process Rates & Plant Closures</div>
                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 5px;">
                     <div class="input-group">
-                        <div class="op-header">
-                            <label>Op 20 (Roughing)</label>
-                            <input type="checkbox" id="op20Active" class="op-checkbox" checked onchange="calculateSchedule()" />
-                        </div>
+                        <div class="op-header"><label>Op 20 (Roughing)</label><input type="checkbox" id="op20Active" class="op-checkbox" checked onchange="calculateSchedule()" /></div>
                         <input type="number" id="op20Rate" value="10" oninput="calculateSchedule()" />
                     </div>
                     <div class="input-group">
-                        <div class="op-header">
-                            <label>Op 30 (Turn/Bore)</label>
-                            <input type="checkbox" id="op30Active" class="op-checkbox" checked onchange="calculateSchedule()" />
-                        </div>
+                        <div class="op-header"><label>Op 30 (Turn/Bore)</label><input type="checkbox" id="op30Active" class="op-checkbox" checked onchange="calculateSchedule()" /></div>
                         <input type="number" id="op30Rate" value="6" oninput="calculateSchedule()" />
                     </div>
                     <div class="input-group">
-                        <div class="op-header">
-                            <label>Op 40 (Bottleneck)</label>
-                            <input type="checkbox" id="op40Active" class="op-checkbox" checked onchange="calculateSchedule()" />
-                        </div>
+                        <div class="op-header"><label>Op 40 (Bottleneck)</label><input type="checkbox" id="op40Active" class="op-checkbox" checked onchange="calculateSchedule()" /></div>
                         <input type="number" id="op40Rate" value="1" oninput="calculateSchedule()" />
                     </div>
                     <div class="input-group">
-                        <div class="op-header">
-                            <label>Op 50 (Finish)</label>
-                            <input type="checkbox" id="op50Active" class="op-checkbox" checked onchange="calculateSchedule()" />
-                        </div>
+                        <div class="op-header"><label>Op 50 (Finish)</label><input type="checkbox" id="op50Active" class="op-checkbox" checked onchange="calculateSchedule()" /></div>
                         <input type="number" id="op50Rate" value="2" oninput="calculateSchedule()" />
                     </div>
                 </div>
@@ -522,7 +336,6 @@
 2026-11-26
 2026-11-27
 2026-12-25</textarea>
-                    <div class="small-note">Accepts commas, line breaks, or pasted lists from data logs.</div>
                 </div>
             </div>
         </div>
@@ -541,9 +354,7 @@
         </div>
 
         <div class="card">
-            <div class="card-title">
-                <span>Tooling Matrix & Box Procurement</span>
-            </div>
+            <div class="card-title">Tooling Matrix & Box Procurement</div>
             <div class="table-wrapper">
                 <table>
                     <thead>
@@ -568,19 +379,10 @@
                 <div class="card-title">⚙️ Dynamic Component Profile Engine <span style="font-size: 0.8rem; color: var(--text-dim);">Phase 2 Configuration Deck</span></div>
                 
                 <div class="deck-form-grid">
-                    <div class="input-group" style="margin-bottom:0;">
-                        <label for="newToolName">Position Name</label>
-                        <input type="text" id="newToolName" placeholder="e.g., Tool #4" />
-                    </div>
-                    <div class="input-group" style="margin-bottom:0;">
-                        <label for="newToolId">Insert Specification ID</label>
-                        <input type="text" id="newToolId" placeholder="e.g., WNMG080408..." />
-                    </div>
-                    <div class="input-group" style="margin-bottom:0;">
-                        <label for="newToolPerPart">Inserts/Part</label>
-                        <input type="number" id="newToolPerPart" value="1" min="0" step="0.1" />
-                    </div>
-                    <div class="input-group" style="margin-bottom:0;">
+                    <div class="input-group"><label for="newToolName">Position Name</label><input type="text" id="newToolName" placeholder="e.g., Tool #4" /></div>
+                    <div class="input-group"><label for="newToolId">Insert Specification ID</label><input type="text" id="newToolId" placeholder="e.g., WNMG080408..." /></div>
+                    <div class="input-group"><label for="newToolPerPart">Inserts/Part</label><input type="number" id="newToolPerPart" value="1" min="0" step="0.1" /></div>
+                    <div class="input-group">
                         <label for="newToolStockType">Procurement Type</label>
                         <select id="newToolStockType" onchange="toggleStockInputField(this.value)">
                             <option value="special">Custom (Track Box Shortage)</option>
@@ -592,9 +394,9 @@
                     <label for="newToolBoxes">Initial Boxes On-Hand</label>
                     <input type="number" id="newToolBoxes" value="0" min="0" />
                 </div>
-                <button class="btn btn-accent" id="addToolToEngineBtn" onclick="addNewToolString()">➕ Deploy New Tool String To Matrix</button>
+                <button class="btn btn-accent" onclick="addNewToolString()">➕ Deploy New Tool String To Matrix</button>
                 
-                <div class="card-title" style="border-bottom: 1px solid var(--border); padding-bottom: 8px;">Active Cell String Deployments</div>
+                <div class="card-title" style="margin-top: 20px; border-bottom: 1px solid var(--border); padding-bottom: 8px;">Active Cell String Deployments</div>
                 <div id="activeToolsStackContainer"></div>
             </div>
         </div>
@@ -612,10 +414,25 @@
 <script>
 let toolsData = [];
 
+// Explicit 14-tool manufacturing deployment array
 const defaultTools = [
-    { name: "Tool #1", id: "LCMF1603M0-0300-MP,890", perPart: 1.0, stockBoxes: 0, isHouseStock: true },
-    { name: "Tool #2", id: "CNMG120408-MF1,TH1000", perPart: 0.5, stockBoxes: 3, isHouseStock: false },
-    { name: "Tool #3", id: "NI-LCMN-BB84081", perPart: 2.0, stockBoxes: 1, isHouseStock: false }
+    // --- OP 40 BOTTLENECK LAYOUT STRINGS (10 Tools) ---
+    { name: "Tool #1 (Op 40)", id: "LCMF1603M0-0300-MP,890", perPart: 1.0, stockBoxes: 0, isHouseStock: true },
+    { name: "Tool #2 (Op 40)", id: "CNMG120408-MF1,TH1000", perPart: 0.5, stockBoxes: 3, isHouseStock: false },
+    { name: "Tool #3 (Op 40)", id: "NI-LCMN-BB84081", perPart: 2.0, stockBoxes: 1, isHouseStock: false },
+    { name: "Tool #4 (Op 40)", id: "WNMG080408-HM,PC9030", perPart: 0.4, stockBoxes: 2, isHouseStock: false },
+    { name: "Tool #5 (Op 40)", id: "DNMG150608-PM,4325", perPart: 0.5, stockBoxes: 0, isHouseStock: true },
+    { name: "Tool #6 (Op 40)", id: "VBGW160404-S,CB20", perPart: 0.2, stockBoxes: 4, isHouseStock: false },
+    { name: "Tool #7 (Op 40)", id: "CCMT09T304-PF,4325", perPart: 0.5, stockBoxes: 1, isHouseStock: false },
+    { name: "Tool #8 (Op 40)", id: "RCMT1204M0,6190", perPart: 1.0, stockBoxes: 0, isHouseStock: true },
+    { name: "Tool #9 (Op 40)", id: "TPMR160304,NX2525", perPart: 0.3, stockBoxes: 2, isHouseStock: false },
+    { name: "Tool #10 (Op 40)", id: "KNUX160405R,1125", perPart: 0.8, stockBoxes: 3, isHouseStock: false },
+
+    // --- OP 50 FINISH LINE LAYOUT STRINGS (4 Tools) ---
+    { name: "Tool #11 (Op 50)", id: "VBMT160404-PF,4415", perPart: 0.2, stockBoxes: 2, isHouseStock: false },
+    { name: "Tool #12 (Op 50)", id: "DCMT11T304-FP,PC9030", perPart: 0.4, stockBoxes: 1, isHouseStock: false },
+    { name: "Tool #13 (Op 50)", id: "SNMG120412-PR,4315", perPart: 0.5, stockBoxes: 0, isHouseStock: true },
+    { name: "Tool #14 (Op 50)", id: "TNMG160408-LC,6105", perPart: 0.6, stockBoxes: 2, isHouseStock: false }
 ];
 
 function loadToolsFromCache() {
@@ -628,9 +445,7 @@ function loadToolsFromCache() {
     }
 }
 
-function saveToolsToCache() {
-    localStorage.setItem("1499_master_tools_list", JSON.stringify(toolsData));
-}
+function saveToolsToCache() { localStorage.setItem("1499_master_tools_list", JSON.stringify(toolsData)); }
 
 function switchTab(targetWorkspace) {
     const runView = document.getElementById('workspaceRun');
@@ -639,24 +454,17 @@ function switchTab(targetWorkspace) {
     const setupBtn = document.getElementById('tabButtonSetup');
 
     if (targetWorkspace === 'setup') {
-        runView.style.display = 'none';
-        setupView.style.display = 'block';
-        setupBtn.classList.add('btn-accent');
-        runBtn.classList.remove('btn-accent');
+        runView.style.display = 'none'; setupView.style.display = 'block';
+        setupBtn.classList.add('btn-accent'); runBtn.classList.remove('btn-accent');
         renderSetupDeckStack();
     } else {
-        runView.style.display = 'block';
-        setupView.style.display = 'none';
-        runBtn.classList.add('btn-accent');
-        setupBtn.classList.remove('btn-accent');
-        renderToolingTable();
-        calculateSchedule();
+        runView.style.display = 'block'; setupView.style.display = 'none';
+        runBtn.classList.add('btn-accent'); setupBtn.classList.remove('btn-accent');
+        renderToolingTable(); calculateSchedule();
     }
 }
 
-function toggleStockInputField(val) {
-    document.getElementById("customBoxCountWrapper").style.display = (val === "house") ? "none" : "flex";
-}
+function toggleStockInputField(val) { document.getElementById("customBoxCountWrapper").style.display = (val === "house") ? "none" : "flex"; }
 
 function renderToolingTable() {
     const tbody = document.getElementById("toolingTableBody");
@@ -690,8 +498,7 @@ function renderToolingTable() {
 function updateBoxStock(index, val) {
     toolsData[index].stockBoxes = parseInt(val) || 0;
     saveToolsToCache();
-    const parts = parseFloat(document.getElementById("partsNeeded").value) || 0;
-    updateToolingTableValues(parts);
+    updateToolingTableValues(parseFloat(document.getElementById("partsNeeded").value) || 0);
 }
 
 function updateToolingTableValues(parts) {
@@ -707,7 +514,6 @@ function updateToolingTableValues(parts) {
         const boxesCell = row.querySelector(".boxes-needed-cell");
 
         if (neededCell) neededCell.innerText = neededInserts;
-
         if (tool.isHouseStock) {
             if (boxesCell) { boxesCell.innerText = "✔"; boxesCell.style.color = "var(--accent)"; }
             return;
@@ -728,8 +534,7 @@ function updateToolingTableValues(parts) {
                 boxesCell.innerHTML = `${boxesNeededToOrder}<span class="order-badge">🚨 ORDER</span>`;
                 boxesCell.style.color = "var(--orange)";
             } else {
-                boxesCell.innerText = "✔";
-                boxesCell.style.color = "var(--accent)";
+                boxesCell.innerText = "✔"; boxesCell.style.color = "var(--accent)";
             }
         }
     });
@@ -737,8 +542,7 @@ function updateToolingTableValues(parts) {
     const maxPartsDisplay = document.getElementById("maxPartsDisplay");
     if (maxPartsDisplay) {
         if (!hasSpecialOrderStock) {
-            maxPartsDisplay.innerText = "Unlimited (In-House)";
-            maxPartsDisplay.style.color = "var(--accent)";
+            maxPartsDisplay.innerText = "Unlimited (In-House)"; maxPartsDisplay.style.color = "var(--accent)";
         } else {
             maxPartsDisplay.innerText = `${maxSupportedParts} parts`;
             maxPartsDisplay.style.color = maxSupportedParts < parts ? "var(--red)" : "var(--accent)";
@@ -759,7 +563,7 @@ function renderSetupDeckStack() {
                 <strong style="color: #fff; font-size: 1.05rem;">${tool.name}</strong>
                 <div style="font-family: monospace; font-size: 0.85rem; color: var(--blue); margin-top: 2px;">${tool.id}</div>
                 <div style="font-size: 0.8rem; color: var(--text-dim); margin-top: 4px;">
-                    Usage: <span style="color: #fff; font-weight:600;">${tool.perPart}</span> inserts/part | 
+                    Usage: <span style="color: #fff; font-weight:600;">${tool.perPart}</span> | 
                     Type: <span style="color: #fff; font-weight:600;">${tool.isHouseStock ? 'In-House Stock' : tool.stockBoxes + ' Boxes'}</span>
                 </div>
             </div>
@@ -777,18 +581,11 @@ function addNewToolString() {
     const boxes = parseInt(document.getElementById("newToolBoxes").value) || 0;
 
     toolsData.push({ name: name, id: id, perPart: perPart, stockBoxes: boxes, isHouseStock: (type === "house") });
-    saveToolsToCache();
-    renderSetupDeckStack();
-    
-    document.getElementById("newToolName").value = "";
-    document.getElementById("newToolId").value = "";
+    saveToolsToCache(); renderSetupDeckStack();
+    document.getElementById("newToolName").value = ""; document.getElementById("newToolId").value = "";
 }
 
-function deleteToolFromEngine(index) {
-    toolsData.splice(index, 1);
-    saveToolsToCache();
-    renderSetupDeckStack();
-}
+function deleteToolFromEngine(index) { toolsData.splice(index, 1); saveToolsToCache(); renderSetupDeckStack(); }
 
 function getOpWorkdayContribution(rateId, activeId, totalParts) {
     const activeEl = document.getElementById(activeId);
@@ -800,13 +597,11 @@ function getOpWorkdayContribution(rateId, activeId, totalParts) {
 
 function parseHolidays() {
     const listEl = document.getElementById("holidayList");
-    if (!listEl) return [];
-    return listEl.value.split(/[\n,]+/).map(s => s.trim()).filter(s => s.match(/^\d{4}-\d{2}-\d{2}$/));
+    return listEl ? listEl.value.split(/[\n,]+/).map(s => s.trim()).filter(s => s.match(/^\d{4}-\d{2}-\d{2}$/)) : [];
 }
 
 function calculateSchedule() {
-    const partsInput = document.getElementById("partsNeeded");
-    const parts = partsInput ? (parseFloat(partsInput.value) || 0) : 0;
+    const parts = parseFloat(document.getElementById("partsNeeded").value) || 0;
     updateToolingTableValues(parts);
 
     const op20Days = getOpWorkdayContribution("op20Rate", "op20Active", parts);
@@ -822,10 +617,10 @@ function calculateSchedule() {
     document.getElementById("daysNeededDisplay").innerText = totalWorkdaysRequired + " workdays";
 
     const rates = [
-        { id: 'op20', active: document.getElementById("op20Active").checked, days: op20Days, class: 'seg-op20', label: 'Op 20' },
-        { id: 'op30', active: document.getElementById("op30Active").checked, days: op30Days, class: 'seg-op30', label: 'Op 30' },
-        { id: 'op40', active: document.getElementById("op40Active").checked, days: op40Days, class: 'seg-op40', label: 'Op 40' },
-        { id: 'op50', active: document.getElementById("op50Active").checked, days: op50Days, class: 'seg-op50', label: 'Op 50' }
+        { active: document.getElementById("op20Active").checked, days: op20Days, class: 'seg-op20', label: 'Op 20' },
+        { active: document.getElementById("op30Active").checked, days: op30Days, class: 'seg-op30', label: 'Op 30' },
+        { active: document.getElementById("op40Active").checked, days: op40Days, class: 'seg-op40', label: 'Op 40' },
+        { active: document.getElementById("op50Active").checked, days: op50Days, class: 'seg-op50', label: 'Op 50' }
     ];
 
     const totalRaw = rates.reduce((sum, r) => sum + (r.active ? r.days : 0), 0);
@@ -835,10 +630,9 @@ function calculateSchedule() {
         if (totalRaw > 0) {
             rates.forEach(r => {
                 if (r.active && r.days > 0) {
-                    const pct = (r.days / totalRaw) * 100;
                     const seg = document.createElement("div");
                     seg.className = `timeline-segment ${r.class}`;
-                    seg.style.width = `${pct}%`;
+                    seg.style.width = `${(r.days / totalRaw) * 100}%`;
                     seg.innerText = `${r.label}: ${Math.ceil(r.days)}d`;
                     timelineBar.appendChild(seg);
                 }
@@ -846,90 +640,53 @@ function calculateSchedule() {
         }
     }
 
-    // Set Default Dates if blank
     const startInput = document.getElementById("startDate");
     const endInput = document.getElementById("targetEndDate");
     if (!startInput.value) startInput.value = "2026-05-29";
     if (!endInput.value) endInput.value = "2026-11-25";
 
     const holidays = parseHolidays();
-    
-    // Calculate Estimated Finish Date
     let finishDate = new Date(startInput.value + 'T00:00:00');
-    let daysAdded = 0;
-    let iterations = 0;
+    let daysAdded = 0; let iterations = 0;
 
     while (daysAdded < totalWorkdaysRequired && iterations < 2000) {
         iterations++;
-        if (daysAdded > 0) {
-            finishDate.setDate(finishDate.getDate() + 1);
-        }
+        if (daysAdded > 0) finishDate.setDate(finishDate.getDate() + 1);
         const dayOfWeek = finishDate.getDay();
         const dateString = finishDate.toISOString().split('T')[0];
         
         if (dayOfWeek !== 0 && dayOfWeek !== 6 && !holidays.includes(dateString)) {
-            if (daysAdded === 0) {
-                // First valid workday starts today
-                daysAdded = 1;
-            } else {
-                daysAdded++;
-            }
+            daysAdded = (daysAdded === 0) ? 1 : daysAdded + 1;
         } else if (daysAdded === 0) {
-            // Push start date forward if it initially landed on a weekend/holiday
             finishDate.setDate(finishDate.getDate() + 1);
         }
     }
 
-    // Display Finish Date
     const finishDateDisplay = document.getElementById("finishDateDisplay");
-    if (finishDateDisplay) {
-        if (totalWorkdaysRequired === 0) {
-            finishDateDisplay.innerText = "--";
-        } else {
-            const options = { year: 'numeric', month: 'short', day: 'numeric' };
-            finishDateDisplay.innerText = finishDate.toLocaleDateString(undefined, options);
-        }
-    }
+    if (finishDateDisplay) finishDateDisplay.innerText = totalWorkdaysRequired === 0 ? "--" : finishDate.toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' });
 
-    // Calculate Available Target Shop Days and Buffer Status
     let targetEndDate = new Date(endInput.value + 'T00:00:00');
     let loopDate = new Date(startInput.value + 'T00:00:00');
-    let availableShopDays = 0;
-    let holidayCount = 0;
+    let availableShopDays = 0; let holidayCount = 0;
 
     while (loopDate <= targetEndDate) {
         const dow = loopDate.getDay();
         const dStr = loopDate.toISOString().split('T')[0];
-        if (dow !== 0 && dow !== 6) {
-            if (holidays.includes(dStr)) {
-                holidayCount++;
-            } else {
-                availableShopDays++;
-            }
-        }
+        if (dow !== 0 && dow !== 6) { if (holidays.includes(dStr)) holidayCount++; else availableShopDays++; }
         loopDate.setDate(loopDate.getDate() + 1);
     }
 
-    // Output remaining metrics
     const burnRateDisplay = document.getElementById("burnRateDisplay");
-    if (burnRateDisplay) {
-        if (availableShopDays > 0) {
-            const pace = (parts / availableShopDays).toFixed(2);
-            burnRateDisplay.innerText = `${pace} parts / day`;
-        } else {
-            burnRateDisplay.innerText = "--";
-        }
-    }
+    if (burnRateDisplay) document.getElementById("burnRateDisplay").innerText = availableShopDays > 0 ? `${(parts / availableShopDays).toFixed(2)} parts / day` : "--";
 
     const bufferDisplay = document.getElementById("bufferDisplay");
     const auditEl = document.getElementById("calendarAudit");
     if (bufferDisplay && auditEl) {
         const buffer = availableShopDays - totalWorkdaysRequired;
         bufferDisplay.innerText = `${buffer} workdays`;
-        
         if (buffer < 0) {
             bufferDisplay.style.color = "var(--red)";
-            auditEl.innerHTML = `⚠️ <strong>Behind schedule!</strong> Cell requires ${totalWorkdaysRequired} workdays, but target range only provides ${availableShopDays} days (excluding weekends and ${holidayCount} recognized holiday closures).`;
+            auditEl.innerHTML = `⚠️ <strong>Behind schedule!</strong> Cell requires ${totalWorkdaysRequired} workdays, but target range only provides ${availableShopDays} days (excluding weekends and ${holidayCount} recognized closures).`;
         } else {
             bufferDisplay.style.color = "var(--accent)";
             auditEl.innerHTML = `✔ <strong>Schedule healthy.</strong> Target timeline contains ${availableShopDays} production days. Plant has ${holidayCount} scheduled non-working days in this window.`;
@@ -939,10 +696,8 @@ function calculateSchedule() {
 
 function clearJobParams() {
     document.getElementById("partsNeeded").value = "100";
-    document.getElementById("op20Rate").value = "10";
-    document.getElementById("op30Rate").value = "6";
-    document.getElementById("op40Rate").value = "1";
-    document.getElementById("op50Rate").value = "2";
+    document.getElementById("op20Rate").value = "10"; document.getElementById("op30Rate").value = "6";
+    document.getElementById("op40Rate").value = "1"; document.getElementById("op50Rate").value = "2";
     calculateSchedule();
 }
 
@@ -951,14 +706,11 @@ function factoryResetMaster() {
         localStorage.removeItem("1499_master_tools_list");
         toolsData = [...defaultTools];
         renderToolingTable();
-        if (document.getElementById("workspaceSetup").style.display === "block") {
-            renderSetupDeckStack();
-        }
+        if (document.getElementById("workspaceSetup").style.display === "block") renderSetupDeckStack();
         calculateSchedule();
     }
 }
 
-// Initial Core Execution Engine Boot
 window.addEventListener("DOMContentLoaded", () => {
     loadToolsFromCache();
     renderToolingTable();
