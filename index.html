@@ -414,34 +414,46 @@
 <script>
 let toolsData = [];
 
-// 14 distinct tools mapped to a 12-place head setup with explicit clearance spacing
+// 14 distinct tools split clearly between Op 40 and Op 50
 const defaultTools = [
     // --- OP 40 BOTTLENECK LAYOUT (10 Tools) ---
-    { name: "Tool #1 (Op 40)", pocket: "1", id: "ENTER-INSERT-ID", perPart: 1.0, stockBoxes: 0, isHouseStock: true },
-    { name: "Tool #2 (Op 40)", pocket: "2", id: "ENTER-INSERT-ID", perPart: 1.0, stockBoxes: 0, isHouseStock: true },
-    { name: "Tool #3 (Op 40)", pocket: "3", id: "ENTER-INSERT-ID", perPart: 1.0, stockBoxes: 0, isHouseStock: true },
-    { name: "Tool #4 (Op 40)", pocket: "4", id: "ENTER-INSERT-ID", perPart: 1.0, stockBoxes: 0, isHouseStock: true },
-    { name: "Tool #5 (Op 40)", pocket: "5", id: "ENTER-INSERT-ID", perPart: 1.0, stockBoxes: 0, isHouseStock: true },
-    { name: "Tool #6 (Op 40)", pocket: "6", id: "ENTER-INSERT-ID", perPart: 1.0, stockBoxes: 0, isHouseStock: true },
-    { name: "Tool #7 (Op 40)", pocket: "7", id: "ENTER-INSERT-ID", perPart: 1.0, stockBoxes: 0, isHouseStock: true },
-    { name: "Tool #8 (Op 40)", pocket: "8", id: "ENTER-INSERT-ID", perPart: 1.0, stockBoxes: 0, isHouseStock: true },
-    { name: "Tool #9 (Op 40)", pocket: "9", id: "ENTER-INSERT-ID", perPart: 1.0, stockBoxes: 0, isHouseStock: true },
-    { name: "Tool #10 (Op 40)", pocket: "10", id: "ENTER-INSERT-ID", perPart: 1.0, stockBoxes: 0, isHouseStock: true },
+    { name: "Op 40 - Tool Slot #1", pocket: "1", id: "ENTER-INSERT-ID", perPart: 1.0, stockBoxes: 0, isHouseStock: true },
+    { name: "Op 40 - Tool Slot #2", pocket: "2", id: "ENTER-INSERT-ID", perPart: 1.0, stockBoxes: 0, isHouseStock: true },
+    { name: "Op 40 - Tool Slot #3", pocket: "3", id: "ENTER-INSERT-ID", perPart: 1.0, stockBoxes: 0, isHouseStock: true },
+    { name: "Op 40 - Tool Slot #4", pocket: "4", id: "ENTER-INSERT-ID", perPart: 1.0, stockBoxes: 0, isHouseStock: true },
+    { name: "Op 40 - Tool Slot #5", pocket: "5", id: "ENTER-INSERT-ID", perPart: 1.0, stockBoxes: 0, isHouseStock: true },
+    { name: "Op 40 - Tool Slot #6", pocket: "6", id: "ENTER-INSERT-ID", perPart: 1.0, stockBoxes: 0, isHouseStock: true },
+    { name: "Op 40 - Tool Slot #7", pocket: "7", id: "ENTER-INSERT-ID", perPart: 1.0, stockBoxes: 0, isHouseStock: true },
+    { name: "Op 40 - Tool Slot #8", pocket: "8", id: "ENTER-INSERT-ID", perPart: 1.0, stockBoxes: 0, isHouseStock: true },
+    { name: "Op 40 - Tool Slot #9", pocket: "9", id: "ENTER-INSERT-ID", perPart: 1.0, stockBoxes: 0, isHouseStock: true },
+    { name: "Op 40 - Tool Slot #10", pocket: "10", id: "ENTER-INSERT-ID", perPart: 1.0, stockBoxes: 0, isHouseStock: true },
 
     // --- OP 50 FINISH LINE LAYOUT (4 Tools) ---
-    { name: "Tool #11 (Op 50)", pocket: "11", id: "ENTER-INSERT-ID", perPart: 1.0, stockBoxes: 0, isHouseStock: true },
-    { name: "Tool #12 (Op 50)", pocket: "12", id: "ENTER-INSERT-ID", perPart: 1.0, stockBoxes: 0, isHouseStock: true },
-    { name: "Tool #13 (Op 50)", pocket: "13", id: "ENTER-INSERT-ID", perPart: 1.0, stockBoxes: 0, isHouseStock: true },
-    { name: "Tool #14 (Op 50)", pocket: "14", id: "ENTER-INSERT-ID", perPart: 1.0, stockBoxes: 0, isHouseStock: true }
+    { name: "Op 50 - Tool Slot #11", pocket: "11", id: "ENTER-INSERT-ID", perPart: 1.0, stockBoxes: 0, isHouseStock: true },
+    { name: "Op 50 - Tool Slot #12", pocket: "12", id: "ENTER-INSERT-ID", perPart: 1.0, stockBoxes: 0, isHouseStock: true },
+    { name: "Op 50 - Tool Slot #13", pocket: "13", id: "ENTER-INSERT-ID", perPart: 1.0, stockBoxes: 0, isHouseStock: true },
+    { name: "Op 50 - Tool Slot #14", pocket: "14", id: "ENTER-INSERT-ID", perPart: 1.0, stockBoxes: 0, isHouseStock: true }
 ];
 
 function loadToolsFromCache() {
     const cached = localStorage.getItem("1499_master_tools_list");
     if (cached) {
-        try { toolsData = JSON.parse(cached); } 
-        catch(e) { toolsData = [...defaultTools]; }
+        try { 
+            const parsed = JSON.parse(cached);
+            if (!Array.isArray(parsed) || parsed.length !== 14) {
+                toolsData = [...defaultTools];
+                saveToolsToCache();
+            } else {
+                toolsData = parsed;
+            }
+        } 
+        catch(e) { 
+            toolsData = [...defaultTools]; 
+            saveToolsToCache();
+        }
     } else {
         toolsData = [...defaultTools];
+        saveToolsToCache();
     }
 }
 
@@ -471,12 +483,11 @@ function renderToolingTable() {
     if (!tbody) return;
     tbody.innerHTML = "";
     
-    // Update the main UI header row if it doesn't match the new 6-column template
     const thead = document.querySelector("table thead tr");
     if (thead) {
         thead.innerHTML = `
             <th>Pocket</th>
-            <th>Tool Name</th>
+            <th>Tool Assignment Name</th>
             <th>Insert Part Configuration</th>
             <th>Inserts/Part</th>
             <th>Total Needed</th>
@@ -490,7 +501,24 @@ function renderToolingTable() {
         return;
     }
 
+    let renderedOp50Header = false;
+
     toolsData.forEach((tool, index) => {
+        // Insert Visual Header BEFORE the first Op 40 Tool
+        if (index === 0) {
+            const headerRow = document.createElement("tr");
+            headerRow.innerHTML = `<td colspan="7" style="background: rgba(245, 124, 0, 0.15); color: var(--orange); font-weight: bold; text-align: left; padding: 10px 15px; letter-spacing: 1px; border-bottom: 2px solid var(--orange);">⚙️ OPERATION 40 TOOLS</td>`;
+            tbody.appendChild(headerRow);
+        }
+        
+        // Insert Visual Header BEFORE the first Op 50 Tool (Index 10)
+        if (index === 10 && !renderedOp50Header) {
+            const headerRow = document.createElement("tr");
+            headerRow.innerHTML = `<td colspan="7" style="background: rgba(160, 32, 240, 0.15); color: #b050ff; font-weight: bold; text-align: left; padding: 10px 15px; letter-spacing: 1px; border-bottom: 2px solid #b050ff; margin-top: 20px;">🏁 OPERATION 50 TOOLS</td>`;
+            tbody.appendChild(headerRow);
+            renderedOp50Header = true;
+        }
+
         const tr = document.createElement("tr");
         tr.id = `tool-row-${index}`;
         let stockInputHTML = tool.isHouseStock 
@@ -508,6 +536,26 @@ function renderToolingTable() {
         `;
         tbody.appendChild(tr);
     });
+}
+
+function updateSingleToolName(index, val) {
+    toolsData[index].name = val.trim() || `Tool Slot #${index + 1}`;
+    saveToolsToCache();
+}
+
+function updateSingleToolId(index, val) {
+    toolsData[index].id = val.trim() || "ENTER-INSERT-ID";
+    saveToolsToCache();
+}
+
+function updateSingleToolUsage(index, val) {
+    toolsData[index].perPart = parseFloat(val) || 0;
+    saveToolsToCache();
+}
+
+function updateSinglePocketID(index, val) {
+    toolsData[index].pocket = val.trim();
+    saveToolsToCache();
 }
 
 function updateBoxStock(index, val) {
@@ -570,58 +618,53 @@ function renderSetupDeckStack() {
     if (!container) return;
     container.innerHTML = "";
 
-    // Insert the pocket number field modifications to the manual addition form if missing
-    const deckForm = document.querySelector(".deck-form-grid");
-    if (deckForm && !document.getElementById("newToolPocket")) {
-        const pocketDiv = document.createElement("div");
-        pocketDiv.className = "input-group";
-        pocketDiv.innerHTML = `<label for="newToolPocket">Turret Pocket #</label><input type="text" id="newToolPocket" placeholder="e.g., 1, 3, 5..." />`;
-        deckForm.insertBefore(pocketDiv, deckForm.firstChild);
-        // Adjust grid template columns for 5 items
-        deckForm.style.gridTemplateColumns = "1fr 2fr 3fr 1fr 1.5fr";
-    }
+    const manualDeckForm = document.querySelector(".deck-form-grid");
+    if (manualDeckForm) manualDeckForm.style.display = "none";
+    const manualBtn = document.querySelector("button[onclick='addNewToolString()']");
+    if (manualBtn) manualBtn.style.display = "none";
 
     toolsData.forEach((tool, index) => {
+        // Section Banners inside Setup Sheet view
+        if (index === 0) {
+            const banner = document.createElement("div");
+            banner.style = "grid-column: 1/-1; font-weight: bold; padding: 10px; margin-top:10px; border-left: 4px solid var(--orange); color: var(--orange); font-size: 1.1rem; text-transform: uppercase;";
+            banner.innerText = "⚙️ Operation 40 Layout Matrix";
+            container.appendChild(banner);
+        }
+        if (index === 10) {
+            const banner = document.createElement("div");
+            banner.style = "grid-column: 1/-1; font-weight: bold; padding: 10px; margin-top:25px; border-left: 4px solid #b050ff; color: #b050ff; font-size: 1.1rem; text-transform: uppercase;";
+            banner.innerText = "🏁 Operation 50 Layout Matrix";
+            container.appendChild(banner);
+        }
+
         const div = document.createElement("div");
         div.className = "live-tool-card";
+        div.style.borderLeft = index >= 10 ? "5px solid #b050ff" : "5px solid var(--orange)";
+        
         div.innerHTML = `
-            <div>
-                <strong style="color: #fff; font-size: 1.05rem;">${tool.name} <span style="color: var(--orange); margin-left: 8px;">[Pocket T${tool.pocket || (index + 1)}]</span></strong>
-                <div style="font-family: monospace; font-size: 0.85rem; color: var(--blue); margin-top: 2px;">${tool.id}</div>
-                <div style="font-size: 0.8rem; color: var(--text-dim); margin-top: 4px;">
-                    Usage: <span style="color: #fff; font-weight:600;">${tool.perPart}</span> | 
-                    Type: <span style="color: #fff; font-weight:600;">${tool.isHouseStock ? 'In-House Stock' : tool.stockBoxes + ' Boxes'}</span>
+            <div style="width: 100%; display: grid; grid-template-columns: 1fr 2fr 3fr 1fr; gap: 12px; align-items: center;">
+                <div class="input-group" style="margin-bottom:0;">
+                    <label style="color: ${index >= 10 ? '#b050ff' : 'var(--orange)'};">Pocket</label>
+                    <input type="text" class="stock-input" value="${tool.pocket || ''}" placeholder="Pkt" style="width:100%; text-align:center;" oninput="updateSinglePocketID(${index}, this.value); calculateSchedule();">
                 </div>
-            </div>
-            <div style="display:flex; gap: 8px; align-items:center;">
-                <input type="text" class="stock-input" value="${tool.pocket || ''}" placeholder="Pkt" style="width:55px; padding:4px;" oninput="updateSinglePocketID(${index}, this.value)">
-                <button class="btn btn-danger" onclick="deleteToolFromEngine(${index})" style="padding: 6px 12px; font-size: 0.8rem;">❌ Wipe</button>
+                <div class="input-group" style="margin-bottom:0;">
+                    <label>Tool Name Assignment</label>
+                    <input type="text" value="${tool.name}" style="padding:6px; background:var(--input-bg); border:1px solid var(--border); color:#fff; border-radius:4px;" oninput="updateSingleToolName(${index}, this.value)">
+                </div>
+                <div class="input-group" style="margin-bottom:0;">
+                    <label>Insert Specification ID</label>
+                    <input type="text" value="${tool.id}" style="padding:6px; font-family:monospace; background:var(--input-bg); border:1px solid var(--border); color:#fff; border-radius:4px;" oninput="updateSingleToolId(${index}, this.value)">
+                </div>
+                <div class="input-group" style="margin-bottom:0;">
+                    <label>Usage (per Part)</label>
+                    <input type="number" value="${tool.perPart}" step="0.1" min="0" style="padding:6px; background:var(--input-bg); border:1px solid var(--border); color:#fff; border-radius:4px; text-align:center;" oninput="updateSingleToolUsage(${index}, this.value); calculateSchedule();">
+                </div>
             </div>
         `;
         container.appendChild(div);
     });
 }
-
-function updateSinglePocketID(index, val) {
-    toolsData[index].pocket = val.trim();
-    saveToolsToCache();
-}
-
-function addNewToolString() {
-    const pocket = document.getElementById("newToolPocket") ? document.getElementById("newToolPocket").value.trim() : "1";
-    const name = document.getElementById("newToolName").value.trim() || "Generic Tool";
-    const id = document.getElementById("newToolId").value.trim() || "UNKNOWN-ID";
-    const perPart = parseFloat(document.getElementById("newToolPerPart").value) || 1;
-    const type = document.getElementById("newToolStockType").value;
-    const boxes = parseInt(document.getElementById("newToolBoxes").value) || 0;
-
-    toolsData.push({ name: name, pocket: pocket, id: id, perPart: perPart, stockBoxes: boxes, isHouseStock: (type === "house") });
-    saveToolsToCache(); renderSetupDeckStack();
-    document.getElementById("newToolName").value = ""; document.getElementById("newToolId").value = "";
-    if(document.getElementById("newToolPocket")) document.getElementById("newToolPocket").value = "";
-}
-
-function deleteToolFromEngine(index) { toolsData.splice(index, 1); saveToolsToCache(); renderSetupDeckStack(); }
 
 function getOpWorkdayContribution(rateId, activeId, totalParts) {
     const activeEl = document.getElementById(activeId);
