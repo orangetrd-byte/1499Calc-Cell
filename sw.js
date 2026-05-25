@@ -1,4 +1,4 @@
-const CACHE_NAME = '1499-cell-v1';
+const CACHE_NAME = '1499-cell-v2';
 const ASSETS = [
   './index.html',
   './manifest.json',
