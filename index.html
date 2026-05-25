@@ -61,7 +61,6 @@
             gap: 12px; 
         }
 
-        /* Navigation Tab Styles */
         .tab-navigation-bar {
             display: flex;
             gap: 12px;
@@ -137,7 +136,7 @@
             accent-color: var(--blue);
         }
         
-        input[type="number"], input[type="date"], textarea { 
+        input[type="number"], input[type="date"], input[type="text"], select, textarea { 
             background-color: var(--input-bg); 
             border: 1px solid var(--border); 
             color: #fff; 
@@ -149,7 +148,7 @@
             transition: border-color 0.2s, box-shadow 0.2s;
         }
 
-        input:focus, textarea:focus { 
+        input:focus, select:focus, textarea:focus { 
             border-color: var(--blue); 
             outline: none; 
             box-shadow: 0 0 6px rgba(10, 132, 255, 0.35); 
@@ -258,7 +257,6 @@
             border-radius: 2px;
         }
 
-        /* Button Styles */
         .btn {
             background-color: var(--input-bg);
             border: 1px solid var(--border);
@@ -374,6 +372,32 @@
             animation: pulseAlert 2s infinite ease-in-out;
         }
 
+        .deck-form-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 15px;
+            margin-bottom: 20px;
+            background: rgba(255,255,255,0.02);
+            padding: 18px;
+            border-radius: 8px;
+            border: 1px dashed var(--border);
+        }
+        @media(min-width: 768px) {
+            .deck-form-grid { grid-template-columns: 2fr 3fr 1fr 1.5fr; }
+        }
+
+        .live-tool-card {
+            background: #111318;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+        }
+
         .footer-utility-bar {
             margin-top: 30px;
             padding-top: 20px;
@@ -407,17 +431,17 @@
                 <div class="card-title">Production Run Parameters</div>
                 <div class="input-group">
                     <label for="partsNeeded">Total Parts In Run Needed</label>
-                    <input type="number" id="partsNeeded" value="23" min="0" />
+                    <input type="number" id="partsNeeded" value="100" min="0" oninput="calculateSchedule()" />
                 </div>
                 
                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
                     <div class="input-group">
                         <label for="startDate">Production Start</label>
-                        <input type="date" id="startDate" />
+                        <input type="date" id="startDate" onchange="calculateSchedule()" />
                     </div>
                     <div class="input-group">
                         <label for="targetEndDate">Target Deadline</label>
-                        <input type="date" id="targetEndDate" />
+                        <input type="date" id="targetEndDate" onchange="calculateSchedule()" />
                     </div>
                 </div>
 
@@ -454,36 +478,36 @@
                     <div class="input-group">
                         <div class="op-header">
                             <label>Op 20 (Roughing)</label>
-                            <input type="checkbox" id="op20Active" class="op-checkbox" checked />
+                            <input type="checkbox" id="op20Active" class="op-checkbox" checked onchange="calculateSchedule()" />
                         </div>
-                        <input type="number" id="op20Rate" value="10" />
+                        <input type="number" id="op20Rate" value="10" oninput="calculateSchedule()" />
                     </div>
                     <div class="input-group">
                         <div class="op-header">
                             <label>Op 30 (Turn/Bore)</label>
-                            <input type="checkbox" id="op30Active" class="op-checkbox" checked />
+                            <input type="checkbox" id="op30Active" class="op-checkbox" checked onchange="calculateSchedule()" />
                         </div>
-                        <input type="number" id="op30Rate" value="6" />
+                        <input type="number" id="op30Rate" value="6" oninput="calculateSchedule()" />
                     </div>
                     <div class="input-group">
                         <div class="op-header">
                             <label>Op 40 (Bottleneck)</label>
-                            <input type="checkbox" id="op40Active" class="op-checkbox" checked />
+                            <input type="checkbox" id="op40Active" class="op-checkbox" checked onchange="calculateSchedule()" />
                         </div>
-                        <input type="number" id="op40Rate" value="1" />
+                        <input type="number" id="op40Rate" value="1" oninput="calculateSchedule()" />
                     </div>
                     <div class="input-group">
                         <div class="op-header">
                             <label>Op 50 (Finish)</label>
-                            <input type="checkbox" id="op50Active" class="op-checkbox" checked />
+                            <input type="checkbox" id="op50Active" class="op-checkbox" checked onchange="calculateSchedule()" />
                         </div>
-                        <input type="number" id="op50Rate" value="2" />
+                        <input type="number" id="op50Rate" value="2" oninput="calculateSchedule()" />
                     </div>
                 </div>
                 
                 <div class="input-group">
                     <label for="holidayList" style="color: var(--orange);">Active Shop Calendar Holidays</label>
-                    <textarea id="holidayList" rows="5" style="resize: vertical; font-size: 0.85rem; font-family: monospace;">2026-01-01
+                    <textarea id="holidayList" rows="5" style="resize: vertical; font-size: 0.85rem; font-family: monospace;" oninput="calculateSchedule()">2026-01-01
 2026-01-02
 2026-04-03
 2026-05-25
@@ -497,10 +521,7 @@
 2026-09-07
 2026-11-26
 2026-11-27
-2026-12-25
-2027-01-01
-2027-03-25
-2027-05-31</textarea>
+2026-12-25</textarea>
                     <div class="small-note">Accepts commas, line breaks, or pasted lists from data logs.</div>
                 </div>
             </div>
@@ -522,7 +543,6 @@
         <div class="card">
             <div class="card-title">
                 <span>Tooling Matrix & Box Procurement</span>
-                <button class="btn btn-accent" id="copyProcurementBtn">📤 Share Tooling Order</button>
             </div>
             <div class="table-wrapper">
                 <table>
@@ -546,10 +566,36 @@
         <div class="grid">
             <div class="card" style="grid-column: 1 / -1;">
                 <div class="card-title">⚙️ Dynamic Component Profile Engine <span style="font-size: 0.8rem; color: var(--text-dim);">Phase 2 Configuration Deck</span></div>
-                <p style="color: var(--text-dim); font-size: 0.95rem; margin-top: 0;">This configuration panel is fully wired and ready! Next up, we will drop in components right here to let you add, modify, or delete tools and operations on the fly.</p>
-                <div style="border: 1px dashed var(--border); padding: 30px; text-align: center; border-radius: 8px; color: var(--text-dim); background-color: rgba(0,0,0,0.15);">
-                    🔧 Ready to deploy dynamic tool string builders...
+                
+                <div class="deck-form-grid">
+                    <div class="input-group" style="margin-bottom:0;">
+                        <label for="newToolName">Position Name</label>
+                        <input type="text" id="newToolName" placeholder="e.g., Tool #4" />
+                    </div>
+                    <div class="input-group" style="margin-bottom:0;">
+                        <label for="newToolId">Insert Specification ID</label>
+                        <input type="text" id="newToolId" placeholder="e.g., WNMG080408..." />
+                    </div>
+                    <div class="input-group" style="margin-bottom:0;">
+                        <label for="newToolPerPart">Inserts/Part</label>
+                        <input type="number" id="newToolPerPart" value="1" min="0" step="0.1" />
+                    </div>
+                    <div class="input-group" style="margin-bottom:0;">
+                        <label for="newToolStockType">Procurement Type</label>
+                        <select id="newToolStockType" onchange="toggleStockInputField(this.value)">
+                            <option value="special">Custom (Track Box Shortage)</option>
+                            <option value="house">In-House Stock (Unlimited)</option>
+                        </select>
+                    </div>
                 </div>
+                <div id="customBoxCountWrapper" class="input-group" style="max-width: 250px; margin-bottom: 20px;">
+                    <label for="newToolBoxes">Initial Boxes On-Hand</label>
+                    <input type="number" id="newToolBoxes" value="0" min="0" />
+                </div>
+                <button class="btn btn-accent" id="addToolToEngineBtn" onclick="addNewToolString()">➕ Deploy New Tool String To Matrix</button>
+                
+                <div class="card-title" style="border-bottom: 1px solid var(--border); padding-bottom: 8px;">Active Cell String Deployments</div>
+                <div id="activeToolsStackContainer"></div>
             </div>
         </div>
     </div>
@@ -557,21 +603,35 @@
     <div class="footer-utility-bar">
         <div style="color: var(--text-dim); font-size: 0.85rem;">System status: Persistent caching engine running</div>
         <div class="btn-group">
-            <button class="btn" id="clearRunParamsBtn">🔄 Clear Active Job Params</button>
-            <button class="btn btn-danger" id="factoryResetMasterBtn">⚠️ Full Factory Reset</button>
+            <button class="btn" onclick="clearJobParams()">🔄 Clear Active Job Params</button>
+            <button class="btn btn-danger" onclick="factoryResetMaster()">⚠️ Full Factory Reset</button>
         </div>
     </div>
 </div>
 
 <script>
-// --- CORE STATIC MASTER INVENTORY LAYOUT ---
-const toolsData = [
+let toolsData = [];
+
+const defaultTools = [
     { name: "Tool #1", id: "LCMF1603M0-0300-MP,890", perPart: 1.0, stockBoxes: 0, isHouseStock: true },
     { name: "Tool #2", id: "CNMG120408-MF1,TH1000", perPart: 0.5, stockBoxes: 3, isHouseStock: false },
     { name: "Tool #3", id: "NI-LCMN-BB84081", perPart: 2.0, stockBoxes: 1, isHouseStock: false }
 ];
 
-// --- APP TAB SWITCHING NAVIGATION CONTROLLER ---
+function loadToolsFromCache() {
+    const cached = localStorage.getItem("1499_master_tools_list");
+    if (cached) {
+        try { toolsData = JSON.parse(cached); } 
+        catch(e) { toolsData = [...defaultTools]; }
+    } else {
+        toolsData = [...defaultTools];
+    }
+}
+
+function saveToolsToCache() {
+    localStorage.setItem("1499_master_tools_list", JSON.stringify(toolsData));
+}
+
 function switchTab(targetWorkspace) {
     const runView = document.getElementById('workspaceRun');
     const setupView = document.getElementById('workspaceSetup');
@@ -583,26 +643,37 @@ function switchTab(targetWorkspace) {
         setupView.style.display = 'block';
         setupBtn.classList.add('btn-accent');
         runBtn.classList.remove('btn-accent');
+        renderSetupDeckStack();
     } else {
         runView.style.display = 'block';
         setupView.style.display = 'none';
         runBtn.classList.add('btn-accent');
         setupBtn.classList.remove('btn-accent');
+        renderToolingTable();
+        calculateSchedule();
     }
 }
 
-// --- TABLE GENERATION ENGINE ---
-function renderInitialToolingTable() {
+function toggleStockInputField(val) {
+    document.getElementById("customBoxCountWrapper").style.display = (val === "house") ? "none" : "flex";
+}
+
+function renderToolingTable() {
     const tbody = document.getElementById("toolingTableBody");
     if (!tbody) return;
     tbody.innerHTML = "";
     
+    if (toolsData.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="6" style="color: var(--text-dim); font-style: italic; padding: 20px;">No tools configured.</td></tr>`;
+        return;
+    }
+
     toolsData.forEach((tool, index) => {
         const tr = document.createElement("tr");
         tr.id = `tool-row-${index}`;
         let stockInputHTML = tool.isHouseStock 
             ? `<span class="house-stock-label">In-House Stock</span>` 
-            : `<input type="number" class="stock-input" value="${tool.stockBoxes}" min="0" data-index="${index}">`;
+            : `<input type="number" class="stock-input" value="${tool.stockBoxes}" min="0" oninput="updateBoxStock(${index}, this.value)">`;
             
         tr.innerHTML = `
             <td><strong style="color: #fff;">${tool.name}</strong></td>
@@ -614,6 +685,13 @@ function renderInitialToolingTable() {
         `;
         tbody.appendChild(tr);
     });
+}
+
+function updateBoxStock(index, val) {
+    toolsData[index].stockBoxes = parseInt(val) || 0;
+    saveToolsToCache();
+    const parts = parseFloat(document.getElementById("partsNeeded").value) || 0;
+    updateToolingTableValues(parts);
 }
 
 function updateToolingTableValues(parts) {
@@ -631,10 +709,7 @@ function updateToolingTableValues(parts) {
         if (neededCell) neededCell.innerText = neededInserts;
 
         if (tool.isHouseStock) {
-            if (boxesCell) {
-                boxesCell.innerText = "--";
-                boxesCell.style.color = "var(--text-dim)";
-            }
+            if (boxesCell) { boxesCell.innerText = "✔"; boxesCell.style.color = "var(--accent)"; }
             return;
         }
 
@@ -642,7 +717,7 @@ function updateToolingTableValues(parts) {
         const shortage = Math.max(0, neededInserts - totalLooseInsertsOnHand);
         const boxesNeededToOrder = Math.ceil(shortage / 10);
 
-        if (tool.perPart > 0 && tool.stockBoxes > 0) {
+        if (tool.perPart > 0) {
             hasSpecialOrderStock = true;
             const possibleWithThisTool = Math.floor(totalLooseInsertsOnHand / tool.perPart);
             if (possibleWithThisTool < maxSupportedParts) maxSupportedParts = possibleWithThisTool;
@@ -650,7 +725,7 @@ function updateToolingTableValues(parts) {
 
         if (boxesCell) {
             if (boxesNeededToOrder > 0) {
-                boxesCell.innerHTML = `${boxesNeededToOrder}<span class="order-badge">🚨 ORDER NOW</span>`;
+                boxesCell.innerHTML = `${boxesNeededToOrder}<span class="order-badge">🚨 ORDER</span>`;
                 boxesCell.style.color = "var(--orange)";
             } else {
                 boxesCell.innerText = "✔";
@@ -662,31 +737,57 @@ function updateToolingTableValues(parts) {
     const maxPartsDisplay = document.getElementById("maxPartsDisplay");
     if (maxPartsDisplay) {
         if (!hasSpecialOrderStock) {
-            maxPartsDisplay.innerText = "0 parts (Check custom boxes)";
-            maxPartsDisplay.style.color = "var(--orange)";
+            maxPartsDisplay.innerText = "Unlimited (In-House)";
+            maxPartsDisplay.style.color = "var(--accent)";
         } else {
             maxPartsDisplay.innerText = `${maxSupportedParts} parts`;
-            maxPartsDisplay.style.color = maxSupportedParts < parts ? "var(--orange)" : "var(--accent)";
+            maxPartsDisplay.style.color = maxSupportedParts < parts ? "var(--red)" : "var(--accent)";
         }
     }
 }
 
-function saveRunParamsToCache() {
-    const runtimeState = {
-        partsNeeded: document.getElementById("partsNeeded").value,
-        startDate: document.getElementById("startDate").value,
-        targetEndDate: document.getElementById("targetEndDate").value,
-        op20Rate: document.getElementById("op20Rate").value,
-        op30Rate: document.getElementById("op30Rate").value,
-        op40Rate: document.getElementById("op40Rate").value,
-        op50Rate: document.getElementById("op50Rate").value,
-        op20Active: document.getElementById("op20Active").checked,
-        op30Active: document.getElementById("op30Active").checked,
-        op40Active: document.getElementById("op40Active").checked,
-        op50Active: document.getElementById("op50Active").checked,
-        holidayList: document.getElementById("holidayList").value
-    };
-    localStorage.setItem("1499_master_runtime", JSON.stringify(runtimeState));
+function renderSetupDeckStack() {
+    const container = document.getElementById("activeToolsStackContainer");
+    if (!container) return;
+    container.innerHTML = "";
+
+    toolsData.forEach((tool, index) => {
+        const div = document.createElement("div");
+        div.className = "live-tool-card";
+        div.innerHTML = `
+            <div>
+                <strong style="color: #fff; font-size: 1.05rem;">${tool.name}</strong>
+                <div style="font-family: monospace; font-size: 0.85rem; color: var(--blue); margin-top: 2px;">${tool.id}</div>
+                <div style="font-size: 0.8rem; color: var(--text-dim); margin-top: 4px;">
+                    Usage: <span style="color: #fff; font-weight:600;">${tool.perPart}</span> inserts/part | 
+                    Type: <span style="color: #fff; font-weight:600;">${tool.isHouseStock ? 'In-House Stock' : tool.stockBoxes + ' Boxes'}</span>
+                </div>
+            </div>
+            <button class="btn btn-danger" onclick="deleteToolFromEngine(${index})" style="padding: 6px 12px; font-size: 0.8rem;">❌ Wipe</button>
+        `;
+        container.appendChild(div);
+    });
+}
+
+function addNewToolString() {
+    const name = document.getElementById("newToolName").value.trim() || "Generic Tool";
+    const id = document.getElementById("newToolId").value.trim() || "UNKNOWN-ID";
+    const perPart = parseFloat(document.getElementById("newToolPerPart").value) || 1;
+    const type = document.getElementById("newToolStockType").value;
+    const boxes = parseInt(document.getElementById("newToolBoxes").value) || 0;
+
+    toolsData.push({ name: name, id: id, perPart: perPart, stockBoxes: boxes, isHouseStock: (type === "house") });
+    saveToolsToCache();
+    renderSetupDeckStack();
+    
+    document.getElementById("newToolName").value = "";
+    document.getElementById("newToolId").value = "";
+}
+
+function deleteToolFromEngine(index) {
+    toolsData.splice(index, 1);
+    saveToolsToCache();
+    renderSetupDeckStack();
 }
 
 function getOpWorkdayContribution(rateId, activeId, totalParts) {
@@ -697,10 +798,10 @@ function getOpWorkdayContribution(rateId, activeId, totalParts) {
     return rateValue > 0 ? (totalParts / rateValue) : 0;
 }
 
-function getParsedHolidays() {
-    const input = document.getElementById("holidayList");
-    if (!input || !input.value) return [];
-    return input.value.split(/[\n,]+/).map(s => s.trim()).filter(s => s.length > 0);
+function parseHolidays() {
+    const listEl = document.getElementById("holidayList");
+    if (!listEl) return [];
+    return listEl.value.split(/[\n,]+/).map(s => s.trim()).filter(s => s.match(/^\d{4}-\d{2}-\d{2}$/));
 }
 
 function calculateSchedule() {
@@ -708,211 +809,160 @@ function calculateSchedule() {
     const parts = partsInput ? (parseFloat(partsInput.value) || 0) : 0;
     updateToolingTableValues(parts);
 
-    const startDateEl = document.getElementById("startDate");
-    const targetEndDateEl = document.getElementById("targetEndDate");
-    let startVal = startDateEl && startDateEl.value ? startDateEl.value : "2026-05-29";
-    let targetEndVal = targetEndDateEl && targetEndDateEl.value ? targetEndDateEl.value : "2026-08-14";
-
     const op20Days = getOpWorkdayContribution("op20Rate", "op20Active", parts);
     const op30Days = getOpWorkdayContribution("op30Rate", "op30Active", parts);
     const op40Days = getOpWorkdayContribution("op40Rate", "op40Active", parts);
     const op50Days = getOpWorkdayContribution("op50Rate", "op50Active", parts);
 
-    const totalWorkdaysRequired = Math.ceil(op20Days + op30Days + op40Days + op50Days);
+    const activeOpsArray = [op20Days, op30Days, op40Days, op50Days].filter(d => d > 0);
+    const slowestOpDays = activeOpsArray.length > 0 ? Math.max(...activeOpsArray) : 0;
+    const cellFlushBuffer = activeOpsArray.length > 1 ? (activeOpsArray.length - 1) : 0;
+    
+    const totalWorkdaysRequired = Math.ceil(slowestOpDays + cellFlushBuffer);
     document.getElementById("daysNeededDisplay").innerText = totalWorkdaysRequired + " workdays";
 
-    // Recalculate Timeline Blocks
+    const rates = [
+        { id: 'op20', active: document.getElementById("op20Active").checked, days: op20Days, class: 'seg-op20', label: 'Op 20' },
+        { id: 'op30', active: document.getElementById("op30Active").checked, days: op30Days, class: 'seg-op30', label: 'Op 30' },
+        { id: 'op40', active: document.getElementById("op40Active").checked, days: op40Days, class: 'seg-op40', label: 'Op 40' },
+        { id: 'op50', active: document.getElementById("op50Active").checked, days: op50Days, class: 'seg-op50', label: 'Op 50' }
+    ];
+
+    const totalRaw = rates.reduce((sum, r) => sum + (r.active ? r.days : 0), 0);
     const timelineBar = document.getElementById("timelineBarContainer");
     if (timelineBar) {
         timelineBar.innerHTML = "";
-        const totalRaw = op20Days + op30Days + op40Days + op50Days;
         if (totalRaw > 0) {
-            const operations = [
-                { class: "seg-op20", days: op20Days, label: "Op 20" },
-                { class: "seg-op30", days: op30Days, label: "Op 30" },
-                { class: "seg-op40", days: op40Days, label: "Op 40" },
-                { class: "seg-op50", days: op50Days, label: "Op 50" }
-            ];
-            operations.forEach(op => {
-                if (op.days > 0) {
-                    const pct = (op.days / totalRaw) * 100;
+            rates.forEach(r => {
+                if (r.active && r.days > 0) {
+                    const pct = (r.days / totalRaw) * 100;
                     const seg = document.createElement("div");
-                    seg.className = `timeline-segment ${op.class}`;
+                    seg.className = `timeline-segment ${r.class}`;
                     seg.style.width = `${pct}%`;
-                    seg.innerText = op.label;
+                    seg.innerText = `${r.label}: ${Math.ceil(r.days)}d`;
                     timelineBar.appendChild(seg);
                 }
             });
         }
     }
 
-    // Shop Day Skip Engine
-    const parsedHolidays = getParsedHolidays();
-    let auditLogs = [];
-    let currentMoment = new Date(startVal + "T00:00:00");
-    let totalCalculatedWorkdaysCount = 0;
+    // Set Default Dates if blank
+    const startInput = document.getElementById("startDate");
+    const endInput = document.getElementById("targetEndDate");
+    if (!startInput.value) startInput.value = "2026-05-29";
+    if (!endInput.value) endInput.value = "2026-11-25";
 
-    if (totalWorkdaysRequired > 0) {
-        while (totalCalculatedWorkdaysCount < totalWorkdaysRequired) {
-            const dayOfWeek = currentMoment.getDay();
-            const formatStr = currentMoment.toISOString().split("T")[0];
+    const holidays = parseHolidays();
+    
+    // Calculate Estimated Finish Date
+    let finishDate = new Date(startInput.value + 'T00:00:00');
+    let daysAdded = 0;
+    let iterations = 0;
 
-            if (dayOfWeek === 0 || dayOfWeek === 6) {
-                // Weekend
-            } else if (parsedHolidays.includes(formatStr)) {
-                auditLogs.push(`⚠️ Calendar Blackout: Closed on ${formatStr}`);
+    while (daysAdded < totalWorkdaysRequired && iterations < 2000) {
+        iterations++;
+        if (daysAdded > 0) {
+            finishDate.setDate(finishDate.getDate() + 1);
+        }
+        const dayOfWeek = finishDate.getDay();
+        const dateString = finishDate.toISOString().split('T')[0];
+        
+        if (dayOfWeek !== 0 && dayOfWeek !== 6 && !holidays.includes(dateString)) {
+            if (daysAdded === 0) {
+                // First valid workday starts today
+                daysAdded = 1;
             } else {
-                totalCalculatedWorkdaysCount++;
+                daysAdded++;
             }
-
-            if (totalCalculatedWorkdaysCount < totalWorkdaysRequired) {
-                currentMoment.setDate(currentMoment.getDate() + 1);
-            }
+        } else if (daysAdded === 0) {
+            // Push start date forward if it initially landed on a weekend/holiday
+            finishDate.setDate(finishDate.getDate() + 1);
         }
     }
 
-    const calculatedFinishStr = currentMoment.toISOString().split("T")[0];
-    document.getElementById("finishDateDisplay").innerText = totalWorkdaysRequired > 0 ? calculatedFinishStr : "--";
-
-    // Handle Buffer Analytics
-    const targetEndMoment = new Date(targetEndVal + "T00:00:00");
-    let availableTargetDays = 0;
-    let runningDateIter = new Date(startVal + "T00:00:00");
-    
-    while (runningDateIter <= targetEndMoment) {
-        const dow = runningDateIter.getDay();
-        const fStr = runningDateIter.toISOString().split("T")[0];
-        if (dow !== 0 && dow !== 6 && !parsedHolidays.includes(fStr)) {
-            availableTargetDays++;
+    // Display Finish Date
+    const finishDateDisplay = document.getElementById("finishDateDisplay");
+    if (finishDateDisplay) {
+        if (totalWorkdaysRequired === 0) {
+            finishDateDisplay.innerText = "--";
+        } else {
+            const options = { year: 'numeric', month: 'short', day: 'numeric' };
+            finishDateDisplay.innerText = finishDate.toLocaleDateString(undefined, options);
         }
-        runningDateIter.setDate(runningDateIter.getDate() + 1);
     }
 
-    const targetDiffDays = Math.floor((targetEndMoment - new Date(calculatedFinishStr + "T00:00:00")) / (1000 * 60 * 60 * 24));
+    // Calculate Available Target Shop Days and Buffer Status
+    let targetEndDate = new Date(endInput.value + 'T00:00:00');
+    let loopDate = new Date(startInput.value + 'T00:00:00');
+    let availableShopDays = 0;
+    let holidayCount = 0;
+
+    while (loopDate <= targetEndDate) {
+        const dow = loopDate.getDay();
+        const dStr = loopDate.toISOString().split('T')[0];
+        if (dow !== 0 && dow !== 6) {
+            if (holidays.includes(dStr)) {
+                holidayCount++;
+            } else {
+                availableShopDays++;
+            }
+        }
+        loopDate.setDate(loopDate.getDate() + 1);
+    }
+
+    // Output remaining metrics
+    const burnRateDisplay = document.getElementById("burnRateDisplay");
+    if (burnRateDisplay) {
+        if (availableShopDays > 0) {
+            const pace = (parts / availableShopDays).toFixed(2);
+            burnRateDisplay.innerText = `${pace} parts / day`;
+        } else {
+            burnRateDisplay.innerText = "--";
+        }
+    }
+
     const bufferDisplay = document.getElementById("bufferDisplay");
-
-    if (totalWorkdaysRequired === 0) {
-        bufferDisplay.innerText = "--";
-        bufferDisplay.style.color = "var(--text-color)";
-    } else if (targetDiffDays >= 0) {
-        bufferDisplay.innerText = `✔ AHEAD BY ${targetDiffDays} DAYS`;
-        bufferDisplay.style.color = "var(--accent)";
-    } else {
-        bufferDisplay.innerText = `🚨 BEHIND BY ${Math.abs(targetDiffDays)} DAYS`;
-        bufferDisplay.style.color = "var(--red)";
-    }
-
-    const burnRate = availableTargetDays > 0 ? (parts / availableTargetDays).toFixed(1) : "--";
-    document.getElementById("burnRateDisplay").innerText = burnRate + " parts/day";
-
     const auditEl = document.getElementById("calendarAudit");
-    if (auditEl) {
-        auditEl.innerText = auditLogs.length > 0 
-            ? `[Calendar Calculations Engine Logs]\n` + auditLogs.join("\n") 
-            : `[Calendar Calculations Engine Logs]\n✔ Parameters stable. No active holiday blackout conflicts intersecting schedule parameters.`;
-    }
-}
-
-// --- LOCAL PERSISTENCE LOADER ---
-function initAppStateAndLoadCache() {
-    const todayStr = new Date().toISOString().split("T")[0];
-    document.getElementById("startDate").value = todayStr;
-    
-    const futureDate = new Date();
-    futureDate.setDate(futureDate.getDate() + 60);
-    document.getElementById("targetEndDate").value = futureDate.toISOString().split("T")[0];
-
-    const cachedRuntime = localStorage.getItem("1499_master_runtime");
-    if (cachedRuntime) {
-        try {
-            const state = JSON.parse(cachedRuntime);
-            if(state.partsNeeded !== undefined) document.getElementById("partsNeeded").value = state.partsNeeded;
-            if(state.startDate) document.getElementById("startDate").value = state.startDate;
-            if(state.targetEndDate) document.getElementById("targetEndDate").value = state.targetEndDate;
-            if(state.op20Rate) document.getElementById("op20Rate").value = state.op20Rate;
-            if(state.op30Rate) document.getElementById("op30Rate").value = state.op30Rate;
-            if(state.op40Rate) document.getElementById("op40Rate").value = state.op40Rate;
-            if(state.op50Rate) document.getElementById("op50Rate").value = state.op50Rate;
-            if(state.op20Active !== undefined) document.getElementById("op20Active").checked = state.op20Active;
-            if(state.op30Active !== undefined) document.getElementById("op30Active").checked = state.op30Active;
-            if(state.op40Active !== undefined) document.getElementById("op40Active").checked = state.op40Active;
-            if(state.op50Active !== undefined) document.getElementById("op50Active").checked = state.op50Active;
-            if(state.holidayList !== undefined) document.getElementById("holidayList").value = state.holidayList;
-        } catch(e) { console.error("Runtime cache skip:", e); }
-    }
-
-    const cachedBoxes = localStorage.getItem("1499_box_inventory");
-    if (cachedBoxes) {
-        try {
-            const boxCounts = JSON.parse(cachedBoxes);
-            boxCounts.forEach(item => {
-                if (toolsData[item.index]) toolsData[item.index].stockBoxes = item.boxes;
-            });
-        } catch(e) { console.error("Inventory cache skip:", e); }
-    }
-
-    renderInitialToolingTable();
-    
-    // Inventory table listener updates
-    document.getElementById("toolingTableBody").addEventListener("input", event => {
-        if (event.target.classList.contains("stock-input")) {
-            const idx = parseInt(event.target.dataset.index);
-            const val = Math.max(0, parseInt(event.target.value) || 0);
-            toolsData[idx].stockBoxes = val;
-            
-            const boxInventoryState = toolsData.map((t, i) => ({ index: i, boxes: t.stockBoxes }));
-            localStorage.setItem("1499_box_inventory", JSON.stringify(boxInventoryState));
-            
-            const partsVal = parseFloat(document.getElementById("partsNeeded").value) || 0;
-            updateToolingTableValues(partsVal);
-            calculateSchedule();
+    if (bufferDisplay && auditEl) {
+        const buffer = availableShopDays - totalWorkdaysRequired;
+        bufferDisplay.innerText = `${buffer} workdays`;
+        
+        if (buffer < 0) {
+            bufferDisplay.style.color = "var(--red)";
+            auditEl.innerHTML = `⚠️ <strong>Behind schedule!</strong> Cell requires ${totalWorkdaysRequired} workdays, but target range only provides ${availableShopDays} days (excluding weekends and ${holidayCount} recognized holiday closures).`;
+        } else {
+            bufferDisplay.style.color = "var(--accent)";
+            auditEl.innerHTML = `✔ <strong>Schedule healthy.</strong> Target timeline contains ${availableShopDays} production days. Plant has ${holidayCount} scheduled non-working days in this window.`;
         }
-    });
+    }
+}
 
-    //Recalc listeners
-    const globalInputIDs = ["partsNeeded", "startDate", "targetEndDate", "op20Rate", "op30Rate", "op40Rate", "op50Rate", "op20Active", "op30Active", "op40Active", "op50Active", "holidayList"];
-    globalInputIDs.forEach(id => {
-        const el = document.getElementById(id);
-        if (!el) return;
-        const evType = el.type === "checkbox" ? "change" : "input";
-        el.addEventListener(evType, () => {
-            saveRunParamsToCache();
-            calculateSchedule();
-        });
-    });
-
+function clearJobParams() {
+    document.getElementById("partsNeeded").value = "100";
+    document.getElementById("op20Rate").value = "10";
+    document.getElementById("op30Rate").value = "6";
+    document.getElementById("op40Rate").value = "1";
+    document.getElementById("op50Rate").value = "2";
     calculateSchedule();
 }
 
-document.addEventListener("DOMContentLoaded", initAppStateAndLoadCache);
-
-document.getElementById("clearRunParamsBtn").addEventListener("click", () => {
-    document.getElementById("partsNeeded").value = "0";
-    saveRunParamsToCache();
-    calculateSchedule();
-});
-
-document.getElementById("factoryResetMasterBtn").addEventListener("click", () => {
-    if (confirm("Reset layout data cache back to defaults?")) {
-        localStorage.clear();
-        location.reload();
+function factoryResetMaster() {
+    if (confirm("Wipe cache and revert layout to default matrix?")) {
+        localStorage.removeItem("1499_master_tools_list");
+        toolsData = [...defaultTools];
+        renderToolingTable();
+        if (document.getElementById("workspaceSetup").style.display === "block") {
+            renderSetupDeckStack();
+        }
+        calculateSchedule();
     }
-});
+}
 
-document.getElementById("copyProcurementBtn").addEventListener("click", () => {
-    const parts = document.getElementById("partsNeeded").value;
-    const finish = document.getElementById("finishDateDisplay").innerText;
-    let msg = `1499 Cell Order Log:\nRun Size: ${parts} Pcs\nEst Clear: ${finish}\n\nRequired Orders:\n`;
-    
-    toolsData.forEach(t => {
-        if (t.isHouseStock) return;
-        const inserts = Math.ceil(parts * t.perPart);
-        const shortage = Math.max(0, inserts - (t.stockBoxes * 10));
-        const boxes = Math.ceil(shortage / 10);
-        if (boxes > 0) msg += `- ${t.name} (${t.id}): ${boxes} Boxes\n`;
-    });
-
-    navigator.clipboard.writeText(msg).then(() => alert("Procurement data copied directly to clipboard!"));
+// Initial Core Execution Engine Boot
+window.addEventListener("DOMContentLoaded", () => {
+    loadToolsFromCache();
+    renderToolingTable();
+    calculateSchedule();
 });
 </script>
 </body>
