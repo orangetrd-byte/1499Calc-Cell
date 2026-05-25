@@ -1,8 +1,9 @@
-const CACHE_NAME = '1499-cell-v2';
+const CACHE_NAME = '1499-cell-v2'; // Bumped version to force layout flash update
 const ASSETS = [
+  './',                            // Explicitly cache root directory access
   './index.html',
   './manifest.json',
-  './icons/icon-192.png',
+  './icons/icon-192.png',          // Lowercase to match your updated manifest profile
   './icons/icon-512.png'
 ];
 
@@ -42,7 +43,7 @@ self.addEventListener('fetch', event => {
         }
         return response;
       }).catch(() => {
-        // Offline fallback (Fixed path here too)
+        // Offline fallback
         return caches.match('./index.html');
       });
     })
