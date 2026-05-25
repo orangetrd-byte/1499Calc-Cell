@@ -49,18 +49,68 @@
         }
 
         h1 { 
-            font-size: 1.65rem; 
-            color: #fff; 
-            margin-top: 0;
-            margin-bottom: 25px; 
-            border-bottom: 3px solid var(--blue); 
-            padding-bottom: 14px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
+            <body>
+<div class="container"> 
+  <h1 style="margin-bottom: 10px;">⚙️ 1499 Master Tooling & Schedule Cell</h1>
+  
+  <div class="tab-navigation-bar" style="display: flex; gap: 10px; margin-bottom: 25px; border-bottom: 1px solid var(--border); padding-bottom: 12px;">
+    <button id="tabButtonRun" class="btn btn-accent" onclick="switchTab('run')" style="padding: 10px 20px; font-size: 0.95rem;">📊 Run Dashboard</button>
+    <button id="tabButtonSetup" class="btn" onclick="switchTab('setup')" style="padding: 10px 20px; font-size: 0.95rem;">🔧 Cell Setup Sheets</button>
+  </div>
+
+  <div id="workspaceRun" class="workspace-view">
+     <div class="grid">
+        ```
+
+---
+
+### Step 2: Scroll to the Bottom and Close the Container
+Go down to the bottom of your HTML file, right before your closing script tag `</script></div></body>`, and close out the `workspaceRun` wrapper div, then add the new blank placeholder workspace for your upcoming setup sheet builder:
+
+```html
+     </div> </div> <div id="workspaceSetup" class="workspace-view" style="display: none;">
+     <div class="grid">
+        <div class="card" style="grid-column: 1 / -1;">
+           <div class="card-title">Dynamic Component Modeler <span style="font-size: 0.8rem; color: var(--text-dim);">Phase 2 Config Platform</span></div>
+           <p style="color: var(--text-dim); font-size: 0.95rem;">This workspace will handle your custom operations arrays and tool builders. Your core math data remains safely active in the run panel.</p>
+        </div>
+     </div>
+  </div>
+
+</div> ```
+
+---
+
+### Step 3: Add the Tab Switching Logic (JavaScript)
+Now, scroll inside your script block (or append it at the absolute end of your functions list) to inject the engine that tells the DOM how to show and hide these tabs on click:
+
+```javascript
+// --- NEW WORKSPACE NAVIGATION MANAGER ---
+function switchTab(targetWorkspace) {
+    const runView = document.getElementById('workspaceRun');
+    const setupView = document.getElementById('workspaceSetup');
+    const runBtn = document.getElementById('tabButtonRun');
+    const setupBtn = document.getElementById('tabButtonSetup');
+
+    if (targetWorkspace === 'setup') {
+        // Hide dashboard, show setup window
+        runView.style.display = 'none';
+        setupView.style.display = 'block';
+        
+        // Swap button styles
+        setupBtn.classList.add('btn-accent');
+        runBtn.classList.remove('btn-accent');
+    } else {
+        // Show dashboard, hide setup window
+        runView.style.display = 'block';
+        setupView.style.display = 'none';
+        
+        // Swap button styles
+        runBtn.classList.add('btn-accent');
+        setupBtn.classList.remove('btn-accent');
+    }
+}
+
 
         .grid { 
             display: grid; 
